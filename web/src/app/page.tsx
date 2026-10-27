@@ -1,6 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import type { ClassInfo } from "@/components/sections/NextClassCard";
-
+import QuickLinks from "@/components/sections/QuickLinks";
+import Services from "@/components/sections/Services";
 // Väliaikainen esimerkkidata. Korvataan Google-kalenterin haulla
 // (lib/calendar.ts) kalenterivaiheessa.
 const nextClass: ClassInfo = {
@@ -22,7 +23,8 @@ export default function Home() {
   return (
     <main>
       <Hero nextClass={nextClass} />
-
+      <QuickLinks />
+      <Services />
       {sections.map((s) => (
         <section key={s.id} id={s.id} className="min-h-screen border-b border-line p-8">
           <h2 className="font-serif text-5xl font-semibold">{s.title}</h2>
