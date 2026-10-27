@@ -1,0 +1,11 @@
+# Rivinvaihdot: kaikki tekstitiedostot tallennetaan LF-muodossa,
+# jolloin ne ovat samat Windowsilla, Macilla ja Linux-palvelimella.
+* text=auto eol=lf
+
+# Binääritiedostot: Git ei koskaan muokkaa niiden sisältöä.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff2 binary
