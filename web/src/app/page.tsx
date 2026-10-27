@@ -1,5 +1,15 @@
-// Väliaikaiset tyhjät osiot navigaation testaamiseen.
-// Jokaisella on id, johon Headerin linkit viittaavat.
+import Hero from "@/components/sections/Hero";
+import type { ClassInfo } from "@/components/sections/NextClassCard";
+
+// Väliaikainen esimerkkidata. Korvataan Google-kalenterin haulla
+// (lib/calendar.ts) kalenterivaiheessa.
+const nextClass: ClassInfo = {
+  title: "Vesijumppa",
+  when: "ti klo 18.00",
+  place: "Tahko",
+};
+
+// Vielä rakentamattomat osiot, joilla navigaatiota voi testata.
 const sections = [
   { id: "palvelut", title: "Palvelut" },
   { id: "hyvinvointi", title: "Liikunta & hyvinvointi" },
@@ -10,10 +20,10 @@ const sections = [
 
 export default function Home() {
   return (
-    // id="top" on logolinkin kohde
-    <main id="top">
+    <main>
+      <Hero nextClass={nextClass} />
+
       {sections.map((s) => (
-        // min-h-screen tekee jokaisesta osiosta näytön korkuisen, jotta vieritys näkyy
         <section key={s.id} id={s.id} className="min-h-screen border-b border-line p-8">
           <h2 className="font-serif text-5xl font-semibold">{s.title}</h2>
         </section>
