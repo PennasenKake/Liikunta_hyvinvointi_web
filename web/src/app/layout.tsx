@@ -1,29 +1,43 @@
-// layout.tsx on sovelluksen juuriasettelu.
-// Se ympäröi kaikki sivut, eli tänne tulevat asiat, jotka näkyvät
-// jokaisella sivulla (myöhemmin Header ja Footer), sekä <html>- ja <body>-tagit.
-
 import type { Metadata } from "next";
+// next/font/google lataa Google-fontit buildin aikana ja tarjoilee ne
+// sivuston omalta palvelimelta: ei pyyntöjä Googleen kävijän selaimesta.
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 
-// Metadata näkyy selaimen välilehdellä ja hakukoneiden tuloksissa.
-// Next.js lisää nämä automaattisesti sivun <head>-osaan.
+// Otsikkofontti. Cormorant Garamond ei ole muuttuva fontti,
+// joten tarvittavat painot ja tyylit pitää luetella erikseen.
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],          // latin sisältää myös ä- ja ö-kirjaimet
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"], // kursiivia käytetään pienissä yläotsikoissa
+  variable: "--font-cormorant", // fontti tallennetaan CSS-muuttujaan
+  display: "swap",              // näytä varafontti, kunnes oma on latautunut
+});
+
+// Leipätekstin fontti. Jost on muuttuva fontti, joten painoja ei tarvitse luetella.
+const jost = Jost({
+  subsets: ["latin"],
+  variable: "--font-jost",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Tahkon Amanda – Liikunta ja hyvinvointi",
   description:
     "Ryhmäliikuntaa, personal trainingia ja rentoutusta Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.",
 };
 
-// RootLayout saa propsina children-sisällön, eli kulloinkin näytettävän sivun
-// (esim. page.tsx). Readonly estää propsien vahingossa tapahtuvan muokkaamisen.
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    // lang="fi" kertoo ruudunlukijoille ja hakukoneille, että sivu on suomeksi.
-    <html lang="fi">
-      <body>{children}</body>
+    // Fonttien CSS-muuttujat asetetaan <html>-tagiin, jolloin ne ovat
+    // käytettävissä koko sivulla. globals.css kytkee ne Tailwindiin.
+    <html lang="fi" className={`${cormorant.variable} ${jost.variable}`}>
+      {/* Perustyylit koko sivulle: tausta, tekstin väri ja leipätekstin fontti */}
+      <body className="bg-surface text-ink font-sans">{children}</body>
     </html>
   );
 }

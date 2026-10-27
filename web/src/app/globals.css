@@ -1,12 +1,41 @@
-
 /* globals.css: koko sivuston yhteiset tyylit. */
-
-/* Tuo Tailwindin käyttöön. Tämän jälkeen luokat kuten
-   "flex", "p-4" ja "text-lg" toimivat kaikissa komponenteissa. */
 @import "tailwindcss";
 
-/* Brändivärit ja fontit lisätään tänne vaiheessa 2
-   Tailwindin @theme-lohkoon. */
+/*
+  Tailwind v4:n teema. Jokainen --color-* muuttuja luo automaattisesti
+  luokat bg-*, text-*, border-* jne. Esim. --color-accent → bg-accent, text-accent.
+  Värit on poimittu hyväksytystä mockupista (versio B).
+*/
+@theme {
+  /* Teksti */
+  --color-ink: #221d4a;        /* Päätekstit ja otsikot */
+  --color-ink-soft: #3b3760;   /* Pidemmät leipätekstit värillisillä taustoilla */
+  --color-muted: #4a4568;      /* Toissijainen teksti (kontrasti valkoisella yli 4.5:1) */
+
+  /* Korostus: painikkeet ja linkit, logon violetin sävy */
+  --color-accent: #4e3192;
+
+  /* Taustat */
+  --color-surface: #fbfafe;    /* Sivun perustausta, lähes valkoinen */
+  --color-lilac: #e9e3f8;      /* Vaalea violetti */
+  --color-lilac-soft: #f1edfa; /* Vielä vaaleampi violetti, esim. Minusta-osio */
+  --color-sky: #dceaf8;        /* Vaalea sininen */
+  --color-sky-soft: #eaf3fc;   /* Heron taivas */
+
+  /* Reunat ja viivat */
+  --color-line: #e1dcf0;       /* Ohuet erotinviivat */
+  --color-border: #c9c1e6;     /* Painikkeiden ja korttien reunat */
+}
+
+/*
+  Fontit kytketään erillisessä "inline"-teemassa, koska ne viittaavat
+  muuttujiin, jotka next/font asettaa <html>-tagiin ajonaikaisesti (layout.tsx).
+  Tulos: font-serif = Cormorant Garamond, font-sans = Jost.
+*/
+@theme inline {
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jost), system-ui, sans-serif;
+}
 
 body {
   /* Fonttien pehmennys tekee tekstistä siistimmän erityisesti Macilla */
