@@ -41,3 +41,17 @@ body {
   /* Fonttien pehmennys tekee tekstistä siistimmän erityisesti Macilla */
   -webkit-font-smoothing: antialiased;
 }
+
+html {
+  /* Sticky header (n. 81 px) peittäisi ankkurilinkin kohteen otsikon.
+     scroll-padding-top jättää vieritykseen tilaa headerin verran. */
+  scroll-padding-top: 6rem;
+}
+
+/* Pehmeä vieritys ankkurilinkeille, mutta vain jos käyttäjä
+   ei ole pyytänyt käyttöjärjestelmästä vähemmän liikettä. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

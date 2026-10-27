@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 // sivuston omalta palvelimelta: ei pyyntöjä Googleen kävijän selaimesta.
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/Header";
 
 // Otsikkofontti. Cormorant Garamond ei ole muuttuva fontti,
 // joten tarvittavat painot ja tyylit pitää luetella erikseen.
@@ -37,7 +38,11 @@ export default function RootLayout({
     // käytettävissä koko sivulla. globals.css kytkee ne Tailwindiin.
     <html lang="fi" className={`${cormorant.variable} ${jost.variable}`}>
       {/* Perustyylit koko sivulle: tausta, tekstin väri ja leipätekstin fontti */}
-      <body className="bg-surface text-ink font-sans">{children}</body>
-    </html>
+      <body className="bg-surface text-ink font-sans">
+        {/* Header näkyy kaikilla sivuilla, koska se on juuriasettelussa */}
+        <Header />
+        {children}
+      </body>
+      </html>
   );
 }
