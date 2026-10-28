@@ -43,7 +43,7 @@ export default function WhyMove() {
 
         {/* Hyötykortit: 1 sarake mobiilissa, 2 tabletilla, 4 työpöydällä.
             gap-px + taustaväri luo ohuet erotinviivat korttien väliin. */}
-        <ul className="grid overflow-hidden rounded-2xl bg-[#b9d2ee] gap-px sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid overflow-hidden rounded-2xl bg-sky-line gap-px sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((b) => (
             <li key={b.title} className="flex flex-col gap-2.5 bg-sky-soft p-7">
               <h3 className="font-serif text-[26px] font-bold">{b.title}</h3>

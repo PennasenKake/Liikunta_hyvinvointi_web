@@ -56,7 +56,7 @@ export default async function Calendar() {
                       href={googleCalendarUrl(e)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-11 items-center rounded-md bg-lilac px-4 text-[15px] font-semibold transition hover:bg-[#ddd4f4]"
+                      className="inline-flex min-h-11 items-center rounded-md bg-lilac px-4 text-[15px] font-semibold transition hover:bg-lilac-strong"
                     >
                       + Kalenteriin
                       <span className="sr-only"> (avautuu uuteen välilehteen)</span>

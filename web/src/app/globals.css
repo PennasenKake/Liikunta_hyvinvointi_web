@@ -20,8 +20,11 @@
   --color-surface: #fbfafe;    /* Sivun perustausta, lähes valkoinen */
   --color-lilac: #e9e3f8;      /* Vaalea violetti */
   --color-lilac-soft: #f1edfa; /* Vielä vaaleampi violetti, esim. Minusta-osio */
+  --color-lilac-strong: #ddd4f4; /* Lilac-painikkeen hover-tila: askeleen tummempi */
   --color-sky: #dceaf8;        /* Vaalea sininen */
   --color-sky-soft: #eaf3fc;   /* Heron taivas */
+  --color-sky-strong: #cfe1f5; /* Sky-painikkeen hover-tila: askeleen tummempi */
+  --color-sky-line: #b9d2ee;   /* Erotinviivat sinisellä taustalla (Miksi liikkua -kortit) */
   --color-sky-ink: #2b5c96;    /* Sininen kuvakeväri vaalealla sinisellä (kontrasti 5.6:1) */
 
   /* Reunat ja viivat */
