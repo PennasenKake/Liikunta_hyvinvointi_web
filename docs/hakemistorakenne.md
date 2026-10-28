@@ -9,6 +9,8 @@ Liikunta_hyvinvointi_web/
 ├── README.md                          ✅ Projektin kuvaus, teknologiat ja käynnistysohjeet
 ├── .gitignore                         ✅ Juuren säännöt: mockupit, kuvat, sopimus, editorit
 ├── .gitattributes                     ✅ LF-rivinvaihdot, kuvat binäärisinä
+├── LICENSE                            ✅ Kaikki oikeudet pidätetään (koodi nähtävissä portfoliona)
+├── .github/workflows/ci.yml           ✅ GitHub Actions: check, build ja savutestit jokaisesta pushista
 │
 ├── materiaalit/                       Lähdemateriaalit, ei sivuston koodia
 │   ├── logo/
@@ -34,7 +36,10 @@ Liikunta_hyvinvointi_web/
 │   └── sopimus.md                     🔒 Laajuus, omistajuus, ylläpito
 │
 ├── web/                               Next.js-sivusto (React, TypeScript, Tailwind)
-│   ├── package.json                   ✅ Skriptit: dev, build, start, lint, check
+│   ├── package.json                   ✅ Skriptit: dev, build, start, lint, check, test:e2e
+│   ├── playwright.config.ts           ✅ Savutestien asetukset (työpöytä + mobiili)
+│   ├── e2e/
+│   │   └── savutesti.spec.ts          ✅ Etusivu, navigaatio, välilehdet, 404, tietosuoja
 │   ├── next.config.ts                 ✅
 │   ├── tsconfig.json                  ✅
 │   ├── eslint.config.mjs              ✅
@@ -43,7 +48,8 @@ Liikunta_hyvinvointi_web/
 │   ├── .env.local                     🔒 Salaisuudet (API-avaimet)
 │   │
 │   ├── public/                        Staattiset tiedostot, näkyvät sivulla juuripolusta
-│   │   ├── logo.svg                   ✅ Täysi logo (Header)
+│   │   ├── logo.svg                   ✅ Täysi logo (Header), SVGO-optimoitu (56 kt → 22 kt)
+│   │   ├── kuvat/                     ✅ Amandan valokuvat pakattuina (8 kpl)
 │   │   └── tahko-hero.svg             ✅ Hero-kuvitus läpinäkyvänä
 │   │
 │   └── src/
@@ -86,6 +92,7 @@ Liikunta_hyvinvointi_web/
 │           ├── pricing.ts             ✅ Hinnasto
 │           ├── about.ts               ✅ Minusta-osion sisältö
 │           ├── calendar.ts            ✅ Tapahtumat (esimerkkidata) ja "lisää kalenteriin"
+│           ├── photos.ts              ✅ Valokuvien polut, alt-tekstit ja mitat
 │           └── sanity.ts              ⬜ Sanity-asiakas ja kyselyt
 │
 └── studio/                            ⬜ Sanity Studio (Amandan muokkausnäkymä)

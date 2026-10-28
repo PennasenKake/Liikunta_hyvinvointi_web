@@ -34,6 +34,7 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 - [x] Footer: yhteystiedot, alueet, kumppanit, Y-tunnus
 - [x] 404-sivu
 - [x] Saavutettavuus WCAG 2.1 AA (axe-core: 0 löydöstä)
+- [x] Automaattiset savutestit (Playwright) ja CI (GitHub Actions)
 - [ ] Scroll reveal -animaatiot
 - [ ] Hakukoneoptimointi: Open Graph, rakennetieto, sitemap
 - [ ] Sisällön muokkaus kirjautumalla (Sanity Studio)
@@ -92,8 +93,11 @@ Sivu aukeaa osoitteeseen http://localhost:3000.
 | `npm run check` | Tyyppitarkistus ja ESLint (aja ennen committia) |
 | `npm run build` | Tuotantobuild |
 | `npm run start` | Tuotantobuildin ajaminen paikallisesti |
+| `npm run test:e2e` | Savutestit selaimessa (tekee buildin itse) |
 
-GitHub Actions ajaa `npm run check` ja `npm run build` automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+Savutestit ([`web/e2e/`](web/e2e/)) tarkistavat työpöytä- ja mobiiliprofiililla, että etusivu latautuu ilman rikkinäisiä resursseja, navigaatio ja välilehdet toimivat ja olematon osoite palauttaa tilakoodin 404. Ennen ensimmäistä ajoa asenna testiselain: `npx playwright install chromium`.
+
+GitHub Actions ajaa tarkistuksen, buildin ja savutestit automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 ## Ympäristömuuttujat
 
@@ -105,7 +109,7 @@ Sivusto toimii toistaiseksi ilman ympäristömuuttujia. Integraatioita varten ko
 
 Koodi on julkisesti nähtävissä portfoliotarkoituksessa.
 Logo, tekstit, kuvat ja kuvitukset ovat Tahkon Amandan omaisuutta,
-eikä niitä saa käyttää ilman lupaa.
+eikä niitä saa käyttää ilman lupaa. Tarkemmin: [LICENSE](LICENSE).
 
 ## Tekijä
 
