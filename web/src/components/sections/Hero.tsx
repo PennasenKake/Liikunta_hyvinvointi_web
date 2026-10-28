@@ -13,8 +13,8 @@ type Props = {
 
 export default function Hero({ nextClass }: Props) {
   return (
-    // id="top" on logolinkin kohde. overflow-hidden estää kuvitusta
-    // aiheuttamasta vaakavieritystä kapeilla näytöillä.
+    // id="top": sivun alun ankkuri (esim. "Takaisin ylös" -linkille Footerissa).
+    // overflow-hidden estää kuvitusta aiheuttamasta vaakavieritystä kapeilla näytöillä.
     <section id="top" className="overflow-hidden bg-sky-soft pt-16">
       {/* relative + z-10: tekstisisältö pysyy kuvituksen päällä,
           kun kuvitus nostetaan negatiivisella marginaalilla ylös */}

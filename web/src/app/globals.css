@@ -14,6 +14,7 @@
 
   /* Korostus: painikkeet ja linkit, logon violetin sävy */
   --color-accent: #4e3192;
+  --color-royal: #1a44ae;      /* Logon tumma sininen: yläpalkin liukuvärin alkupää */
 
   /* Taustat */
   --color-surface: #fbfafe;    /* Sivun perustausta, lähes valkoinen */
@@ -44,9 +45,9 @@ body {
 }
 
 html {
-  /* Sticky header (n. 81 px) peittäisi ankkurilinkin kohteen otsikon.
-     scroll-padding-top jättää vieritykseen tilaa headerin verran. */
-  scroll-padding-top: 6rem;
+  /* Sticky header (84–104 px näytön leveydestä riippuen) peittäisi ankkurilinkin
+     kohteen otsikon. scroll-padding-top jättää vieritykseen tilaa headerin verran. */
+  scroll-padding-top: 7.5rem;
 }
 
 /* Pehmeä vieritys ankkurilinkeille, mutta vain jos käyttäjä

@@ -18,10 +18,10 @@ export default function NotFound() {
   return (
     // Sama vaaleansininen tausta ja Tahko-kuvitus kuin herossa:
     // kävijä tunnistaa olevansa yhä oikealla sivustolla.
-    // min-h: sivu täyttää näytön headerin (n. 81 px) alapuolelta.
+    // min-h: sivu täyttää näytön headerin (n. 6,5 rem) alapuolelta.
     // svh = pienin näkymän korkeus, joka ei hypi mobiiliselaimen osoitepalkin mukana.
     // flex-col + kuvituksen mt-auto: kuvitus asettuu aina sivun alareunaan.
-    <main className="flex min-h-[calc(100svh-81px)] flex-col overflow-hidden bg-sky-soft pt-20">
+    <main className="flex min-h-[calc(100svh-6.5rem)] flex-col overflow-hidden bg-sky-soft pt-20">
       <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center gap-6 px-6 text-center">
         {/* Virhekoodi pienenä yläotsikkona: tieto on mukana, mutta ei hallitse sivua */}
         <p className="font-serif text-2xl italic text-accent">404</p>

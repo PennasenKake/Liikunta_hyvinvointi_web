@@ -22,7 +22,8 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 - [x] Yläpalkin navigaatio ja mobiilivalikko
 - [x] Hero-osio Tahko-kuvituksella
-- [ ] Palvelut: Liikunta ja Hyvinvointi
+- [x] 404-sivu
+- [x] Palvelut: Liikunta ja Hyvinvointi
 - [ ] Hinnasto ja Minusta-osio
 - [ ] Tulevat tunnit Google-kalenterista, lisäys omaan kalenteriin ja jakaminen
 - [ ] Instagram-karuselli
