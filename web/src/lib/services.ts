@@ -4,6 +4,10 @@
 //
 // TODO(Amanda): kestot, paikkakunnat, tehotasot ja "Sopii:"-tekstit ovat
 // arvioita, jotka Amanda tarkistaa. Lista: docs/sisalto.md.
+//
+// Palvelut-osio näyttää tällä hetkellä vain kuvakkeen, nimen, tehotason ja kuvauksen.
+// Kesto, paikkakunnat ja "Sopii:" säilytetään datassa myöhempää käyttöä varten
+// (esim. palvelukohtaiset alasivut tai kalenterin suodatus).
 
 import { site } from "./site";
 
@@ -42,13 +46,29 @@ export type Service = {
 export type ServiceCategory = {
   id: "liikunta" | "hyvinvointi"; // Sallitut arvot rajattu: kirjoitusvirhe huomataan heti
   label: string;
+  intro: string; // Lyhyt teksti siitä, miksi tämä on tärkeää (näkyy palstan yläosassa)
   services: Service[];
 };
+
+// Palvelun ankkuri-id otsikosta: "Äänimaljarentoutus" → "aanimaljarentoutus".
+// Käytetään sekä Palvelut-osion listassa (id) että yläpalkin alavalikon linkeissä (/#id),
+// joten molemmat pysyvät automaattisesti samoina.
+export function serviceId(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/ä/g, "a")
+    .replace(/ö/g, "o")
+    .replace(/å/g, "a")
+    .replace(/[^a-z0-9]+/g, "-") // Välilyönnit ja muut merkit viivoiksi
+    .replace(/^-|-$/g, "");      // Ei viivaa alkuun tai loppuun
+}
 
 export const serviceCategories: ServiceCategory[] = [
   {
     id: "liikunta",
     label: "Liikunta",
+    intro:
+      "Liikunta pitää kehon vahvana ja mielen virkeänä. Säännöllinen treeni parantaa unta, jaksamista ja ryhtiä, ja ryhmässä liikkuminen on hauskempaa.",
     services: [
       {
         title: "Vesijumppa",
@@ -111,6 +131,8 @@ export const serviceCategories: ServiceCategory[] = [
   {
     id: "hyvinvointi",
     label: "Hyvinvointi",
+    intro:
+      "Palautuminen on osa hyvinvointia. Rauhoittuminen, venyttely ja oman kehon tunteminen auttavat jaksamaan arjessa ja treenissä.",
     services: [
       {
         title: "Äänimaljarentoutus",

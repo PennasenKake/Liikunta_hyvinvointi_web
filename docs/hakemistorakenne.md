@@ -39,7 +39,7 @@ Liikunta_hyvinvointi_web/
 │   ├── package.json                   ✅ Skriptit: dev, build, start, lint, check, test:e2e
 │   ├── playwright.config.ts           ✅ Savutestien asetukset (työpöytä + mobiili)
 │   ├── e2e/
-│   │   └── savutesti.spec.ts          ✅ Etusivu, navigaatio, välilehdet, palvelukortit, 404, tietosuoja
+│   │   └── savutesti.spec.ts          ✅ Etusivu, navigaatio, alavalikot, yläpalkki, palvelut, 404, tietosuoja
 │   ├── next.config.ts                 ✅
 │   ├── tsconfig.json                  ✅
 │   ├── eslint.config.mjs              ✅
@@ -66,15 +66,16 @@ Liikunta_hyvinvointi_web/
 │       ├── components/
 │       │   ├── layout/                Näkyvät jokaisella sivulla
 │       │   │   ├── Header.tsx         ✅ Logo ja navigaatio (Server Component)
-│       │   │   ├── MobileMenu.tsx     ✅ Hampurilaisvalikko (Client Component)
+│       │   │   ├── HeaderShell.tsx    ✅ Pieneneminen ja piiloutuminen vieritettäessä (Client Component)
+│       │   │   ├── NavDropdown.tsx    ✅ Työpöydän alavalikot Liikunta/Hyvinvointi (Client Component)
+│       │   │   ├── MobileMenu.tsx     ✅ Hampurilaisvalikko alavalikoineen (Client Component)
 │       │   │   └── Footer.tsx         ✅ Yhteystiedot, alueet, kumppanit, Y-tunnus
 │       │   ├── sections/              Etusivun osiot järjestyksessä
 │       │   │   ├── Hero.tsx           ✅ Otsikko, painikkeet, Tahko-kuvitus
 │       │   │   ├── NextClassCard.tsx  ✅ "Seuraava tunti" -kortti
 │       │   │   ├── QuickLinks.tsx     ✅ Neljä pikalinkkiä
-│       │   │   ├── Services.tsx       ✅ Palvelut-osio (Server Component)
-│       │   │   ├── ServiceTabs.tsx    ✅ Liikunta/Hyvinvointi-välilehdet (Client Component)
-│       │   │   ├── ServiceCard.tsx    ✅ Palvelukortti: tehotaso, Sopii, kesto, paikat, linkki
+│       │   │   ├── Services.tsx       ✅ Palvelut-osio: Liikunta ja Hyvinvointi rinnakkain (Server Component)
+│       │   │   ├── ServiceItem.tsx    ✅ Palvelurivi, mobiilissa avautuva kuvaus (Client Component)
 │       │   │   ├── WhyMove.tsx        ✅ Miksi liikkua ja levätä
 │       │   │   ├── Pricing.tsx        ✅ Hinnasto
 │       │   │   ├── About.tsx          ✅ Minusta
@@ -85,7 +86,7 @@ Liikunta_hyvinvointi_web/
 │       │       ├── ButtonLink.tsx     ✅ Painikkeen näköinen linkki (primary/secondary)
 │       │       ├── PlaceholderImage.tsx ✅ Paikkamerkki puuttuvalle valokuvalle
 │       │       ├── SectionHeading.tsx ✅ Osioiden yhteinen otsikko
-│       │       ├── ServiceIcon.tsx    ✅ Palvelukorttien viivakuvakkeet
+│       │       ├── ServiceIcon.tsx    ✅ Palvelujen viivakuvakkeet (myös alavalikoissa)
 │       │       └── Reveal.tsx         ⬜ Scroll reveal -animaatio
 │       │
 │       └── lib/                       Data ja logiikka ilman käyttöliittymää

@@ -58,11 +58,44 @@ test.describe("Navigaatio", () => {
     await expect(page.locator("#hinnasto")).toBeInViewport();
   });
 
-  test("Hyvinvointi-linkki avaa oikean välilehden", async ({ page, isMobile }) => {
+  test("Hyvinvointi-linkki vierittää Hyvinvointi-palstaan", async ({ page, isMobile }) => {
     await page.goto("/");
     await clickNavLink(page, isMobile, "Hyvinvointi");
     await expect(page).toHaveURL(/#hyvinvointi$/);
-    await expect(page.getByRole("tab", { name: /Hyvinvointi/ })).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("heading", { level: 3, name: "Hyvinvointi" })).toBeInViewport();
+  });
+
+  test("alavalikon palvelulinkki vie oikeaan palveluun", async ({ page, isMobile }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Päävalikko" });
+    if (isMobile) {
+      // Mobiili: valikko auki → Liikunnan nuoli → palvelulista
+      await nav.getByRole("button", { name: "Avaa valikko" }).click();
+      await nav.getByRole("button", { name: "Liikunta: näytä palvelut" }).click();
+    } else {
+      // Työpöytä: alavalikko aukeaa, kun hiiri viedään Liikunta-kohdan päälle
+      await nav.getByRole("link", { name: "Liikunta", exact: true }).hover();
+    }
+    await nav.getByRole("link", { name: "Vesijumppa" }).click();
+    await expect(page).toHaveURL(/#vesijumppa$/);
+    await expect(page.locator("#vesijumppa")).toBeInViewport();
+  });
+
+  test("yläpalkki piiloutuu alas vieritettäessä ja palaa ylös vieritettäessä", async ({ page }) => {
+    await page.goto("/");
+    const header = page.locator("header").first();
+    await expect(header).toHaveAttribute("data-scrolled", "false");
+
+    // Hiiren rulla vierittää kuten käyttäjä (window.scrollTo ei vastaisi oikeaa käyttöä)
+    await page.mouse.move(200, 400);
+    await page.mouse.wheel(0, 1500);
+    await expect(header).toHaveAttribute("data-hidden", "true");
+    await expect(header).toHaveAttribute("data-scrolled", "true");
+    await expect(header).not.toBeInViewport();
+
+    await page.mouse.wheel(0, -300);
+    await expect(header).toHaveAttribute("data-hidden", "false");
+    await expect(header).toBeInViewport();
   });
 
   test("valikon linkki toimii myös toiselta sivulta", async ({ page, isMobile }) => {
@@ -97,45 +130,39 @@ test.describe("Navigaatio", () => {
 });
 
 test.describe("Palvelut", () => {
-  test("välilehdet vaihtuvat nuolinäppäimillä (WAI-ARIA)", async ({ page }) => {
-    await page.goto("/#liikunta");
-    const liikunta = page.getByRole("tab", { name: /Liikunta/ });
-    const hyvinvointi = page.getByRole("tab", { name: /Hyvinvointi/ });
-
-    await expect(liikunta).toHaveAttribute("aria-selected", "true");
-    await liikunta.focus();
-    await page.keyboard.press("ArrowRight");
-
-    // Valinta ja fokus siirtyvät, paneelin sisältö vaihtuu ja osoite päivittyy
-    await expect(hyvinvointi).toHaveAttribute("aria-selected", "true");
-    await expect(hyvinvointi).toBeFocused();
-    await expect(page.getByRole("tabpanel").getByRole("heading", { name: "Yin jooga" })).toBeVisible();
-    await expect(page).toHaveURL(/#hyvinvointi$/);
+  test("kaikki palvelut näkyvät oikeissa palstoissa", async ({ page }) => {
+    // Odotetut määrät ja nimet luetaan datasta, jotta testi ei hajoa, kun palveluita lisätään
+    await page.goto("/");
+    for (const cat of serviceCategories) {
+      const column = page.getByRole("region", { name: cat.label });
+      await expect(column.getByRole("listitem")).toHaveCount(cat.services.length);
+      for (const s of cat.services) {
+        await expect(column.getByRole("heading", { level: 4, name: s.title })).toBeAttached();
+      }
+    }
   });
 
-  test("palvelukortit: oikea määrä ja toimivat linkit", async ({ page }) => {
-    // Odotetut määrät luetaan datasta, jotta testi ei hajoa, kun palveluita lisätään
-    const [liikunta, hyvinvointi] = serviceCategories;
+  test("työpöydällä kuvaukset näkyvät heti", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Mobiilissa kuvaus avautuu klikkaamalla (oma testi)");
     await page.goto("/#liikunta");
-    const panel = page.getByRole("tabpanel");
+    await expect(page.getByText(/Vedessä liikkuminen on nivelille ystävällistä/)).toBeVisible();
+  });
 
-    // Jokaisella palvelulla on kortti, jossa on otsikko (h3)
-    await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(liikunta.services.length);
+  test("mobiilissa kuvaus avautuu ja sulkeutuu palvelun nimeä napauttamalla", async ({ page, isMobile }) => {
+    test.skip(!isMobile, "Työpöydällä kuvaukset näkyvät aina");
+    await page.goto("/#liikunta");
+    const button = page.getByRole("button", { name: "Vesijumppa", exact: true });
+    const description = page.getByText(/Vedessä liikkuminen on nivelille ystävällistä/);
 
-    // Ryhmätunnin linkki vie kalenteriin, yksilöpalvelun linkki yhteystietoihin.
-    // Linkin nimessä on palvelun nimi ruudunlukijaa varten (sr-only).
-    await expect(panel.getByRole("link", { name: "Katso tunnit: Vesijumppa" })).toHaveAttribute("href", "/#kalenteri");
-    await expect(panel.getByRole("link", { name: "Varaa aika: Personal Training" })).toHaveAttribute(
-      "href",
-      "/#yhteystiedot",
-    );
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    await expect(description).toBeHidden();
 
-    await page.getByRole("tab", { name: /Hyvinvointi/ }).click();
-    await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(hyvinvointi.services.length);
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await expect(description).toBeVisible();
 
-    // Kortin linkki toimii: kalenteri tulee näkyviin
-    await panel.getByRole("link", { name: "Katso tunnit: Yin jooga" }).click();
-    await expect(page.locator("#kalenteri")).toBeInViewport();
+    await button.click();
+    await expect(description).toBeHidden();
   });
 });
 

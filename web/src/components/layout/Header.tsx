@@ -1,6 +1,9 @@
 // Header.tsx: sivun yläpalkki (logo ja navigaatio).
-// Server Component (ei "use client" -riviä), joten se renderöidään palvelimella
-// eikä lähetä selaimeen JavaScriptiä. Vain mobiilivalikko on Client Component.
+// Server Component: sisältö renderöidään palvelimella. Selaimen JavaScriptiä tarvitsevat
+// osat ovat omissa Client Componenteissaan:
+//   HeaderShell  – pieneneminen ja piiloutuminen vieritettäessä
+//   NavDropdown  – työpöydän alavalikot (Liikunta, Hyvinvointi)
+//   MobileMenu   – hampurilaisvalikko pienille näytöille
 //
 // Värit myötäilevät logoa: liukuväri logon tummasta sinisestä (royal)
 // brändin violettiin (accent). Teksti on valkoista, kontrasti 8.5–9.6:1 (WCAG AAA).
@@ -8,27 +11,43 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
-import MobileMenu from "./MobileMenu";
+import { serviceCategories, serviceId } from "@/lib/services";
+import HeaderShell from "./HeaderShell";
+import NavDropdown from "./NavDropdown";
+import MobileMenu, { type MenuItem } from "./MobileMenu";
 
 // Näkyvä fokusrengas näppäimistökäyttäjille. Selaimen oletusrengas on sininen,
 // joten se ei erottuisi sinisestä taustasta: käytetään valkoista.
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
 
+// Valikon rakenne: site.ts:n linkit, joista Liikunta ja Hyvinvointi saavat alavalikoksi
+// palvelunsa (services.ts). Uusi palvelu ilmestyy alavalikkoon automaattisesti.
+const menu: MenuItem[] = site.nav.map((item) => {
+  const category = serviceCategories.find((c) => item.href === `/#${c.id}`);
+  return {
+    ...item,
+    children: category?.services.map((s) => ({
+      label: s.title,
+      href: `/#${serviceId(s.title)}`,
+      icon: s.icon,
+    })),
+  };
+});
+
 export default function Header() {
   return (
-    // sticky top-0: palkki pysyy ylhäällä vierittäessä. z-50: muiden elementtien päällä.
-    // bg-linear-to-r: Tailwind v4:n liukuväri vasemmalta oikealle.
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-linear-to-r from-royal to-accent text-white shadow-[0_4px_20px_rgba(26,68,174,0.25)]">
+    <HeaderShell>
+      {/* Korkeus pienenee vieritettäessä: 84 → 64 px mobiilissa, 104 → 72 px työpöydällä.
+          group-data-[scrolled=true]/header: HeaderShell asettaa data-scrolled-attribuutin. */}
       <nav
         aria-label="Päävalikko"
-        className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 lg:py-3"
+        className="mx-auto flex h-21 max-w-6xl items-center justify-between gap-4 px-4 transition-[height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:h-16 sm:px-6 lg:h-26 lg:group-data-[scrolled=true]/header:h-18"
       >
         {/* Logo ja nimi linkkinä etusivulle. href="/" toimii kaikilta sivuilta (myös 404). */}
         <Link href="/" className={`flex min-w-0 items-center gap-3 rounded-full sm:gap-4 ${focusRing}`}>
-          {/* Täysi logo teksteineen. Koko kasvaa näytön mukaan: 64 px mobiilissa, 80 px työpöydällä.
-              ring-[3px] ring-white: valkoinen rengas kehystää logon ja erottaa sen sinisestä palkista.
-              shadow: tumma varjo nostaa logon irti taustasta.
+          {/* Täysi logo teksteineen: 64 px mobiilissa, 80 px työpöydällä, vierittäessä pienempi.
+              ring-[3px] ring-white: valkoinen rengas erottaa logon sinisestä palkista.
               unoptimized: SVG on vektori, joten Next.js:n kuvaoptimointia ei tarvita. */}
           <Image
             src="/logo.svg"
@@ -37,7 +56,7 @@ export default function Header() {
             height={80}
             priority
             unoptimized
-            className="size-16 shrink-0 rounded-full shadow-[0_4px_14px_rgba(20,10,60,0.45)] ring-[3px] ring-white lg:size-20"
+            className="size-16 shrink-0 rounded-full shadow-[0_4px_14px_rgba(20,10,60,0.45)] ring-[3px] ring-white transition-[width,height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:size-12 lg:size-20 lg:group-data-[scrolled=true]/header:size-14"
           />
           {/* min-w-0: teksti saa kutistua, jottei palkki vuoda yli kapealla näytöllä */}
           <span className="flex min-w-0 flex-col leading-tight">
@@ -49,19 +68,29 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Työpöytänavigaatio: piilossa pienillä näytöillä (hidden), näkyvissä lg-leveydestä (1024 px). */}
-        <ul className="hidden items-center gap-7 font-medium lg:flex">
-          {site.nav.map((item) => (
-            <li key={item.href}>
-              {/* Hover: alleviivaus värimuutoksen sijaan, koska valkoinen on jo vaalein sävy */}
-              <a
+        {/* Työpöytänavigaatio: piilossa pienillä näytöillä, näkyvissä lg-leveydestä (1024 px). */}
+        <ul className="hidden items-center gap-6 font-medium lg:flex">
+          {menu.map((item) =>
+            item.children ? (
+              <NavDropdown
+                key={item.href}
+                label={item.label}
                 href={item.href}
-                className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+                items={item.children}
+                focusRing={focusRing}
+              />
+            ) : (
+              <li key={item.href}>
+                {/* Hover: alleviivaus värimuutoksen sijaan, koska valkoinen on jo vaalein sävy */}
+                <a
+                  href={item.href}
+                  className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ),
+          )}
           <li>
             {/* Toimintakehote käänteisenä: valkoinen painike violetilla tekstillä (kontrasti 9.6:1) */}
             <a
@@ -74,8 +103,8 @@ export default function Header() {
         </ul>
 
         {/* Mobiilivalikko näkyy vain alle lg-leveydellä (komponentti piilottaa itsensä) */}
-        <MobileMenu />
+        <MobileMenu items={[...menu, site.contact]} />
       </nav>
-    </header>
+    </HeaderShell>
   );
 }

@@ -25,9 +25,9 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 ## Ominaisuudet
 
-- [x] Yläpalkin navigaatio ja mobiilivalikko
+- [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, alavalikot palveluihin, mobiilivalikko
 - [x] Hero-osio omalla Tahko-kuvituksella
-- [x] Palvelut: Liikunta ja Hyvinvointi -välilehdet
+- [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset
 - [x] Miksi liikkua, Hinnasto ja Minusta (osin paikkamerkkisisällöllä)
 - [x] Tulevat tunnit: lisäys omaan kalenteriin ja jakaminen *(esimerkkidata, Google-kalenteri tulossa)*
 - [x] Instagram-karuselli *(väliaikaiset kuvat, Behold-syöte tulossa)*
@@ -41,7 +41,7 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 ## Tekniset ratkaisut
 
-**Server Components oletuksena.** Valtaosa sivusta renderöidään palvelimella HTML:ksi, eikä selaimeen lähetetä niille JavaScriptiä. Client Componentteja on vain kolme: mobiilivalikko, palveluiden välilehdet ja jakopainike, eli ne osat, joissa on tilaa tai selaimen rajapintoja.
+**Server Components oletuksena.** Valtaosa sivusta renderöidään palvelimella HTML:ksi, eikä selaimeen lähetetä niille JavaScriptiä. Client Componentteja ovat vain ne osat, joissa on tilaa tai selaimen rajapintoja: yläpalkin vierityslogiikka, alavalikot, mobiilivalikko, palvelurivin avautuminen ja jakopainike. Esimerkiksi yläpalkin sisältö renderöidään palvelimella, ja vain sen vierityskäyttäytyminen ajetaan selaimessa.
 
 **Data erillään näkymästä.** Palvelut, hinnat, kalenteri, kuvat ja yhteystiedot ovat `web/src/lib/`-kansiossa. Komponentit vain näyttävät datan. Kun sisältö siirtyy Sanityyn ja Google-kalenteriin, muutokset tehdään `lib/`-tiedostoihin eikä komponentteihin tarvitse koskea.
 
@@ -49,7 +49,7 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 **Saavutettavuus rakenteessa, ei jälkikäteen.**
 - Semanttinen HTML: `<dl>` hinnastossa, `<address>` yhteystiedoissa, `<time>` tapahtumissa
-- WAI-ARIA-välilehdet nuolinäppäintuella ja näppäimistöllä vieritettävä karuselli
+- Alavalikot WAI-ARIA Disclosure -mallilla (hiiri, näppäimistö ja kosketus), näppäimistöllä vieritettävä karuselli
 - Näkyvä fokusrengas, kosketusalueet vähintään 44 px, `prefers-reduced-motion`-tuki
 - Kaikkien värien kontrasti laskettu: teksti 6,8–9,6:1 (AA vaatii 4,5:1)
 

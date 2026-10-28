@@ -31,7 +31,7 @@ const icons = {
 const groupClassCount =
   serviceCategories.find((c) => c.id === "liikunta")?.services.filter((s) => s.booking === "ryhma").length ?? 0;
 
-// href osoittaa suoraan oikeaan välilehteen (ServiceTabs lukee #-osan).
+// href osoittaa suoraan Palvelut-osion oikeaan palstaan (#liikunta tai #hyvinvointi).
 // Sävyt tulevat teemasta: text-sky-ink on lisätty globals.css:ään.
 const links = [
   { title: "Ryhmäliikunta", sub: `${groupClassCount} tuntityyppiä`, href: "/#liikunta", icon: icons.group, tone: "bg-lilac text-accent" },
