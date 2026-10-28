@@ -39,7 +39,7 @@ Liikunta_hyvinvointi_web/
 │   ├── package.json                   ✅ Skriptit: dev, build, start, lint, check, test:e2e
 │   ├── playwright.config.ts           ✅ Savutestien asetukset (työpöytä + mobiili)
 │   ├── e2e/
-│   │   └── savutesti.spec.ts          ✅ Etusivu, navigaatio, välilehdet, 404, tietosuoja
+│   │   └── savutesti.spec.ts          ✅ Etusivu, navigaatio, välilehdet, palvelukortit, 404, tietosuoja
 │   ├── next.config.ts                 ✅
 │   ├── tsconfig.json                  ✅
 │   ├── eslint.config.mjs              ✅
@@ -74,6 +74,7 @@ Liikunta_hyvinvointi_web/
 │       │   │   ├── QuickLinks.tsx     ✅ Neljä pikalinkkiä
 │       │   │   ├── Services.tsx       ✅ Palvelut-osio (Server Component)
 │       │   │   ├── ServiceTabs.tsx    ✅ Liikunta/Hyvinvointi-välilehdet (Client Component)
+│       │   │   ├── ServiceCard.tsx    ✅ Palvelukortti: tehotaso, Sopii, kesto, paikat, linkki
 │       │   │   ├── WhyMove.tsx        ✅ Miksi liikkua ja levätä
 │       │   │   ├── Pricing.tsx        ✅ Hinnasto
 │       │   │   ├── About.tsx          ✅ Minusta
@@ -84,11 +85,12 @@ Liikunta_hyvinvointi_web/
 │       │       ├── ButtonLink.tsx     ✅ Painikkeen näköinen linkki (primary/secondary)
 │       │       ├── PlaceholderImage.tsx ✅ Paikkamerkki puuttuvalle valokuvalle
 │       │       ├── SectionHeading.tsx ✅ Osioiden yhteinen otsikko
+│       │       ├── ServiceIcon.tsx    ✅ Palvelukorttien viivakuvakkeet
 │       │       └── Reveal.tsx         ⬜ Scroll reveal -animaatio
 │       │
 │       └── lib/                       Data ja logiikka ilman käyttöliittymää
 │           ├── site.ts                ✅ Nimi, yhteystiedot, Y-tunnus, navigaatio
-│           ├── services.ts            ✅ Palvelut kategorioittain
+│           ├── services.ts            ✅ Palvelut, tehotasot, kestot ja paikkakunnat
 │           ├── pricing.ts             ✅ Hinnasto
 │           ├── about.ts               ✅ Minusta-osion sisältö
 │           ├── calendar.ts            ✅ Tapahtumat (esimerkkidata) ja "lisää kalenteriin"

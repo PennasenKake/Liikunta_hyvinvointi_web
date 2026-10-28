@@ -24,6 +24,7 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 6 | **Instagram-tunnus** | Instagram-osio, Footer | `lib/site.ts` → `instagram` | ⬜ |
 | 7 | **Google-kalenteri** (tunniste) ja tuntien paikat | Tulevat tunnit, Heron kortti | `lib/calendar.ts` | ⬜ |
 | 8 | **Kumppanilogot ja käyttölupa:** ePassi, Tahko, Nilsiän Yrittäjät | Footer | `lib/site.ts` → `partners` | ⬜ |
+| 9 | **Palvelukorttien tiedot:** kesto, paikkakunnat, tehotaso ja "Sopii:"-teksti jokaiselle palvelulle (nyt arvioita) | Palvelut-osion kortit | `lib/services.ts` | ⬜ |
 
 ## Tarkistettavat asiat
 
@@ -36,7 +37,7 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 ## Saadut kuvat
 
 Tunneilta saadut kuvat ovat `lib/photos.ts`-tiedostossa. Käytössä: Miksi liikkua -osio
-(äänimaljat) ja Instagram-osion väliaikaiset kuvat. Tulevat palvelukortit käyttävät samoja kuvia.
+(äänimaljat) ja Instagram-osion väliaikaiset kuvat.
 
 | Kuva | Tila |
 |---|---|

@@ -6,6 +6,7 @@
 
 import { test, expect, type Page } from "@playwright/test";
 import { site } from "../src/lib/site";
+import { serviceCategories } from "../src/lib/services";
 
 // Avaa navigaation linkin oikealla tavalla laitteen mukaan:
 // työpöydällä linkki näkyy suoraan, mobiilissa valikko pitää avata ensin.
@@ -110,6 +111,31 @@ test.describe("Palvelut", () => {
     await expect(hyvinvointi).toBeFocused();
     await expect(page.getByRole("tabpanel").getByRole("heading", { name: "Yin jooga" })).toBeVisible();
     await expect(page).toHaveURL(/#hyvinvointi$/);
+  });
+
+  test("palvelukortit: oikea määrä ja toimivat linkit", async ({ page }) => {
+    // Odotetut määrät luetaan datasta, jotta testi ei hajoa, kun palveluita lisätään
+    const [liikunta, hyvinvointi] = serviceCategories;
+    await page.goto("/#liikunta");
+    const panel = page.getByRole("tabpanel");
+
+    // Jokaisella palvelulla on kortti, jossa on otsikko (h3)
+    await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(liikunta.services.length);
+
+    // Ryhmätunnin linkki vie kalenteriin, yksilöpalvelun linkki yhteystietoihin.
+    // Linkin nimessä on palvelun nimi ruudunlukijaa varten (sr-only).
+    await expect(panel.getByRole("link", { name: "Katso tunnit: Vesijumppa" })).toHaveAttribute("href", "/#kalenteri");
+    await expect(panel.getByRole("link", { name: "Varaa aika: Personal Training" })).toHaveAttribute(
+      "href",
+      "/#yhteystiedot",
+    );
+
+    await page.getByRole("tab", { name: /Hyvinvointi/ }).click();
+    await expect(panel.getByRole("heading", { level: 3 })).toHaveCount(hyvinvointi.services.length);
+
+    // Kortin linkki toimii: kalenteri tulee näkyviin
+    await panel.getByRole("link", { name: "Katso tunnit: Yin jooga" }).click();
+    await expect(page.locator("#kalenteri")).toBeInViewport();
   });
 });
 

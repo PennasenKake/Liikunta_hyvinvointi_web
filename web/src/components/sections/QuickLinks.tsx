@@ -1,6 +1,8 @@
 // QuickLinks.tsx: neljä pikalinkkiä heti Heron alla.
 // Kortit nousevat negatiivisella marginaalilla Heron kuvituksen päälle.
 
+import { serviceCategories } from "@/lib/services";
+
 // Kuvakkeet: ohuet viivapiirrokset. aria-hidden, koska teksti kertoo merkityksen.
 const icons = {
   group: <path d="M6.5 6.5v11M17.5 6.5v11M3 9.5v5M21 9.5v5M6.5 12h11" />,
@@ -24,10 +26,15 @@ const icons = {
   ),
 };
 
+// Ryhmäliikuntatuntien määrä lasketaan datasta, jotta luku pysyy oikeana,
+// kun palveluita lisätään (Personal Training on yksilöpalvelu, joten se ei lasketa mukaan).
+const groupClassCount =
+  serviceCategories.find((c) => c.id === "liikunta")?.services.filter((s) => s.booking === "ryhma").length ?? 0;
+
 // href osoittaa suoraan oikeaan välilehteen (ServiceTabs lukee #-osan).
 // Sävyt tulevat teemasta: text-sky-ink on lisätty globals.css:ään.
 const links = [
-  { title: "Ryhmäliikunta", sub: "8 tuntityyppiä", href: "/#liikunta", icon: icons.group, tone: "bg-lilac text-accent" },
+  { title: "Ryhmäliikunta", sub: `${groupClassCount} tuntityyppiä`, href: "/#liikunta", icon: icons.group, tone: "bg-lilac text-accent" },
   { title: "Personal Training", sub: "Ohjelma juuri sinulle", href: "/#liikunta", icon: icons.person, tone: "bg-sky text-sky-ink" },
   { title: "Rentoutus & jooga", sub: "Äänimaljat, yin, venyttely", href: "/#hyvinvointi", icon: icons.bowl, tone: "bg-lilac text-accent" },
   { title: "InBody-mittaus", sub: "Kehonkoostumus", href: "/#hyvinvointi", icon: icons.chart, tone: "bg-sky text-sky-ink" },

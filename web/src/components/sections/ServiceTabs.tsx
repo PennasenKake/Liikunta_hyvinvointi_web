@@ -11,6 +11,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ServiceCategory } from "@/lib/services";
+import ServiceCard from "./ServiceCard";
 
 type Props = {
   categories: ServiceCategory[];
@@ -98,23 +99,15 @@ export default function ServiceTabs({ categories }: Props) {
 
       {/* Valitun välilehden sisältö. aria-labelledby yhdistää paneelin välilehteensä. */}
       <div role="tabpanel" id={`paneeli-${current.id}`} aria-labelledby={`tab-${current.id}`}>
-        <ol>
-          {current.services.map((s, i) => (
-            <li
-              key={s.title}
-              className="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line py-6"
-            >
-              {/* padStart: 1 → "01". Numero on koriste, joten ruudunlukija ohittaa sen. */}
-              <span aria-hidden="true" className="w-14 shrink-0 font-serif text-3xl italic text-accent">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="min-w-0 grow basis-60 font-serif text-3xl font-semibold">{s.title}</h3>
-              <p className="min-w-0 grow-[2] basis-96 text-[17px] leading-relaxed text-muted">
-                {s.description}
-              </p>
+        {/* Kortit ruudukossa: 1 sarake mobiilissa, 2 tabletilla, 3 työpöydällä.
+            Lista (<ul>), jotta ruudunlukija kertoo palvelujen määrän. */}
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {current.services.map((s) => (
+            <li key={s.title}>
+              <ServiceCard service={s} tone={current.id === "liikunta" ? "lilac" : "sky"} />
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
     </div>
   );
