@@ -2,7 +2,8 @@
 // Kertoo, miksi liikunta ja palautuminen ovat tärkeitä hyvinvoinnille (suunnitelman kohta 7).
 
 import SectionHeading from "@/components/ui/SectionHeading";
-import PlaceholderImage from "@/components/ui/PlaceholderImage";
+import Image from "next/image";
+import { photos } from "@/lib/photos";
 
 // Neljä hyötyä. Data komponentin yläpuolella, jotta tekstejä on helppo muokata.
 const benefits = [
@@ -18,11 +19,18 @@ export default function WhyMove() {
       <div className="mx-auto flex max-w-5xl flex-col gap-12">
         {/* Kuva ja teksti vierekkäin, kapealla näytöllä allekkain (flex-wrap) */}
         <div className="flex flex-wrap items-center gap-8 rounded-2xl bg-white p-5 sm:gap-10">
-          {/* TODO(Amanda): kuva rentoutustunnilta */}
-          <PlaceholderImage
-            label="Kuva: äänimaljat tai rentoutustunti"
-            className="h-64 min-w-0 grow basis-72 rounded-xl sm:h-80"
-          />
+          {/* Äänimaljat kuvaavat sitä, mistä osio kertoo: liikkeen rinnalla myös lepo.
+              sizes: kuva on mobiilissa koko levyinen, työpöydällä noin puolet sisällöstä.
+              Selain lataa sizes-tiedon perusteella vain tarvittavan kokoisen version. */}
+          <div className="relative h-64 min-w-0 grow basis-72 overflow-hidden rounded-xl sm:h-80">
+            <Image
+              src={photos.aanimaljat.src}
+              alt={photos.aanimaljat.alt}
+              fill // täyttää kääreen: koko määräytyy kääreen luokista
+              sizes="(min-width: 1024px) 460px, 100vw"
+              className="object-cover object-[50%_60%]" // rajauksen painopiste maljoihin
+            />
+          </div>
           <div className="min-w-0 grow basis-80 sm:pr-4">
             <SectionHeading
               id="miksi-liikkua-otsikko"

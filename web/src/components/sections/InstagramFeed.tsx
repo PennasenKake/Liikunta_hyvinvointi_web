@@ -1,9 +1,10 @@
 // InstagramFeed.tsx: Instagram-julkaisut.
-// NYT: kuusi paikkamerkkiruutua vaakaan vieritettävänä.
+// NYT: Amandan omia kuvia (lib/photos.ts) vaakaan vieritettävänä.
 // MYÖHEMMIN (vaihe 8): Behold-palvelun syöte, joka päivittää julkaisut automaattisesti.
 
 import SectionHeading from "@/components/ui/SectionHeading";
-import PlaceholderImage from "@/components/ui/PlaceholderImage";
+import Image from "next/image";
+import { instagramPreview } from "@/lib/photos";
 import { site } from "@/lib/site";
 
 export default function InstagramFeed() {
@@ -28,17 +29,36 @@ export default function InstagramFeed() {
         </div>
 
         {/* Vaakavieritys: scroll-snap pysäyttää vierityksen aina ruudun alkuun.
-            Kosketusnäytöllä pyyhkäistään, työpöydällä vieritetään vaakasuunnassa. */}
-        <ul
-          aria-label="Instagram-julkaisut"
-          className="flex snap-x snap-mandatory gap-3.5 overflow-x-auto pb-3"
+            Kosketusnäytöllä pyyhkäistään, työpöydällä vieritetään vaakasuunnassa.
+
+            Saavutettavuus (WCAG 2.1.1 Näppäimistö): vieritettävän alueen pitää olla
+            myös näppäimistöllä käytettävissä.
+            - tabIndex={0}: Tab-näppäin pysähtyy alueeseen, ja nuolinäppäimet vierittävät sitä
+            - role="region" + aria-label: ruudunlukija kertoo, mihin fokus siirtyi
+            - focus-visible: näkyvä fokusrengas vain näppäimistökäytössä, ei hiirellä klikatessa */}
+        <div
+          role="region"
+          aria-label="Instagram-julkaisut, vieritä vaakasuunnassa"
+          tabIndex={0}
+          className="overflow-x-auto rounded-xl pb-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
-          {[1, 2, 3, 4, 5, 6].map((n) => (
-            <li key={n} className="w-[min(260px,70vw)] shrink-0 snap-start">
-              <PlaceholderImage label={`Instagram-julkaisu ${n}`} className="aspect-4/5 rounded-xl" />
-            </li>
-          ))}
-        </ul>
+          <ul className="flex snap-x snap-mandatory gap-3.5">
+            {instagramPreview.map((photo) => (
+              <li key={photo.src} className="w-[min(260px,70vw)] shrink-0 snap-start">
+                {/* aspect-4/5: Instagramin pystykuvasuhde. Kuva rajataan siihen (object-cover). */}
+                <div className="relative aspect-4/5 overflow-hidden rounded-xl bg-lilac">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    sizes="260px" // ruudun leveys on aina enintään 260 px
+                    className="object-cover"
+                  />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   );
