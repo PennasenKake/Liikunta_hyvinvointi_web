@@ -1,6 +1,6 @@
 # ci.yml: jatkuva integraatio (Continuous Integration).
 # Tarkistaa jokaisen pushin ja pull requestin automaattisesti GitHubin palvelimella.
-# Jos tyyppitarkistus, lint tai build epäonnistuu, GitHub näyttää punaisen rastin
+# Jos tyyppitarkistus, lint, build tai savutestit epäonnistuvat, GitHub näyttää punaisen rastin
 # commitin vieressä ja lähettää ilmoituksen. Näin rikkinäinen koodi huomataan heti
 # eikä vasta julkaisussa.
 
@@ -24,9 +24,9 @@ concurrency:
 
 jobs:
   tarkistus:
-    name: Tarkistus ja build
+    name: Tarkistus, build ja testit
     runs-on: ubuntu-latest
-    timeout-minutes: 10 # Pysäyttää jumiin jääneen ajon, ettei se kuluta minuutteja turhaan
+    timeout-minutes: 15 # Pysäyttää jumiin jääneen ajon, ettei se kuluta minuutteja turhaan
 
     # Next.js-sovellus on web-kansiossa, joten kaikki komennot ajetaan sieltä
     defaults:
@@ -61,3 +61,25 @@ jobs:
         run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: 1 # Ei lähetetä Next.js:n käyttötilastoja CI-ajoista
+
+      # 6. Asentaa testeissä käytettävän Chromium-selaimen ja sen Linux-kirjastot.
+      #    Vain Chromium, koska molemmat testiprofiilit (työpöytä ja Pixel 7) käyttävät sitä.
+      - name: Playwright-selaimen asennus
+        run: npx playwright install --with-deps chromium
+
+      # 7. Savutestit tuotantobuildia vastaan (web/e2e/savutesti.spec.ts).
+      #    Playwright käynnistää palvelimen itse, koska build on jo tehty vaiheessa 5.
+      - name: Savutestit
+        run: npm run test:e2e
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      # 8. Jos testit epäonnistuvat, HTML-raportti tallennetaan ladattavaksi
+      #    ajon Summary-sivulle (Artifacts). Raportissa näkyy, mikä testi kaatui ja miksi.
+      - name: Testiraportin tallennus
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-raportti
+          path: web/playwright-report/
+          retention-days: 7 # Poistetaan viikon kuluttua, ettei tallennustilaa kulu turhaan
