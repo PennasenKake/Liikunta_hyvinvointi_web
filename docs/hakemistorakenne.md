@@ -25,6 +25,7 @@ Liikunta_hyvinvointi_web/
 │   └── kuvat/                         🔒 Amandan valokuvat alkuperäiskoossa
 │
 ├── docs/                              Dokumentaatio
+│   ├── kuvat/esikatselu.jpg           ✅ README:n kuvakaappaus
 │   ├── hakemistorakenne.md            ✅ Tämä tiedosto
 │   ├── muistiinpanot.md               ✅ Verkkosivuston suunnitelma
 │   ├── sisalto.md                     ✅ Palvelut, tekstit, hinnat, yhteystiedot
@@ -38,7 +39,7 @@ Liikunta_hyvinvointi_web/
 │   ├── tsconfig.json                  ✅
 │   ├── eslint.config.mjs              ✅
 │   ├── AGENTS.md                      ✅ Next.js:n ohjeet tekoälyavustajille
-│   ├── .env.example                   ⬜ Ympäristömuuttujien mallipohja
+│   ├── .env.example                   ✅ Ympäristömuuttujien mallipohja
 │   ├── .env.local                     🔒 Salaisuudet (API-avaimet)
 │   │
 │   ├── public/                        Staattiset tiedostot, näkyvät sivulla juuripolusta
