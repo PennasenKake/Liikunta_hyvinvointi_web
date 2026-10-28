@@ -27,7 +27,7 @@ Liikunta_hyvinvointi_web/
 ├── docs/                              Dokumentaatio
 │   ├── hakemistorakenne.md            ✅ Tämä tiedosto
 │   ├── muistiinpanot.md               ✅ Verkkosivuston suunnitelma
-│   ├── sisalto.md                     ⬜ Palvelut, tekstit, hinnat, yhteystiedot
+│   ├── sisalto.md                     ✅ Palvelut, tekstit, hinnat, yhteystiedot
 │   ├── tietoturvatarkistus.md         ⬜ 7 kohdan tarkistus ennen julkaisua
 │   ├── luovutus.md                    ⬜ Ohjeet Amandalle sisällön muokkaamiseen
 │   └── sopimus.md                     🔒 Laajuus, omistajuus, ylläpito
@@ -54,33 +54,37 @@ Liikunta_hyvinvointi_web/
 │       │   ├── icon.png               ✅ Favicon (logomerkistä)
 │       │   ├── apple-icon.png         ✅ iPhonen kotinäytön kuvake
 │       │   └── tietosuoja/
-│       │       └── page.tsx           ⬜ Tietosuojaseloste
+│       │       └── page.tsx           ✅ Tietosuojaseloste (paikkamerkki)
 │       │
 │       ├── components/
 │       │   ├── layout/                Näkyvät jokaisella sivulla
 │       │   │   ├── Header.tsx         ✅ Logo ja navigaatio (Server Component)
 │       │   │   ├── MobileMenu.tsx     ✅ Hampurilaisvalikko (Client Component)
-│       │   │   └── Footer.tsx         ⬜ Yhteystiedot, alueet, kumppanit, Y-tunnus
+│       │   │   └── Footer.tsx         ✅ Yhteystiedot, alueet, kumppanit, Y-tunnus
 │       │   ├── sections/              Etusivun osiot järjestyksessä
 │       │   │   ├── Hero.tsx           ✅ Otsikko, painikkeet, Tahko-kuvitus
 │       │   │   ├── NextClassCard.tsx  ✅ "Seuraava tunti" -kortti
 │       │   │   ├── QuickLinks.tsx     ✅ Neljä pikalinkkiä
 │       │   │   ├── Services.tsx       ✅ Palvelut-osio (Server Component)
 │       │   │   ├── ServiceTabs.tsx    ✅ Liikunta/Hyvinvointi-välilehdet (Client Component)
-│       │   │   ├── WhyMove.tsx        ⬜ Miksi liikkua ja levätä
-│       │   │   ├── Pricing.tsx        ⬜ Hinnasto
-│       │   │   ├── About.tsx          ⬜ Minusta
-│       │   │   ├── Calendar.tsx       ⬜ Tulevat tunnit (Google-kalenteri)
-│       │   │   └── InstagramFeed.tsx  ⬜ Behold-karuselli
+│       │   │   ├── WhyMove.tsx        ✅ Miksi liikkua ja levätä
+│       │   │   ├── Pricing.tsx        ✅ Hinnasto
+│       │   │   ├── About.tsx          ✅ Minusta
+│       │   │   ├── Calendar.tsx       ✅ Tulevat tunnit (esimerkkidata, Google-kalenteri vaiheessa 7)
+│       │   │   ├── ShareButton.tsx    ✅ Tapahtuman jakaminen (Client Component)
+│       │   │   └── InstagramFeed.tsx  ✅ Paikkamerkit (Behold vaiheessa 8)
 │       │   └── ui/                    Pienet uudelleenkäytettävät palat
 │       │       ├── ButtonLink.tsx     ✅ Painikkeen näköinen linkki (primary/secondary)
-│       │       ├── SectionHeading.tsx ⬜ Osioiden yhteinen otsikko
+│       │       ├── PlaceholderImage.tsx ✅ Paikkamerkki puuttuvalle valokuvalle
+│       │       ├── SectionHeading.tsx ✅ Osioiden yhteinen otsikko
 │       │       └── Reveal.tsx         ⬜ Scroll reveal -animaatio
 │       │
 │       └── lib/                       Data ja logiikka ilman käyttöliittymää
 │           ├── site.ts                ✅ Nimi, yhteystiedot, Y-tunnus, navigaatio
 │           ├── services.ts            ✅ Palvelut kategorioittain
-│           ├── calendar.ts            ⬜ Google Calendar -haku ja "lisää kalenteriin"
+│           ├── pricing.ts             ✅ Hinnasto
+│           ├── about.ts               ✅ Minusta-osion sisältö
+│           ├── calendar.ts            ✅ Tapahtumat (esimerkkidata) ja "lisää kalenteriin"
 │           └── sanity.ts              ⬜ Sanity-asiakas ja kyselyt
 │
 └── studio/                            ⬜ Sanity Studio (Amandan muokkausnäkymä)

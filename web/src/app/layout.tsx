@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 // Otsikkofontti. Cormorant Garamond ei ole muuttuva fontti,
 // joten tarvittavat painot ja tyylit pitää luetella erikseen.
@@ -42,6 +43,8 @@ export default function RootLayout({
         {/* Header näkyy kaikilla sivuilla, koska se on juuriasettelussa */}
         <Header />
         {children}
+        {/* Footer näkyy kaikilla sivuilla, kuten Header */}
+        <Footer />
       </body>
       </html>
   );
