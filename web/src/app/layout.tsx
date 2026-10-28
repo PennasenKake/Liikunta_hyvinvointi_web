@@ -46,6 +46,6 @@ export default function RootLayout({
         {/* Footer näkyy kaikilla sivuilla, kuten Header */}
         <Footer />
       </body>
-      </html>
+    </html>
   );
 }
