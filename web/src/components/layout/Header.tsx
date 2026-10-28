@@ -17,7 +17,7 @@ export default function Header() {
         className="mx-auto flex max-w-6xl items-center justify-between gap-5 px-6 py-3"
       >
         {/* Logo ja nimi linkkinä sivun alkuun */}
-        <Link href="#top" className="flex items-center gap-3.5">
+        <Link href="/" className="flex items-center gap-3.5">
           {/* next/image optimoi kuvan automaattisesti (koko, formaatti, lazy loading).
               priority: logo ladataan heti, koska se näkyy ensimmäisenä. */}
           <Image
@@ -26,7 +26,7 @@ export default function Header() {
             width={56}
             height={56}
             priority
-            className="size-14 rounded-full object-cover"
+            className="size-14"
           />
           <span className="flex flex-col leading-tight">
             <span className="font-serif text-2xl font-bold">{site.name}</span>
@@ -48,10 +48,10 @@ export default function Header() {
           ))}
           <li>
             <a
-              href="#yhteystiedot"
+              href={site.contact.href}
               className="rounded-md bg-accent px-5 py-3 font-semibold text-white transition-opacity hover:opacity-90"
             >
-              Yhteystiedot
+              {site.contact.label}
             </a>
           </li>
         </ul>

@@ -2,6 +2,7 @@ import Hero from "@/components/sections/Hero";
 import type { ClassInfo } from "@/components/sections/NextClassCard";
 import QuickLinks from "@/components/sections/QuickLinks";
 import Services from "@/components/sections/Services";
+
 // Väliaikainen esimerkkidata. Korvataan Google-kalenterin haulla
 // (lib/calendar.ts) kalenterivaiheessa.
 const nextClass: ClassInfo = {
@@ -11,11 +12,11 @@ const nextClass: ClassInfo = {
 };
 
 // Vielä rakentamattomat osiot, joilla navigaatiota voi testata.
+// Liikunta ja Hyvinvointi ovat nyt Palvelut-osiossa (Services.tsx).
 const sections = [
-  { id: "palvelut", title: "Palvelut" },
-  { id: "hyvinvointi", title: "Liikunta & hyvinvointi" },
   { id: "hinnasto", title: "Hinnasto" },
   { id: "minusta", title: "Minusta" },
+  { id: "kalenteri", title: "Tulevat tunnit" }, // Heron painikkeet osoittavat tänne
   { id: "yhteystiedot", title: "Yhteystiedot" },
 ];
 

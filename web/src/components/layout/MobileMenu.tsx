@@ -23,7 +23,7 @@ export default function MobileMenu() {
   }, [open]);
 
   // Kaikki linkit: navigaatio ja Yhteystiedot
-  const links = [...site.nav, { label: "Yhteystiedot", href: "#yhteystiedot" }];
+  const links = [...site.nav, site.contact];
 
   return (
     // lg:hidden piilottaa koko mobiilivalikon isoilla näytöillä

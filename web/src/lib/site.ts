@@ -12,11 +12,18 @@ export const site = {
   businessId: "3337574-9",
   areas: ["Tahko", "Siilinjärvi", "Kuopio", "Rautavaara"],
 
-  // Navigaation linkit. href viittaa etusivun osioiden id-arvoihin (#palvelut jne.).
+  // Navigaatio suunnitelman mukaan: Liikunta ja Hyvinvointi omina kohtinaan.
+  // Linkit alkavat "/"-merkillä, jotta ne toimivat myös muilta sivuilta
+  // (404, tietosuojaseloste): selain siirtyy etusivulle ja vierittää osioon.
+  // Etusivulla "/#liikunta" ei lataa sivua uudelleen, vaan vain vierittää.
   nav: [
-    { label: "Palvelut", href: "#palvelut" },
-    { label: "Liikunta & hyvinvointi", href: "#hyvinvointi" },
-    { label: "Hinnasto", href: "#hinnasto" },
-    { label: "Minusta", href: "#minusta" },
+    { label: "Liikunta", href: "/#liikunta" },
+    { label: "Hyvinvointi", href: "/#hyvinvointi" },
+    { label: "Hinnasto", href: "/#hinnasto" },
+    { label: "Minusta", href: "/#minusta" },
   ],
+
+  // Korostettu toimintakehote valikon lopussa. Erillään nav-listasta,
+  // koska se tyylitellään painikkeeksi. Yksi paikka Headerille ja MobileMenulle.
+  contact: { label: "Yhteystiedot", href: "/#yhteystiedot" },
 } as const; // "as const" tekee arvoista vain luku -muotoisia ja tarkentaa tyypit

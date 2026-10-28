@@ -58,7 +58,8 @@ export default function Hero({ nextClass }: Props) {
         unoptimized // SVG on jo vektori, joten Next.js:n kuvaoptimointia ei tarvita
         // object-cover + object-bottom: kapeilla näytöillä rajataan taivasta pois,
         // jolloin vuori, järvi ja kylä pysyvät näkyvissä.
-        className="-mt-6 block h-[clamp(300px,42vw,600px)] w-full object-cover object-bottom sm:-mt-20 lg:-mt-28"
+        // Maksimikorkeus 460 px, jotta pikalinkit näkyvät työpöydällä ilman vieritystä
+        className="-mt-6 block h-[clamp(280px,34vw,460px)] w-full object-cover object-bottom sm:-mt-20 lg:-mt-28"
       />
     </section>
   );

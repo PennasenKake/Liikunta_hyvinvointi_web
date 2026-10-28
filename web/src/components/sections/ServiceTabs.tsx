@@ -1,46 +1,121 @@
-// QuickLinks.tsx: neljä pikalinkkiä heti Heron alla.
-// Kortit nousevat negatiivisella marginaalilla Heron kuvituksen päälle.
+// ServiceTabs.tsx: Liikunta/Hyvinvointi-välilehdet ja palvelulista.
+// Client Component, koska valittu välilehti on tilaa ja vaihtuu klikkauksella.
+// Toteutus noudattaa WAI-ARIA Tabs -mallia: ruudunlukija tunnistaa välilehdet,
+// ja nuolinäppäimet siirtävät valintaa.
+//
+// Välilehti on sidottu osoitteen #-osaan:
+//   /#liikunta    → Liikunta-välilehti auki
+//   /#hyvinvointi → Hyvinvointi-välilehti auki
+// Näin valikon linkit, pikalinkit ja jaetut linkit avaavat oikean välilehden.
+"use client";
 
-// Kuvakkeet: ohuet viivapiirrokset. aria-hidden, koska teksti kertoo merkityksen.
-const icons = {
-  group: <path d="M6.5 6.5v11M17.5 6.5v11M3 9.5v5M21 9.5v5M6.5 12h11" />,
-  person: <><circle cx="12" cy="7" r="3.5" /><path d="M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7" /></>,
-  bowl: <><path d="M4 13c0 3.9 3.6 6 8 6s8-2.1 8-6H4z" /><path d="M9 9c0-1.5 1-2 1-3.5M14 9c0-1.5 1-2 1-3.5" /></>,
-  chart: <><rect x="4" y="3" width="16" height="18" rx="3" /><path d="M8 8h8M8 12h5M8 16h3" /></>,
+import { useEffect, useRef, useState } from "react";
+import type { ServiceCategory } from "@/lib/services";
+
+type Props = {
+  categories: ServiceCategory[];
 };
 
-const links = [
-  { title: "Ryhmäliikunta", sub: "8 tuntityyppiä", icon: icons.group, tone: "bg-lilac text-accent" },
-  { title: "Personal Training", sub: "Ohjelma juuri sinulle", icon: icons.person, tone: "bg-sky text-[#2b5c96]" },
-  { title: "Rentoutus & jooga", sub: "Äänimaljat, yin, venyttely", icon: icons.bowl, tone: "bg-lilac text-accent" },
-  { title: "InBody-mittaus", sub: "Kehonkoostumus", icon: icons.chart, tone: "bg-sky text-[#2b5c96]" },
-];
+export default function ServiceTabs({ categories }: Props) {
+  // Valitun välilehden indeksi (0 = Liikunta)
+  const [active, setActive] = useState(0);
 
-export default function QuickLinks() {
+  // Viittaukset välilehtipainikkeisiin, jotta fokus voidaan siirtää nuolinäppäimillä.
+  // useRef säilyttää arvon renderöintien välillä aiheuttamatta uutta renderöintiä.
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Synkronoi välilehti osoitteen #-osaan.
+  // 1) Heti latautuessa: jaettu linkki tahkonamanda.fi/#hyvinvointi avaa oikean välilehden.
+  // 2) hashchange: valikon tai pikalinkin klikkaus vaihtaa välilehteä ilman sivun latausta.
+  // Paluufunktio poistaa kuuntelijan, kun komponentti poistuu.
+  useEffect(() => {
+    const sync = () => {
+      const i = categories.findIndex((c) => `#${c.id}` === window.location.hash);
+      if (i !== -1) setActive(i); // Muu hash (esim. #hinnasto) ei muuta välilehteä
+    };
+    sync();
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, [categories]);
+
+  // Välilehden valinta klikkauksella tai nuolinäppäimellä.
+  // replaceState päivittää osoitteen #-osan ilman vieritystä ja ilman uutta
+  // selainhistorian merkintää. Tärkeä reunatapaus: jos osoite jäisi #liikunta-tilaan
+  // käyttäjän valittua Hyvinvoinnin, valikon "Liikunta"-linkki ei laukaisisi
+  // hashchange-tapahtumaa (osoite ei muutu), eikä välilehti vaihtuisi takaisin.
+  function select(i: number) {
+    setActive(i);
+    history.replaceState(null, "", `#${categories[i].id}`);
+  }
+
+  // Nuoli oikealle/vasemmalle vaihtaa välilehteä. Modulo (%) kiertää
+  // viimeisestä ensimmäiseen ja päinvastoin.
+  function onKeyDown(e: React.KeyboardEvent) {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const dir = e.key === "ArrowRight" ? 1 : -1;
+    const next = (active + dir + categories.length) % categories.length;
+    select(next);
+    tabRefs.current[next]?.focus();
+  }
+
+  const current = categories[active];
+
   return (
-    <section aria-label="Pikalinkit palveluihin" className="bg-white px-6">
-      {/* -mt-16 nostaa kortit Heron kuvituksen päälle, relative pitää ne päällimmäisinä.
-          auto-fit + minmax: niin monta 200 px:n saraketta kuin mahtuu, ilman mediakyselyitä. */}
-      <div className="relative mx-auto -mt-16 grid max-w-5xl grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3.5">
-        {links.map((l) => (
-          <a
-            key={l.title}
-            href="#palvelut"
-            className="flex items-center gap-3.5 rounded-2xl border border-line bg-white p-5 shadow-[0_8px_24px_rgba(34,29,74,0.06)] transition hover:border-border"
-          >
-            <span className={`flex size-12 shrink-0 items-center justify-center rounded-full ${l.tone}`}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                {l.icon}
-              </svg>
-            </span>
-            <span>
-              <span className="block text-[17px] font-semibold">{l.title}</span>
-              <span className="text-sm text-muted">{l.sub}</span>
-            </span>
-          </a>
-        ))}
+    <div>
+      {/* role="tablist" kertoo ruudunlukijalle, että painikkeet ovat välilehtiä */}
+      <div
+        role="tablist"
+        aria-label="Palveluryhmä"
+        onKeyDown={onKeyDown}
+        className="mb-8 inline-flex gap-1 rounded-lg bg-lilac-soft p-1"
+      >
+        {categories.map((cat, i) => {
+          const selected = i === active;
+          return (
+            <button
+              key={cat.id}
+              ref={(el) => {
+                tabRefs.current[i] = el;
+              }}
+              type="button"
+              role="tab"
+              id={`tab-${cat.id}`}
+              aria-selected={selected}
+              aria-controls={`paneeli-${cat.id}`}
+              // Vain valittu välilehti on Tab-näppäimellä saavutettava (tabIndex 0),
+              // muihin siirrytään nuolilla. Tämä on WAI-ARIA-mallin mukaista.
+              tabIndex={selected ? 0 : -1}
+              onClick={() => select(i)}
+              className={`min-h-11 rounded-md px-5 font-semibold transition ${
+                selected ? "bg-accent text-white" : "text-ink hover:bg-lilac"
+              }`}
+            >
+              {cat.label} ({cat.services.length})
+            </button>
+          );
+        })}
       </div>
-    </section>
+
+      {/* Valitun välilehden sisältö. aria-labelledby yhdistää paneelin välilehteensä. */}
+      <div role="tabpanel" id={`paneeli-${current.id}`} aria-labelledby={`tab-${current.id}`}>
+        <ol>
+          {current.services.map((s, i) => (
+            <li
+              key={s.title}
+              className="flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-line py-6"
+            >
+              {/* padStart: 1 → "01". Numero on koriste, joten ruudunlukija ohittaa sen. */}
+              <span aria-hidden="true" className="w-14 shrink-0 font-serif text-3xl italic text-accent">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3 className="min-w-0 grow basis-60 font-serif text-3xl font-semibold">{s.title}</h3>
+              <p className="min-w-0 grow-[2] basis-96 text-[17px] leading-relaxed text-muted">
+                {s.description}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
   );
 }

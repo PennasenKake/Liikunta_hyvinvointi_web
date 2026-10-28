@@ -21,6 +21,7 @@
   --color-lilac-soft: #f1edfa; /* Vielä vaaleampi violetti, esim. Minusta-osio */
   --color-sky: #dceaf8;        /* Vaalea sininen */
   --color-sky-soft: #eaf3fc;   /* Heron taivas */
+  --color-sky-ink: #2b5c96;    /* Sininen kuvakeväri vaalealla sinisellä (kontrasti 5.6:1) */
 
   /* Reunat ja viivat */
   --color-line: #e1dcf0;       /* Ohuet erotinviivat */
