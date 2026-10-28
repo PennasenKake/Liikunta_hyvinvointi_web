@@ -1,5 +1,7 @@
 # Tahkon Amanda – verkkosivusto
 
+[![CI](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml/badge.svg)](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml)
+
 > **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Next.js 16, TypeScript and Tailwind CSS v4. Accessible (WCAG 2.1 AA), fast and fully custom-designed. Content management via Sanity and class schedule via Google Calendar are in progress.
 
 Responsiivinen verkkosivusto liikunta- ja hyvinvointipalveluita tarjoavalle Tahkon Amandalle.
@@ -90,6 +92,8 @@ Sivu aukeaa osoitteeseen http://localhost:3000.
 | `npm run check` | Tyyppitarkistus ja ESLint (aja ennen committia) |
 | `npm run build` | Tuotantobuild |
 | `npm run start` | Tuotantobuildin ajaminen paikallisesti |
+
+GitHub Actions ajaa `npm run check` ja `npm run build` automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 ## Ympäristömuuttujat
 

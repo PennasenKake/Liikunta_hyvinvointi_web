@@ -1,0 +1,63 @@
+# ci.yml: jatkuva integraatio (Continuous Integration).
+# Tarkistaa jokaisen pushin ja pull requestin automaattisesti GitHubin palvelimella.
+# Jos tyyppitarkistus, lint tai build epäonnistuu, GitHub näyttää punaisen rastin
+# commitin vieressä ja lähettää ilmoituksen. Näin rikkinäinen koodi huomataan heti
+# eikä vasta julkaisussa.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Vähimmät oikeudet: työnkulku vain lukee koodia, ei muuta repoa (tietoturva).
+permissions:
+  contents: read
+
+# Jos samaan haaraan pushataan uudestaan ennen kuin edellinen ajo on valmis,
+# vanha ajo perutaan. Säästää aikaa, eikä vanhentuneen koodin tulosta tarvitse odottaa.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tarkistus:
+    name: Tarkistus ja build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10 # Pysäyttää jumiin jääneen ajon, ettei se kuluta minuutteja turhaan
+
+    # Next.js-sovellus on web-kansiossa, joten kaikki komennot ajetaan sieltä
+    defaults:
+      run:
+        working-directory: web
+
+    steps:
+      # 1. Hakee repon koodin palvelimelle
+      - name: Koodin haku
+        uses: actions/checkout@v7
+
+      # 2. Asentaa Noden ja ottaa npm-välimuistin käyttöön.
+      #    Välimuisti nopeuttaa seuraavia ajoja, koska paketteja ei ladata joka kerta uudelleen.
+      - name: Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22 # Next.js 16 vaatii vähintään 20.9:n
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      # 3. npm ci asentaa täsmälleen package-lock.jsonin mukaiset versiot.
+      #    Toisin kuin npm install, se ei koskaan päivitä lukitustiedostoa.
+      - name: Riippuvuuksien asennus
+        run: npm ci
+
+      # 4. TypeScript-tyyppitarkistus ja ESLint (sama kuin paikallisesti npm run check)
+      - name: Tyyppitarkistus ja lint
+        run: npm run check
+
+      # 5. Tuotantobuild: varmistaa, että sivusto kääntyy samoin kuin julkaisussa
+      - name: Tuotantobuild
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1 # Ei lähetetä Next.js:n käyttötilastoja CI-ajoista
