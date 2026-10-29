@@ -5,6 +5,7 @@ import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
 import NextClassCard, { type ClassInfo } from "./NextClassCard";
 import { site } from "@/lib/site";
+import { withBase } from "@/lib/paths";
 
 // Hero saa seuraavan tunnin propsina. null = ei tulevia tunteja, jolloin korttia ei näytetä.
 type Props = {
@@ -60,7 +61,7 @@ export default function Hero({ nextClass }: Props) {
           (vähintään 340 px, jotta lyhyelläkin näytöllä maisema erottuu). */}
       <div className="relative -mt-6 h-[300px] sm:-mt-16 sm:h-[380px] lg:-mt-24 lg:h-auto lg:min-h-[340px] lg:flex-1">
         <Image
-          src="/tahko-hero.svg"
+          src={withBase("/tahko-hero.svg")}
           alt="" // Koriste: sisältö on jo tekstissä, joten ruudunlukija ohittaa kuvan
           fill // Täyttää kääreen koon: leveys ja korkeus tulevat kääreestä
           sizes="100vw"

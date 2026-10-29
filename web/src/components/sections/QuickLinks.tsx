@@ -3,6 +3,7 @@
 // Työpöydällä vähemmän (-mt-8), jotta kuvituksen rantakylä jää näkyviin.
 
 import { serviceCategories } from "@/lib/services";
+import { withBase } from "@/lib/paths";
 
 // Kuvakkeet: ohuet viivapiirrokset. aria-hidden, koska teksti kertoo merkityksen.
 const icons = {
@@ -51,7 +52,7 @@ export default function QuickLinks() {
           <a
             key={l.title}
             data-reveal
-            href={l.href}
+            href={withBase(l.href)}
             // Mobiilissa kuvake tekstin yläpuolella (flex-col), sm-leveydestä vierekkäin.
             className="flex flex-col items-start gap-3 rounded-2xl border border-line bg-white p-4 shadow-[0_8px_24px_rgba(34,29,74,0.06)] transition hover:border-border sm:flex-row sm:items-center sm:gap-3.5 sm:p-5"
           >

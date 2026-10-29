@@ -6,10 +6,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/ui/LegalPage";
+import { withBase } from "@/lib/paths";
 
 export const metadata: Metadata = {
   title: "Evästeasetukset", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
-  alternates: { canonical: "/evasteet" }, // Sivun ensisijainen osoite hakukoneille
+  alternates: { canonical: withBase("/evasteet") }, // Sivun ensisijainen osoite hakukoneille
   description: "Tahkon Amandan sivusto ei aseta evästeitä eikä käytä seurantaa.",
 };
 

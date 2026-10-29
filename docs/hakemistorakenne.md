@@ -11,6 +11,7 @@ Liikunta_hyvinvointi_web/
 ├── .gitattributes                     ✅ LF-rivinvaihdot, kuvat binäärisinä
 ├── LICENSE                            ✅ Kaikki oikeudet pidätetään (koodi nähtävissä portfoliona)
 ├── .github/workflows/ci.yml           ✅ GitHub Actions: check, build ja savutestit jokaisesta pushista
+├── .github/workflows/pages.yml        ✅ Testiversion julkaisu GitHub Pagesiin
 │
 ├── materiaalit/                       Lähdemateriaalit, ei sivuston koodia
 │   ├── logo/
@@ -38,6 +39,7 @@ Liikunta_hyvinvointi_web/
 ├── web/                               Next.js-sivusto (React, TypeScript, Tailwind)
 │   ├── package.json                   ✅ Skriptit: dev, build, start, lint, check, test:e2e
 │   ├── playwright.config.ts           ✅ Savutestien asetukset (työpöytä + mobiili)
+│   ├── scripts/build-pages.mjs        ✅ Staattinen build GitHub Pagesia varten (npm run build:pages)
 │   ├── e2e/
 │   │   └── savutesti.spec.ts          ✅ Etusivu, navigaatio, alavalikot, yläpalkki, palvelut, 404, tietosuoja
 │   ├── next.config.ts                 ✅
@@ -106,6 +108,7 @@ Liikunta_hyvinvointi_web/
 │           ├── photos.ts              ✅ Valokuvien polut, alt-tekstit ja mitat
 │           ├── instagram.ts           ✅ Instagram-julkaisujen malli ja väliaikaiset julkaisut
 │           ├── seo.ts                 ✅ Sivuston osoite, noindex-tila ja LocalBusiness-rakennetieto
+│           ├── paths.ts               ✅ withBase(): alipolku kuviin ja linkkeihin (GitHub Pages)
 │           └── sanity.ts              ⬜ Sanity-asiakas ja kyselyt
 │
 └── studio/                            ⬜ Sanity Studio (Amandan muokkausnäkymä)

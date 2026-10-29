@@ -15,6 +15,7 @@ import { serviceCategories, serviceId } from "@/lib/services";
 import HeaderShell from "./HeaderShell";
 import NavDropdown from "./NavDropdown";
 import MobileMenu, { type MenuItem } from "./MobileMenu";
+import { withBase } from "@/lib/paths";
 
 // Näkyvä fokusrengas näppäimistökäyttäjille. Selaimen oletusrengas on sininen,
 // joten se ei erottuisi sinisestä taustasta: käytetään valkoista.
@@ -50,7 +51,7 @@ export default function Header() {
               ring-[3px] ring-white: valkoinen rengas erottaa logon sinisestä palkista.
               unoptimized: SVG on vektori, joten Next.js:n kuvaoptimointia ei tarvita. */}
           <Image
-            src="/logo.svg"
+            src={withBase("/logo.svg")}
             alt="" // Tyhjä alt, koska vieressä on nimi tekstinä: ruudunlukija ei lue samaa kahdesti
             width={80}
             height={80}
@@ -83,7 +84,7 @@ export default function Header() {
               <li key={item.href}>
                 {/* Hover: alleviivaus värimuutoksen sijaan, koska valkoinen on jo vaalein sävy */}
                 <a
-                  href={item.href}
+                  href={withBase(item.href)}
                   className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}
                 >
                   {item.label}

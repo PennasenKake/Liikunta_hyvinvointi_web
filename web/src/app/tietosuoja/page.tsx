@@ -5,11 +5,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import LegalPage from "@/components/ui/LegalPage";
+import { withBase } from "@/lib/paths";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Tietosuojaseloste", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
-  alternates: { canonical: "/tietosuoja" }, // Sivun ensisijainen osoite hakukoneille
+  alternates: { canonical: withBase("/tietosuoja") }, // Sivun ensisijainen osoite hakukoneille
   description: "Miten Tahkon Amanda käsittelee henkilötietoja ja mitä sivusto lataa kolmansilta osapuolilta.",
 };
 

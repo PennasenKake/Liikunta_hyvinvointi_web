@@ -4,11 +4,12 @@
 
 import type { Metadata } from "next";
 import LegalPage from "@/components/ui/LegalPage";
+import { withBase } from "@/lib/paths";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Käyttöehdot", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
-  alternates: { canonical: "/kayttoehdot" }, // Sivun ensisijainen osoite hakukoneille
+  alternates: { canonical: withBase("/kayttoehdot") }, // Sivun ensisijainen osoite hakukoneille
   description: "Tahkon Amandan palveluiden ehdot: ajanvaraus, peruutus, osallistuminen ja maksaminen.",
 };
 

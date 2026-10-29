@@ -13,6 +13,7 @@
 import { useRef, useState } from "react";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import type { ServiceIconName } from "@/lib/services";
+import { withBase } from "@/lib/paths";
 
 type Props = {
   label: string;
@@ -52,7 +53,7 @@ export default function NavDropdown({ label, href, items, focusRing }: Props) {
       }}
     >
       <div className="flex items-center gap-0.5">
-        <a href={href} className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}>
+        <a href={withBase(href)} className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}>
           {label}
         </a>
         <button
@@ -86,7 +87,7 @@ export default function NavDropdown({ label, href, items, focusRing }: Props) {
             {items.map((item) => (
               <li key={item.href}>
                 <a
-                  href={item.href}
+                  href={withBase(item.href)}
                   onClick={() => setOpen(false)}
                   className="flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 font-medium transition hover:bg-lilac-soft focus-visible:outline-2 focus-visible:outline-accent"
                 >

@@ -4,11 +4,12 @@
 
 import type { Metadata } from "next";
 import LegalPage from "@/components/ui/LegalPage";
+import { withBase } from "@/lib/paths";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Saavutettavuusseloste", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
-  alternates: { canonical: "/saavutettavuus" }, // Sivun ensisijainen osoite hakukoneille
+  alternates: { canonical: withBase("/saavutettavuus") }, // Sivun ensisijainen osoite hakukoneille
   description: "Tahkon Amandan sivuston saavutettavuus: WCAG 2.1 AA -tavoite, testaus ja palaute.",
 };
 

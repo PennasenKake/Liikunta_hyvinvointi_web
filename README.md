@@ -10,7 +10,7 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 ![Tahkon Amandan verkkosivuston etusivu työpöydällä ja puhelimessa](docs/kuvat/esikatselu.jpg)
 
 🔗 **Sivusto:** tahkonamanda.fi *(julkaistaan myöhemmin)*
-🔍 **Demo:** *(esikatseluversio tulossa)*
+🔍 **Testiversio:** [pennasenkake.github.io/Liikunta_hyvinvointi_web](https://pennasenkake.github.io/Liikunta_hyvinvointi_web/) *(GitHub Pages, ei hakukoneissa)*
 
 ## Teknologiat
 
@@ -119,6 +119,7 @@ Sivu aukeaa osoitteeseen http://localhost:3000.
 | `npm run build` | Tuotantobuild |
 | `npm run start` | Tuotantobuildin ajaminen paikallisesti |
 | `npm run test:e2e` | Savutestit selaimessa (tekee buildin itse) |
+| `npm run build:pages` | Staattinen build GitHub Pagesia varten (`out/`-kansio) |
 
 **Savutestit** ([`web/e2e/`](web/e2e/)) ajetaan työpöytä- ja mobiiliprofiililla. Ne tarkistavat, että:
 - etusivu latautuu ilman virheitä, rikkinäisiä resursseja ja vaakavieritystä
@@ -132,6 +133,18 @@ Sivu aukeaa osoitteeseen http://localhost:3000.
 Ennen ensimmäistä ajoa asenna testiselain: `npx playwright install chromium`.
 
 GitHub Actions ajaa tarkistuksen, buildin ja savutestit automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). Jos testit epäonnistuvat, HTML-raportti tallentuu ajon Artifacts-osioon.
+
+## Testiversio GitHub Pagesissa
+
+GitHub Actions julkaisee testiversion jokaisesta pushista main-haaraan ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
+
+GitHub Pages tarjoilee vain valmiita tiedostoja ja sivusto on alipolussa, joten testiversio rakennetaan staattisena (`npm run build:pages`). Ero tuotantoon:
+- `next.config.ts` vaihtaa staattiseen vientiin: `output: "export"`, `basePath` ja kuvat ilman optimointia.
+- Cache Components korvataan `experimental.useCache`-asetuksella, joten kalenteri luetaan kerran julkaisussa.
+- `robots.txt` kieltää indeksoinnin ja sivuilla on `noindex`. Sivukarttaa ei julkaista.
+- Kuvien ja `<a>`-linkkien polut saavat alipolun `lib/paths.ts`:n `withBase()`-funktiosta. `<Link>` lisää sen itse.
+
+Tavallinen build, testit ja lopullinen julkaisu (palvelimella, esim. Netlify) eivät muutu.
 
 ## Ympäristömuuttujat
 

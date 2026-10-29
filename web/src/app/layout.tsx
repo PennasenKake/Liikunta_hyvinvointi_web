@@ -6,7 +6,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import RevealOnScroll from "@/components/RevealOnScroll";
-import { NOINDEX, SITE_URL } from "@/lib/seo";
+import { NOINDEX, SITE_ORIGIN } from "@/lib/seo";
 
 // Otsikkofontti. Cormorant Garamond ei ole muuttuva fontti,
 // joten tarvittavat painot ja tyylit pitää luetella erikseen.
@@ -27,8 +27,9 @@ const jost = Jost({
 
 // Koko sivuston oletusmetatiedot. Yksittäiset sivut täydentävät näitä omilla metatiedoillaan.
 export const metadata: Metadata = {
-  // metadataBase: suhteelliset osoitteet (jakokuva, canonical) muutetaan täysiksi osoitteiksi
-  metadataBase: new URL(SITE_URL),
+  // metadataBase: suhteelliset osoitteet (jakokuva, canonical) muutetaan täysiksi osoitteiksi.
+  // Vain palvelimen osoite: alipolku tulee jakokuvaan Next.js:ltä ja canonicaliin withBase():sta.
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
     // Etusivun otsikko: paikkakunnat mukana paikallista hakua varten
     default: "Tahkon Amanda – Liikunta ja hyvinvointi Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla",

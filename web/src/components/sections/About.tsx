@@ -6,6 +6,7 @@ import Image from "next/image";
 import SectionHeading from "@/components/ui/SectionHeading";
 import PlaceholderImage from "@/components/ui/PlaceholderImage";
 import { about } from "@/lib/about";
+import { withBase } from "@/lib/paths";
 
 export default function About() {
   return (
@@ -32,7 +33,7 @@ export default function About() {
         <div data-reveal className="min-w-0 grow basis-72">
           {about.photo ? (
             <Image
-              src={about.photo.src}
+              src={withBase(about.photo.src)}
               alt={about.photo.alt}
               width={640}
               height={800}

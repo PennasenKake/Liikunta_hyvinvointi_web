@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import ButtonLink from "@/components/ui/ButtonLink";
 import { site } from "@/lib/site";
+import { withBase } from "@/lib/paths";
 
 export const metadata: Metadata = {
   title: "Sivua ei löytynyt", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
@@ -53,7 +54,7 @@ export default function NotFound() {
       {/* Sama kuvitus kuin etusivulla, matalampana. Koriste, joten alt on tyhjä.
           mt-auto työntää kuvan alas, ja vähintään 12 (3 rem) väli pitää sen erillään tekstistä. */}
       <Image
-        src="/tahko-hero.svg"
+        src={withBase("/tahko-hero.svg")}
         alt=""
         width={2400}
         height={700}

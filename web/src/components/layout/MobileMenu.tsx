@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import type { ServiceIconName } from "@/lib/services";
+import { withBase } from "@/lib/paths";
 
 // Valikon kohta. children = alavalikon linkit (vain Liikunnalla ja Hyvinvoinnilla).
 export type MenuItem = {
@@ -88,7 +89,7 @@ export default function MobileMenu({ items }: { items: MenuItem[] }) {
               return (
                 <li key={item.href} className="border-b border-line last:border-0">
                   <div className="flex items-center justify-between">
-                    <a href={item.href} onClick={close} className="block grow py-3.5 focus-visible:outline-2 focus-visible:outline-accent">
+                    <a href={withBase(item.href)} onClick={close} className="block grow py-3.5 focus-visible:outline-2 focus-visible:outline-accent">
                       {item.label}
                     </a>
                     {item.children && (
@@ -115,7 +116,7 @@ export default function MobileMenu({ items }: { items: MenuItem[] }) {
                       {item.children.map((child) => (
                         <li key={child.href}>
                           <a
-                            href={child.href}
+                            href={withBase(child.href)}
                             onClick={close}
                             className="flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 focus-visible:outline-2 focus-visible:outline-accent"
                           >

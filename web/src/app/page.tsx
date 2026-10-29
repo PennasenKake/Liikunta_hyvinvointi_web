@@ -14,10 +14,11 @@ import TahkoLine from "@/components/ui/TahkoLine";
 import type { Metadata } from "next";
 import { formatShort, getUpcomingEvents } from "@/lib/calendar";
 import { jsonLdString, localBusinessJsonLd } from "@/lib/seo";
+import { withBase } from "@/lib/paths";
 
 // Etusivun ensisijainen osoite hakukoneille (otsikko ja kuvaus tulevat layout.tsx:n oletuksista)
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: { canonical: withBase("/") },
 };
 
 // async: Heron "Seuraava tunti" -kortti tarvitsee kalenterin ensimmäisen tapahtuman

@@ -7,6 +7,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { withBase } from "@/lib/paths";
 
 // Sarakkeen otsikko. <h2>, jotta ruudunlukijan otsikkolistassa näkyvät alatunnisteen osat.
 function ColumnTitle({ children }: { children: React.ReactNode }) {
@@ -28,7 +29,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-4">
               <Image
-                src="/logo.svg"
+                src={withBase("/logo.svg")}
                 alt=""
                 width={64}
                 height={64}
@@ -57,7 +58,7 @@ export default function Footer() {
             <ul>
               {site.footerNav.map((item) => (
                 <li key={item.href}>
-                  <a href={item.href} className={linkClass}>
+                  <a href={withBase(item.href)} className={linkClass}>
                     {item.label}
                   </a>
                 </li>

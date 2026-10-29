@@ -16,6 +16,11 @@ import { serviceCategories } from "./services";
 // Lopun kauttaviiva poistetaan, jotta osoitteet eivät tuplaannu ("...fi//tietosuoja").
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://tahkonamanda.fi").replace(/\/$/, "");
 
+// Pelkkä palvelimen osoite ilman alipolkua (GitHub Pages: https://pennasenkake.github.io).
+// metadataBase käyttää tätä, koska Next.js lisää alipolun (basePath) itse tiedostopohjaisiin
+// metatietoihin, kuten jakokuvaan. Muuten alipolku tulisi osoitteeseen kahdesti.
+export const SITE_ORIGIN = new URL(SITE_URL).origin;
+
 // NEXT_PUBLIC_NOINDEX=1 esikatselussa: robots.txt kieltää indeksoinnin ja sivuille tulee noindex
 export const NOINDEX = process.env.NEXT_PUBLIC_NOINDEX === "1";
 
