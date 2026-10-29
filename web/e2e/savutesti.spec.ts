@@ -48,6 +48,42 @@ test.describe("Etusivu", () => {
     await page.waitForLoadState("networkidle"); // Odotetaan, että kuvat ym. ovat latautuneet
     expect(errors).toEqual([]);
   });
+
+  test("sivu ei vieritä vaakasuunnassa", async ({ page }) => {
+    // Regressiotesti: karusellin sr-only-tekstit levensivät aiemmin sivua mobiilissa
+    await page.goto("/");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+});
+
+test.describe("Instagram", () => {
+  test("karusellin nuolet vierittävät julkaisuja", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Mobiilissa selataan pyyhkäisemällä, nuolet ovat piilossa");
+    await page.goto("/#instagram");
+    const list = page.getByRole("list", { name: /Instagram-julkaisut/ });
+    const prev = page.getByRole("button", { name: "Edelliset julkaisut" });
+    const next = page.getByRole("button", { name: "Seuraavat julkaisut" });
+
+    await expect(prev).toBeDisabled(); // Alussa ei voi mennä taaksepäin
+    await next.click();
+    await expect.poll(() => list.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
+    await expect(prev).toBeEnabled();
+  });
+});
+
+test.describe("Alatunniste ja tietosivut", () => {
+  for (const item of site.legal) {
+    test(`${item.label}: linkki alatunnisteessa ja sivu latautuu`, async ({ page }) => {
+      await page.goto("/");
+      const link = page.getByRole("navigation", { name: "Ehdot ja tietosuoja" }).getByRole("link", { name: item.label });
+      await expect(link).toHaveAttribute("href", item.href);
+
+      const response = await page.goto(item.href);
+      expect(response?.status()).toBe(200);
+      await expect(page.getByRole("heading", { level: 1, name: item.label === "Tietosuoja" ? "Tietosuojaseloste" : item.label })).toBeVisible();
+    });
+  }
 });
 
 test.describe("Navigaatio", () => {
@@ -178,11 +214,5 @@ test.describe("Virhesivut", () => {
     // Etusivulle-painike vie takaisin etusivulle
     await page.getByRole("link", { name: "Etusivulle" }).click();
     await expect(page).toHaveURL(/\/$/);
-  });
-
-  test("tietosuojasivu latautuu", async ({ page }) => {
-    const response = await page.goto("/tietosuoja");
-    expect(response?.status()).toBe(200);
-    await expect(page.getByRole("heading", { level: 1, name: "Tietosuojaseloste" })).toBeVisible();
   });
 });

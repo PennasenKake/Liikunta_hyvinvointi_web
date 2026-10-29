@@ -22,15 +22,3 @@ export const photos = {
   aanimaljat: { src: "/kuvat/aanimaljat.jpg", alt: "Kolme äänimaljaa lampaantaljalla lootuskynttilöiden ja valojen keskellä", width: 1200, height: 1600 },
   aanimaljatJarvi: { src: "/kuvat/aanimaljat-jarvi.jpg", alt: "Äänimalja kädessä terassilla järvimaiseman edessä", width: 480, height: 600 },
 } satisfies Record<string, Photo>; // satisfies: tarkistaa tyypin, mutta säilyttää avainten nimet automaattitäydennystä varten
-
-// Instagram-osion väliaikaiset kuvat, kunnes Behold-syöte kytketään (vaihe 8)
-export const instagramPreview: Photo[] = [
-  photos.aanimaljat,
-  photos.vesijumppa,
-  photos.joogasali,
-  photos.sekuntikello,
-  photos.aanimaljatJarvi,
-  photos.ulkotreeni,
-  photos.inbody,
-  photos.joogablokit,
-];

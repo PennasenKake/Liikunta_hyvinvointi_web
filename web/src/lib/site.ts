@@ -26,6 +26,24 @@ export const site = {
     { label: "Minusta", href: "/#minusta" },
   ],
 
+  // Alatunnisteen "Sivusto"-sarake: päävalikon kohdat ja muut etusivun osiot
+  footerNav: [
+    { label: "Liikunta", href: "/#liikunta" },
+    { label: "Hyvinvointi", href: "/#hyvinvointi" },
+    { label: "Hinnasto", href: "/#hinnasto" },
+    { label: "Minusta", href: "/#minusta" },
+    { label: "Tulevat tunnit", href: "/#kalenteri" },
+    { label: "Instagram", href: "/#instagram" },
+  ],
+
+  // Alatunnisteen "Tietoa ja ehdot" -sarake. Jokaisella on oma sivunsa (app/<kansio>/page.tsx).
+  legal: [
+    { label: "Käyttöehdot", href: "/kayttoehdot" },
+    { label: "Tietosuoja", href: "/tietosuoja" },
+    { label: "Evästeasetukset", href: "/evasteet" },
+    { label: "Saavutettavuusseloste", href: "/saavutettavuus" },
+  ],
+
   // Korostettu toimintakehote valikon lopussa. Erillään nav-listasta,
   // koska se tyylitellään painikkeeksi. Yksi paikka Headerille ja MobileMenulle.
   contact: { label: "Yhteystiedot", href: "/#yhteystiedot" },

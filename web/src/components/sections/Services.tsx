@@ -19,7 +19,7 @@ export default function Services() {
   return (
     <section id="palvelut" aria-labelledby="palvelut-otsikko" className="bg-white px-6 pb-24 pt-24">
       <div className="mx-auto max-w-6xl">
-        <h2 id="palvelut-otsikko" className="mb-2.5 font-serif text-[clamp(2.5rem,6vw,3.5rem)] font-semibold leading-tight">
+        <h2 id="palvelut-otsikko" data-reveal className="mb-2.5 font-serif text-[clamp(2.5rem,6vw,3.5rem)] font-semibold leading-tight">
           Palvelut
         </h2>
         <p className="mb-12 max-w-md text-[17px] leading-relaxed text-muted">
@@ -30,7 +30,7 @@ export default function Services() {
           {serviceCategories.map((cat) => (
             // id="liikunta" / "hyvinvointi": yläpalkin ja pikalinkkien ankkurit osuvat suoraan palstaan.
             // aria-labelledby: ruudunlukija ilmoittaa alueen nimen ("Liikunta").
-            <div key={cat.id} id={cat.id} role="region" aria-labelledby={`${cat.id}-otsikko`}>
+            <div key={cat.id} id={cat.id} role="region" aria-labelledby={`${cat.id}-otsikko`} data-reveal>
               <div className={`mb-4 rounded-2xl p-6 lg:mb-6 ${tones[cat.id].box}`}>
                 <h3 id={`${cat.id}-otsikko`} className="mb-2 font-serif text-[38px] font-semibold leading-none">
                   {cat.label}
@@ -49,7 +49,7 @@ export default function Services() {
 
         {/* Yhteinen toimintakehote koko osiolle: ryhmätunnit kalenterista,
             yksilöpalveluista (Personal Training, InBody) sovitaan aika suoraan. */}
-        <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-line p-6 sm:flex-row sm:flex-wrap sm:items-center">
+        <div data-reveal className="mt-10 flex flex-col gap-4 rounded-2xl border border-line p-6 sm:flex-row sm:flex-wrap sm:items-center">
           <p className="grow font-medium">
             Ryhmätunnit näet kalenterista. Personal Trainingista ja InBody-mittauksesta sovitaan aika suoraan.
           </p>

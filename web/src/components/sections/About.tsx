@@ -12,7 +12,7 @@ export default function About() {
     <section id="minusta" className="bg-lilac-soft px-6 py-24">
       {/* flex-wrap-reverse: kapealla näytöllä kuva nousee tekstin yläpuolelle */}
       <div className="mx-auto flex max-w-5xl flex-wrap-reverse items-center gap-14">
-        <div className="min-w-0 grow basis-96">
+        <div data-reveal className="min-w-0 grow basis-96">
           <SectionHeading eyebrow="Minusta" title={about.heading} />
           <div className="-mt-4 flex flex-col gap-5">
             {about.paragraphs.map((text) => (
@@ -29,7 +29,7 @@ export default function About() {
         </div>
 
         {/* Kuva tai paikkamerkki. Molemmilla sama koko (h-[520px] → mobiilissa matalampi). */}
-        <div className="min-w-0 grow basis-72">
+        <div data-reveal className="min-w-0 grow basis-72">
           {about.photo ? (
             <Image
               src={about.photo.src}

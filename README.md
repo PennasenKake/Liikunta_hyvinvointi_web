@@ -30,12 +30,13 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 - [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset
 - [x] Miksi liikkua, Hinnasto ja Minusta (osin paikkamerkkisisällöllä)
 - [x] Tulevat tunnit: lisäys omaan kalenteriin ja jakaminen *(esimerkkidata, Google-kalenteri tulossa)*
-- [x] Instagram-karuselli *(väliaikaiset kuvat, Behold-syöte tulossa)*
-- [x] Footer: yhteystiedot, alueet, kumppanit, Y-tunnus
+- [x] Instagram-karuselli nuolilla ja pyyhkäisyllä *(väliaikaiset kuvat, Behold-syöte tulossa)*
+- [x] Footer: sivusto, yhteystiedot, tietoa ja ehdot, kumppanit, Y-tunnus
+- [x] Käyttöehdot, tietosuojaseloste, evästeasetukset ja saavutettavuusseloste *(luonnokset)*
 - [x] 404-sivu
 - [x] Saavutettavuus WCAG 2.1 AA (axe-core: 0 löydöstä)
 - [x] Automaattiset savutestit (Playwright) ja CI (GitHub Actions)
-- [ ] Scroll reveal -animaatiot
+- [x] Scroll reveal -animaatiot (toimii ilman JavaScriptiä, huomioi vähennetyn liikkeen)
 - [ ] Hakukoneoptimointi: Open Graph, rakennetieto, sitemap
 - [ ] Sisällön muokkaus kirjautumalla (Sanity Studio)
 
@@ -55,7 +56,7 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 **Suorituskyky.** Fontit ladataan `next/font`-työkalulla omalta palvelimelta (ei pyyntöjä Googleen kävijän selaimesta). Kuvat optimoidaan `next/image`-komponentilla, jolloin puhelin lataa noin 90 kt:n WebP-version 500 kt:n alkuperäisen sijaan. Etusivun kokonaiskoko on noin 360 kt.
 
-**Oma visuaalinen identiteetti.** Tahko-kuvitus ja vektorilogo on piirretty SVG:nä: kuvituksessa ovat Tahkovuoren rinteet, Tahkon portaat, Panorama-tuolihissi, Tahkolahti ja ponttonisilta. Värit ja fontit on määritelty yhteen paikkaan Tailwind v4:n `@theme`-lohkoon.
+**Oma visuaalinen identiteetti.** Tahko-kuvitus ja vektorilogo on piirretty SVG:nä: kuvituksessa ovat Tahkovuoren rinteet, näkötorni ja zipline, Tahkon portaat, Tirol-ravintola, Panorama-tuolihissi ja -metsäkylpylä, Tahkolahti, ponttonisilta, Sokos-hotelli ja mökkikylä. Värit ja fontit on määritelty yhteen paikkaan Tailwind v4:n `@theme`-lohkoon.
 
 **Aikavyöhykkeet.** Kellonajat muotoillaan aina `Europe/Helsinki`-aikavyöhykkeellä, joten ne näkyvät oikein, vaikka palvelin olisi ulkomailla.
 

@@ -14,7 +14,7 @@ export default function Pricing() {
         {/* <dl> eli kuvauslista on semanttisesti oikea nimi–arvo-pareille (palvelu–hinta) */}
         <dl>
           {prices.map((p) => (
-            <div key={p.name} className="flex items-baseline gap-4 border-b border-line py-5">
+            <div key={p.name} data-reveal className="flex items-baseline gap-4 border-b border-line py-5">
               <dt className="min-w-0 shrink">
                 <span className="block text-[19px] font-semibold">{p.name}</span>
                 <span className="mt-1 block text-[15px] text-muted">{p.detail}</span>

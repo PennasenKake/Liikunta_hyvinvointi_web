@@ -15,7 +15,7 @@ export default function SectionHeading({ eyebrow, title, intro, align = "left", 
   const center = align === "center";
 
   return (
-    <div className={`mb-10 flex flex-col gap-3 ${center ? "items-center text-center" : ""}`}>
+    <div data-reveal className={`mb-10 flex flex-col gap-3 ${center ? "items-center text-center" : ""}`}>
       {eyebrow && <p className="font-serif text-2xl italic text-accent">{eyebrow}</p>}
       {/* clamp: otsikko skaalautuu 36 px:stä 56 px:iin näytön leveyden mukaan */}
       <h2 id={id} className="font-serif text-[clamp(2.25rem,5vw,3.5rem)] font-semibold leading-[1.05]">

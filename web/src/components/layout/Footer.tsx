@@ -1,5 +1,6 @@
-// Footer.tsx: sivun alatunniste.
-// Yhteystiedot, toiminta-alueet, kumppanit ja yrityksen tiedot (suunnitelman kohta 3).
+// Footer.tsx: sivun alatunniste (rakenne kuten GlossTahkon sivustolla).
+// Neljä saraketta: brändi, Sivusto, Yhteystiedot ja Tietoa ja ehdot.
+// Niiden alla kumppanit ja alarivi (tekijänoikeus, Y-tunnus, huomautus, takaisin ylös).
 // id="yhteystiedot": valikon Yhteystiedot-linkki vierittää tänne.
 // Värit samat kuin yläpalkissa, jolloin sivu alkaa ja päättyy logon väreihin.
 
@@ -7,63 +8,118 @@ import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
 
+// Sarakkeen otsikko. <h2>, jotta ruudunlukijan otsikkolistassa näkyvät alatunnisteen osat.
+function ColumnTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mb-3 font-serif text-xl font-semibold uppercase tracking-[0.16em] text-sky">{children}</h2>
+  );
+}
+
+// Listan linkki: py-2 kasvattaa kosketusaluetta (vähintään 44 px rivikorkeuden kanssa)
+const linkClass = "inline-block py-2 underline-offset-4 hover:underline";
+
 export default function Footer() {
   return (
-    <footer id="yhteystiedot" className="bg-linear-to-r from-royal to-accent px-6 pb-8 pt-16 text-white">
+    <footer id="yhteystiedot" className="bg-linear-to-r from-royal to-accent px-6 pb-6 pt-16 text-white">
       <div className="mx-auto max-w-6xl">
-        {/* Yläosa: esittely, yhteystiedot ja alueet. Kapealla näytöllä allekkain. */}
-        <div className="flex flex-wrap justify-between gap-12">
-          <div className="flex min-w-0 grow basis-72 flex-col gap-4">
+        {/* Mobiili: sarakkeet allekkain. Tabletti: 2 × 2. Leveä: 4 saraketta, brändi leveimpänä. */}
+        <div data-reveal="fade" className="grid gap-10 sm:grid-cols-2 sm:gap-x-12 lg:grid-cols-[1.4fr_0.8fr_1.3fr_1fr]">
+          {/* Brändi: logo, nimi, lyhyt lupaus ja soittopainike */}
+          <div>
             <div className="flex items-center gap-4">
               <Image
                 src="/logo.svg"
                 alt=""
-                width={72}
-                height={72}
+                width={64}
+                height={64}
                 unoptimized
-                className="size-18 rounded-full ring-[3px] ring-white"
+                className="size-16 rounded-full ring-[3px] ring-white"
               />
-              <span className="font-serif text-3xl font-bold">{site.name}</span>
+              <p className="flex flex-col leading-tight">
+                <span className="font-serif text-3xl font-bold">{site.name}</span>
+                <span className="text-xs font-medium uppercase tracking-[0.14em] text-sky">{site.tagline}</span>
+              </p>
             </div>
-            <p className="max-w-sm text-lg leading-relaxed text-sky">
-              Soita tai laita viestiä, niin katsotaan yhdessä sinulle sopiva tunti.
+            <p className="mt-5 max-w-xs leading-relaxed text-sky">
+              Liikuntaa ja rentoutusta Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.
             </p>
+            <a
+              href={site.phoneHref}
+              className="mt-5 inline-flex min-h-11 items-center rounded-md bg-white px-5 font-semibold text-accent transition hover:bg-lilac"
+            >
+              Soita {site.phone}
+            </a>
           </div>
 
-          {/* <address> on semanttinen elementti yhteystiedoille. not-italic: selaimen oletuskursiivi pois. */}
-          <address className="flex flex-col gap-2.5 not-italic">
-            <h2 className="mb-1 text-sm font-semibold uppercase tracking-[0.08em] text-sky">Yhteystiedot</h2>
-            <a href={site.phoneHref} className="text-lg underline-offset-4 hover:underline">{site.phone}</a>
-            {/* break-all: pitkä sähköpostiosoite rivittyy kapealla näytöllä eikä aiheuta vaakavieritystä */}
-            <a href={`mailto:${site.email}`} className="break-all text-lg underline-offset-4 hover:underline">
-              {site.email}
-            </a>
-            {site.instagram.url ? (
-              <a href={site.instagram.url} target="_blank" rel="noopener noreferrer" className="text-lg underline-offset-4 hover:underline">
-                Instagram @{site.instagram.handle}
-              </a>
-            ) : (
-              <span className="text-lg text-sky">Instagram @{site.instagram.handle}</span>
-            )}
-          </address>
-
-          <div className="flex flex-col gap-2.5">
-            <h2 className="mb-1 text-sm font-semibold uppercase tracking-[0.08em] text-sky">Toiminta-alue</h2>
-            <ul className="text-lg leading-loose">
-              {site.areas.map((a) => (
-                <li key={a}>{a}</li>
+          {/* Sivusto: etusivun osiot */}
+          <nav aria-label="Sivuston osiot">
+            <ColumnTitle>Sivusto</ColumnTitle>
+            <ul>
+              {site.footerNav.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className={linkClass}>
+                    {item.label}
+                  </a>
+                </li>
               ))}
             </ul>
+          </nav>
+
+          {/* Yhteystiedot. <address> on semanttinen elementti yhteystiedoille. */}
+          <div>
+            <ColumnTitle>Yhteystiedot</ColumnTitle>
+            <address className="not-italic">
+              <ul>
+                <li>
+                  <a href={site.phoneHref} className={linkClass}>
+                    {site.phone}
+                  </a>
+                </li>
+                <li>
+                  {/* break-all: pitkä osoite rivittyy kapealla näytöllä eikä aiheuta vaakavieritystä */}
+                  <a href={`mailto:${site.email}`} className={`${linkClass} break-all`}>
+                    {site.email}
+                  </a>
+                </li>
+                <li>
+                  {site.instagram.url ? (
+                    <a href={site.instagram.url} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                      Instagram @{site.instagram.handle}
+                      <span className="sr-only"> (uusi välilehti)</span>
+                    </a>
+                  ) : (
+                    <span className="inline-block py-2 text-sky">Instagram @{site.instagram.handle}</span>
+                  )}
+                </li>
+                <li className="py-2 text-sky">Toiminta-alue: {site.areas.join(", ")}</li>
+              </ul>
+            </address>
           </div>
+
+          {/* Tietoa ja ehdot: lakisivut. Link: siirtyminen ilman koko sivun latausta. */}
+          <nav aria-label="Ehdot ja tietosuoja">
+            <ColumnTitle>Tietoa ja ehdot</ColumnTitle>
+            <ul>
+              {site.legal.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={linkClass}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
         {/* Kumppanit. TODO(Amanda): logot ja käyttölupa. Ilman logoa näytetään nimi. */}
-        <div className="mt-14 border-t border-white/20 pt-8">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.08em] text-sky">Yhteistyössä</h2>
-          {/* w-36 mobiilissa: kaksi logoa mahtuu riville */}
+        <div data-reveal="fade" className="mt-12 border-t border-white/20 pt-8">
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.12em] text-sky">Yhteistyössä</h2>
           <ul className="flex flex-wrap gap-3">
             {site.partners.map((p) => (
-              <li key={p.name} className="flex h-16 w-36 items-center sm:w-40 justify-center rounded-lg bg-white px-4 text-center text-sm font-semibold text-ink">
+              <li
+                key={p.name}
+                className="flex h-16 w-36 items-center justify-center rounded-lg bg-white px-4 text-center text-sm font-semibold text-ink sm:w-40"
+              >
                 {p.logo ? (
                   <Image src={p.logo} alt={p.name} width={140} height={48} className="max-h-12 w-auto object-contain" />
                 ) : (
@@ -74,15 +130,15 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Alarivi: tekijänoikeus, Y-tunnus ja tietosuojaseloste */}
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 text-sm text-sky">
+        {/* Alarivi: tekijänoikeus, Y-tunnus, lyhyt tietosuojahuomautus ja takaisin ylös */}
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-white/20 pt-5 text-sm text-sky">
           <p>
             © {site.copyrightYear} {site.name} · Y-tunnus {site.businessId}
           </p>
-          <div className="flex gap-6">
-            <Link href="/tietosuoja" className="underline-offset-4 hover:text-white hover:underline">Tietosuojaseloste</Link>
-            <a href="#top" className="underline-offset-4 hover:text-white hover:underline">Takaisin ylös ↑</a>
-          </div>
+          <p className="max-w-xl">Sivusto ei aseta evästeitä eikä käytä seurantaa.</p>
+          <a href="#top" className="inline-flex min-h-11 items-center underline-offset-4 hover:text-white hover:underline">
+            Takaisin ylös ↑
+          </a>
         </div>
       </div>
     </footer>

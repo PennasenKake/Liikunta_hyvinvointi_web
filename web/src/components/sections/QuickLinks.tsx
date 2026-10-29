@@ -1,5 +1,6 @@
 // QuickLinks.tsx: neljä pikalinkkiä heti Heron alla.
 // Kortit nousevat negatiivisella marginaalilla Heron kuvituksen päälle.
+// Työpöydällä vähemmän (-mt-8), jotta kuvituksen rantakylä jää näkyviin.
 
 import { serviceCategories } from "@/lib/services";
 
@@ -45,10 +46,11 @@ export default function QuickLinks() {
     <section aria-label="Pikalinkit palveluihin" className="bg-white px-6">
       {/* Ruudukko: 2 × 2 mobiilissa ja tabletilla, 4 rinnakkain lg-leveydestä (1024 px).
           Näin yksikään kortti ei jää yksin riville, ja mobiilissa vieritystä on vähemmän. */}
-      <div className="relative mx-auto -mt-16 grid max-w-5xl grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-3.5">
+      <div className="relative mx-auto -mt-16 grid lg:-mt-8 max-w-5xl grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-3.5">
         {links.map((l) => (
           <a
             key={l.title}
+            data-reveal
             href={l.href}
             // Mobiilissa kuvake tekstin yläpuolella (flex-col), sm-leveydestä vierekkäin.
             className="flex flex-col items-start gap-3 rounded-2xl border border-line bg-white p-4 shadow-[0_8px_24px_rgba(34,29,74,0.06)] transition hover:border-border sm:flex-row sm:items-center sm:gap-3.5 sm:p-5"

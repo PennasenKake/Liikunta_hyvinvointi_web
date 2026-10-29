@@ -55,7 +55,7 @@ export default function NotFound() {
       <Image
         src="/tahko-hero.svg"
         alt=""
-        width={1440}
+        width={2400}
         height={700}
         unoptimized
         className="mt-auto block h-[clamp(220px,30vw,380px)] w-full object-cover object-bottom pt-12"

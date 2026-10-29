@@ -18,7 +18,7 @@ export default function WhyMove() {
     <section id="miksi-liikkua" aria-labelledby="miksi-liikkua-otsikko" className="bg-sky px-6 py-24">
       <div className="mx-auto flex max-w-5xl flex-col gap-12">
         {/* Kuva ja teksti vierekkäin, kapealla näytöllä allekkain (flex-wrap) */}
-        <div className="flex flex-wrap items-center gap-8 rounded-2xl bg-white p-5 sm:gap-10">
+        <div data-reveal className="flex flex-wrap items-center gap-8 rounded-2xl bg-white p-5 sm:gap-10">
           {/* Äänimaljat kuvaavat sitä, mistä osio kertoo: liikkeen rinnalla myös lepo.
               sizes: kuva on mobiilissa koko levyinen, työpöydällä noin puolet sisällöstä.
               Selain lataa sizes-tiedon perusteella vain tarvittavan kokoisen version. */}
@@ -45,7 +45,7 @@ export default function WhyMove() {
             gap-px + taustaväri luo ohuet erotinviivat korttien väliin. */}
         <ul className="grid overflow-hidden rounded-2xl bg-sky-line gap-px sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((b) => (
-            <li key={b.title} className="flex flex-col gap-2.5 bg-sky-soft p-7">
+            <li key={b.title} data-reveal className="flex flex-col gap-2.5 bg-sky-soft p-7">
               <h3 className="font-serif text-[26px] font-bold">{b.title}</h3>
               <p className="leading-relaxed text-ink-soft">{b.text}</p>
             </li>

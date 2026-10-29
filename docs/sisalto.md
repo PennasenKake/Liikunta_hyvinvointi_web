@@ -25,6 +25,8 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 7 | **Google-kalenteri** (tunniste) ja tuntien paikat | Tulevat tunnit, Heron kortti | `lib/calendar.ts` | ⬜ |
 | 8 | **Kumppanilogot ja käyttölupa:** ePassi, Tahko, Nilsiän Yrittäjät | Footer | `lib/site.ts` → `partners` | ⬜ |
 | 9 | **Palvelukorttien tiedot:** kesto, paikkakunnat, tehotaso ja "Sopii:"-teksti jokaiselle palvelulle (nyt arvioita) | Palvelut-osion kortit | `lib/services.ts` | ⬜ |
+| 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu | Käyttöehdot | `app/kayttoehdot/page.tsx` | ⬜ |
+| 11 | **InBody-tulosten säilytys:** säilytetäänkö ja missä muodossa | Tietosuojaseloste | `app/tietosuoja/page.tsx` | ⬜ |
 
 ## Tarkistettavat asiat
 

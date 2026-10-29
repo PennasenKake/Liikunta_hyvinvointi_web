@@ -22,7 +22,7 @@ Liikunta_hyvinvointi_web/
 │   ├── kuvitus/
 │   │   ├── tahko-hero.svg             ✅ Hero-kuvitus taivastaustalla
 │   │   ├── tahko-hero-lapinakyva.svg  ✅ Ilman taivasta (sama kuin web/public/tahko-hero.svg)
-│   │   └── tahko-hero.png             ✅ 2880 × 1400 px (some, esitykset)
+│   │   └── tahko-hero.png             ✅ 4800 × 1400 px (some, esitykset)
 │   ├── mockups/                       🔒 Mockupit ja referenssikuvat (tekijänoikeudet)
 │   └── kuvat/                         🔒 Amandan valokuvat alkuperäiskoossa
 │
@@ -60,16 +60,19 @@ Liikunta_hyvinvointi_web/
 │       │   ├── globals.css            ✅ Tailwind-teema: värit ja fontit
 │       │   ├── icon.png               ✅ Favicon (logomerkistä)
 │       │   ├── apple-icon.png         ✅ iPhonen kotinäytön kuvake
-│       │   └── tietosuoja/
-│       │       └── page.tsx           ✅ Tietosuojaseloste (paikkamerkki)
+│       │   ├── kayttoehdot/page.tsx   ✅ Käyttöehdot (luonnos, TODO(Amanda))
+│       │   ├── tietosuoja/page.tsx    ✅ Tietosuojaseloste (luonnos)
+│       │   ├── evasteet/page.tsx      ✅ Evästeasetukset (sivusto ei aseta evästeitä)
+│       │   └── saavutettavuus/page.tsx ✅ Saavutettavuusseloste
 │       │
 │       ├── components/
+│       │   ├── RevealOnScroll.tsx     ✅ Paljastusanimaatio vieritettäessä (data-reveal)
 │       │   ├── layout/                Näkyvät jokaisella sivulla
 │       │   │   ├── Header.tsx         ✅ Logo ja navigaatio (Server Component)
 │       │   │   ├── HeaderShell.tsx    ✅ Pieneneminen ja piiloutuminen vieritettäessä (Client Component)
 │       │   │   ├── NavDropdown.tsx    ✅ Työpöydän alavalikot Liikunta/Hyvinvointi (Client Component)
 │       │   │   ├── MobileMenu.tsx     ✅ Hampurilaisvalikko alavalikoineen (Client Component)
-│       │   │   └── Footer.tsx         ✅ Yhteystiedot, alueet, kumppanit, Y-tunnus
+│       │   │   └── Footer.tsx         ✅ Sivusto, Yhteystiedot, Tietoa ja ehdot, kumppanit
 │       │   ├── sections/              Etusivun osiot järjestyksessä
 │       │   │   ├── Hero.tsx           ✅ Otsikko, painikkeet, Tahko-kuvitus
 │       │   │   ├── NextClassCard.tsx  ✅ "Seuraava tunti" -kortti
@@ -81,13 +84,14 @@ Liikunta_hyvinvointi_web/
 │       │   │   ├── About.tsx          ✅ Minusta
 │       │   │   ├── Calendar.tsx       ✅ Tulevat tunnit (esimerkkidata, Google-kalenteri vaiheessa 7)
 │       │   │   ├── ShareButton.tsx    ✅ Tapahtuman jakaminen (Client Component)
-│       │   │   └── InstagramFeed.tsx  ✅ Paikkamerkit (Behold vaiheessa 8)
+│       │   │   ├── InstagramFeed.tsx  ✅ Instagram-osio (Behold myöhemmin)
+│       │   │   └── InstagramCarousel.tsx ✅ Karuselli: nuolet, pyyhkäisy, scroll-snap (Client Component)
 │       │   └── ui/                    Pienet uudelleenkäytettävät palat
+│       │       ├── LegalPage.tsx      ✅ Tietosivujen yhteinen runko
 │       │       ├── ButtonLink.tsx     ✅ Painikkeen näköinen linkki (primary/secondary)
 │       │       ├── PlaceholderImage.tsx ✅ Paikkamerkki puuttuvalle valokuvalle
 │       │       ├── SectionHeading.tsx ✅ Osioiden yhteinen otsikko
 │       │       ├── ServiceIcon.tsx    ✅ Palvelujen viivakuvakkeet (myös alavalikoissa)
-│       │       └── Reveal.tsx         ⬜ Scroll reveal -animaatio
 │       │
 │       └── lib/                       Data ja logiikka ilman käyttöliittymää
 │           ├── site.ts                ✅ Nimi, yhteystiedot, Y-tunnus, navigaatio
@@ -96,6 +100,7 @@ Liikunta_hyvinvointi_web/
 │           ├── about.ts               ✅ Minusta-osion sisältö
 │           ├── calendar.ts            ✅ Tapahtumat (esimerkkidata) ja "lisää kalenteriin"
 │           ├── photos.ts              ✅ Valokuvien polut, alt-tekstit ja mitat
+│           ├── instagram.ts           ✅ Instagram-julkaisujen malli ja väliaikaiset julkaisut
 │           └── sanity.ts              ⬜ Sanity-asiakas ja kyselyt
 │
 └── studio/                            ⬜ Sanity Studio (Amandan muokkausnäkymä)

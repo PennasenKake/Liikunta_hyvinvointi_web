@@ -32,6 +32,7 @@ export default async function Calendar() {
               return (
                 <li
                   key={e.id}
+                  data-reveal
                   className="flex flex-wrap items-center gap-x-5 gap-y-3 rounded-xl border border-line bg-surface px-5 py-5 sm:px-6"
                 >
                   {/* Päivämäärälaatta. <time> kertoo koneille (hakukoneet, kalenterit) tarkan ajan. */}
