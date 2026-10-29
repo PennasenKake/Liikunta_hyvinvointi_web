@@ -14,7 +14,7 @@ type Props = {
 
 export default function LegalPage({ eyebrow, title, updated, children }: Props) {
   return (
-    <main className="bg-surface px-6 pb-24 pt-14">
+    <main id="sisalto" tabIndex={-1} className="bg-surface px-6 pb-24 pt-14 outline-none">
       <article className="mx-auto max-w-3xl">
         <p className="font-serif text-2xl italic text-accent">{eyebrow}</p>
         <h1 className="mt-2 font-serif text-[clamp(2.5rem,6vw,3.5rem)] font-semibold leading-tight">{title}</h1>

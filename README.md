@@ -37,6 +37,8 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 - [x] Saavutettavuus WCAG 2.1 AA (axe-core: 0 löydöstä)
 - [x] Automaattiset savutestit (Playwright) ja CI (GitHub Actions)
 - [x] Scroll reveal -animaatiot (toimii ilman JavaScriptiä, huomioi vähennetyn liikkeen)
+- [x] Vierityksen mukana piirtyvä vuoristoviiva osioiden välissä (pelkkä CSS, vähennetyn liikkeen tuki)
+- [x] Siirry sisältöön -ohituslinkki näppäimistökäyttäjille
 - [ ] Hakukoneoptimointi: Open Graph, rakennetieto, sitemap
 - [ ] Sisällön muokkaus kirjautumalla (Sanity Studio)
 

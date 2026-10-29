@@ -88,6 +88,7 @@ Liikunta_hyvinvointi_web/
 │       │   │   └── InstagramCarousel.tsx ✅ Karuselli: nuolet, pyyhkäisy, scroll-snap (Client Component)
 │       │   └── ui/                    Pienet uudelleenkäytettävät palat
 │       │       ├── LegalPage.tsx      ✅ Tietosivujen yhteinen runko
+│       │       ├── TahkoLine.tsx      ✅ Vuoristosiluetti osioiden välissä, vierityssidonnainen viiva
 │       │       ├── ButtonLink.tsx     ✅ Painikkeen näköinen linkki (primary/secondary)
 │       │       ├── PlaceholderImage.tsx ✅ Paikkamerkki puuttuvalle valokuvalle
 │       │       ├── SectionHeading.tsx ✅ Osioiden yhteinen otsikko

@@ -10,6 +10,7 @@ import Pricing from "@/components/sections/Pricing";
 import About from "@/components/sections/About";
 import Calendar from "@/components/sections/Calendar";
 import InstagramFeed from "@/components/sections/InstagramFeed";
+import TahkoLine from "@/components/ui/TahkoLine";
 import { formatShort, getUpcomingEvents } from "@/lib/calendar";
 
 // async: Heron "Seuraava tunti" -kortti tarvitsee kalenterin ensimmäisen tapahtuman
@@ -22,13 +23,19 @@ export default async function Home() {
     : null;
 
   return (
-    <main>
+    // id="sisalto" + tabIndex={-1}: "Siirry sisältöön" -linkki siirtää fokuksen tänne (layout.tsx)
+    <main id="sisalto" tabIndex={-1} className="outline-none">
       <Hero nextClass={nextClass} />
       <QuickLinks />
       <Services />
+      {/* Vuoristosiluetit osioiden rajoilla: from = yläpuolisen osion väri, to = alapuolisen */}
+      <TahkoLine id="palvelut-miksi" from="white" to="sky" shape="huiput" />
       <WhyMove />
+      <TahkoLine id="miksi-hinnasto" from="sky" to="white" shape="tahko" />
       <Pricing />
+      <TahkoLine id="hinnasto-minusta" from="white" to="lilac-soft" shape="harju" flip />
       <About />
+      <TahkoLine id="minusta-kalenteri" from="lilac-soft" to="white" shape="huiput" flip />
       <Calendar />
       <InstagramFeed />
     </main>

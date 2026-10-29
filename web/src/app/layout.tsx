@@ -57,6 +57,16 @@ export default function RootLayout({
       </head>
       {/* Perustyylit koko sivulle: tausta, tekstin väri ja leipätekstin fontti */}
       <body className="bg-surface text-ink font-sans">
+        {/* Ohituslinkki (WCAG 2.4.1): ensimmäinen Tab-painallus paljastaa sen, ja Enter
+            hyppää navigaation yli suoraan sisältöön (<main id="sisalto">).
+            sr-only piilottaa sen näkyvistä, focus:not-sr-only tuo sen esiin fokuksessa.
+            z-[60]: yläpalkin (z-50) päällä. */}
+        <a
+          href="#sisalto"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-white focus:px-5 focus:py-3 focus:font-semibold focus:text-accent focus:shadow-lg focus:outline-2 focus:outline-offset-2 focus:outline-accent"
+        >
+          Siirry sisältöön
+        </a>
         {/* Header näkyy kaikilla sivuilla, koska se on juuriasettelussa */}
         <Header />
         {children}

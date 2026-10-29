@@ -57,6 +57,42 @@ test.describe("Etusivu", () => {
   });
 });
 
+test.describe("Saavutettavuus", () => {
+  test("Siirry sisältöön -linkki tulee näkyviin Tab-näppäimellä ja vie sisältöön", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Ohituslinkki on näppäimistökäyttäjille");
+    await page.goto("/");
+    await page.keyboard.press("Tab"); // Ensimmäinen Tab: ohituslinkki
+    const skip = page.getByRole("link", { name: "Siirry sisältöön" });
+    await expect(skip).toBeFocused();
+    await expect(skip).toBeInViewport(); // Näkyy fokuksessa (ei enää sr-only)
+
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/#sisalto$/);
+    await expect(page.locator("main#sisalto")).toBeFocused();
+  });
+
+  test("vuoristoviiva näkyy kokonaan, kun kävijä on pyytänyt vähemmän liikettä", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    const lines = page.locator(".tahko-line");
+    await expect(lines).toHaveCount(4);
+    // stroke-dashoffset 0 = viiva piirretty kokonaan heti, ei animaatiota
+    for (const offset of await lines.evaluateAll((els) => els.map((el) => getComputedStyle(el).strokeDashoffset))) {
+      expect(parseFloat(offset)).toBe(0);
+    }
+  });
+
+  test("vuoristoviiva piirtyy vierityksen mukana", async ({ page }) => {
+    await page.goto("/");
+    const line = page.locator(".tahko-line").first();
+    const offset = () => line.evaluate((el) => parseFloat(getComputedStyle(el).strokeDashoffset));
+    expect(await offset()).toBeGreaterThan(0.9); // Ruudun alapuolella: ei vielä piirretty
+    await line.scrollIntoViewIfNeeded();
+    await page.evaluate(() => window.scrollBy(0, window.innerHeight / 3)); // Siluetti kohti ruudun keskiosaa
+    await expect.poll(offset).toBeLessThan(0.5);
+  });
+});
+
 test.describe("Instagram", () => {
   test("karusellin nuolet vierittävät julkaisuja", async ({ page, isMobile }) => {
     test.skip(isMobile, "Mobiilissa selataan pyyhkäisemällä, nuolet ovat piilossa");

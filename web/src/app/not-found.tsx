@@ -21,7 +21,7 @@ export default function NotFound() {
     // min-h: sivu täyttää näytön headerin (n. 6,5 rem) alapuolelta.
     // svh = pienin näkymän korkeus, joka ei hypi mobiiliselaimen osoitepalkin mukana.
     // flex-col + kuvituksen mt-auto: kuvitus asettuu aina sivun alareunaan.
-    <main className="flex min-h-[calc(100svh-6.5rem)] flex-col overflow-hidden bg-sky-soft pt-20">
+    <main id="sisalto" tabIndex={-1} className="flex min-h-[calc(100svh-6.5rem)] flex-col overflow-hidden bg-sky-soft pt-20 outline-none">
       <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center gap-6 px-6 text-center">
         {/* Virhekoodi pienenä yläotsikkona: tieto on mukana, mutta ei hallitse sivua */}
         <p className="font-serif text-2xl italic text-accent">404</p>
