@@ -60,6 +60,9 @@ Liikunta_hyvinvointi_web/
 │       │   ├── globals.css            ✅ Tailwind-teema: värit ja fontit
 │       │   ├── icon.png               ✅ Favicon (logomerkistä)
 │       │   ├── apple-icon.png         ✅ iPhonen kotinäytön kuvake
+│       │   ├── robots.ts              ✅ /robots.txt (esikatselussa indeksointi kielletty)
+│       │   ├── sitemap.ts             ✅ /sitemap.xml
+│       │   ├── opengraph-image.png    ✅ Jakokuva 1200 × 630 (+ .alt.txt)
 │       │   ├── kayttoehdot/page.tsx   ✅ Käyttöehdot (luonnos, TODO(Amanda))
 │       │   ├── tietosuoja/page.tsx    ✅ Tietosuojaseloste (luonnos)
 │       │   ├── evasteet/page.tsx      ✅ Evästeasetukset (sivusto ei aseta evästeitä)
@@ -102,6 +105,7 @@ Liikunta_hyvinvointi_web/
 │           ├── calendar.ts            ✅ Tapahtumat (esimerkkidata) ja "lisää kalenteriin"
 │           ├── photos.ts              ✅ Valokuvien polut, alt-tekstit ja mitat
 │           ├── instagram.ts           ✅ Instagram-julkaisujen malli ja väliaikaiset julkaisut
+│           ├── seo.ts                 ✅ Sivuston osoite, noindex-tila ja LocalBusiness-rakennetieto
 │           └── sanity.ts              ⬜ Sanity-asiakas ja kyselyt
 │
 └── studio/                            ⬜ Sanity Studio (Amandan muokkausnäkymä)

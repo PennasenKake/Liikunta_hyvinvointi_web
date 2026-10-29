@@ -6,6 +6,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import RevealOnScroll from "@/components/RevealOnScroll";
+import { NOINDEX, SITE_URL } from "@/lib/seo";
 
 // Otsikkofontti. Cormorant Garamond ei ole muuttuva fontti,
 // joten tarvittavat painot ja tyylit pitää luetella erikseen.
@@ -24,10 +25,33 @@ const jost = Jost({
   display: "swap",
 });
 
+// Koko sivuston oletusmetatiedot. Yksittäiset sivut täydentävät näitä omilla metatiedoillaan.
 export const metadata: Metadata = {
-  title: "Tahkon Amanda – Liikunta ja hyvinvointi",
+  // metadataBase: suhteelliset osoitteet (jakokuva, canonical) muutetaan täysiksi osoitteiksi
+  metadataBase: new URL(SITE_URL),
+  title: {
+    // Etusivun otsikko: paikkakunnat mukana paikallista hakua varten
+    default: "Tahkon Amanda – Liikunta ja hyvinvointi Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla",
+    // Muiden sivujen otsikko: "Käyttöehdot – Tahkon Amanda"
+    template: "%s – Tahkon Amanda",
+  },
   description:
-    "Ryhmäliikuntaa, personal trainingia ja rentoutusta Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.",
+    "Vesijumppaa, HIIT:iä, personal trainingia, äänimaljarentoutusta, yin joogaa ja InBody-mittauksia Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.",
+  applicationName: "Tahkon Amanda",
+  // Jakaminen somessa ja viestisovelluksissa. Kuva: app/opengraph-image.png (Next.js lisää sen itse).
+  openGraph: {
+    type: "website",
+    locale: "fi_FI",
+    siteName: "Tahkon Amanda",
+    title: "Tahkon Amanda – Liikunta ja hyvinvointi",
+    description: "Ryhmäliikuntaa, personal trainingia ja rentoutusta Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.",
+  },
+  twitter: { card: "summary_large_image" },
+  // Esikatselussa (NEXT_PUBLIC_NOINDEX=1) sivut pidetään pois hakukoneista.
+  // Tuotannossa ei erillistä tagia: indeksointi on oletus, ja näin 404-sivun automaattinen
+  // noindex ei saa rinnalleen ristiriitaista "index, follow" -tagia.
+  robots: NOINDEX ? { index: false, follow: false } : undefined,
+  formatDetection: { telephone: false }, // Puhelinnumero on jo linkki: ei selaimen omaa tunnistusta
 };
 
 export default function RootLayout({

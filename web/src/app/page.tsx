@@ -11,7 +11,14 @@ import About from "@/components/sections/About";
 import Calendar from "@/components/sections/Calendar";
 import InstagramFeed from "@/components/sections/InstagramFeed";
 import TahkoLine from "@/components/ui/TahkoLine";
+import type { Metadata } from "next";
 import { formatShort, getUpcomingEvents } from "@/lib/calendar";
+import { jsonLdString, localBusinessJsonLd } from "@/lib/seo";
+
+// Etusivun ensisijainen osoite hakukoneille (otsikko ja kuvaus tulevat layout.tsx:n oletuksista)
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 // async: Heron "Seuraava tunti" -kortti tarvitsee kalenterin ensimmäisen tapahtuman
 export default async function Home() {
@@ -25,6 +32,9 @@ export default async function Home() {
   return (
     // id="sisalto" + tabIndex={-1}: "Siirry sisältöön" -linkki siirtää fokuksen tänne (layout.tsx)
     <main id="sisalto" tabIndex={-1} className="outline-none">
+      {/* Rakennetieto (JSON-LD): kertoo Googlelle yrityksen nimen, yhteystiedot, palvelualueet
+          ja palvelut. Ei näy sivulla. Testaus: search.google.com/test/rich-results */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(localBusinessJsonLd()) }} />
       <Hero nextClass={nextClass} />
       <QuickLinks />
       <Services />

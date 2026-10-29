@@ -10,7 +10,7 @@ import ButtonLink from "@/components/ui/ButtonLink";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Sivua ei löytynyt – Tahkon Amanda",
+  title: "Sivua ei löytynyt", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
   description: "Etsimääsi sivua ei löytynyt. Palaa etusivulle tai tutustu palveluihin.",
 };
 

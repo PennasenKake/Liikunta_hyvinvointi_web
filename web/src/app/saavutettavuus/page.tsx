@@ -7,7 +7,8 @@ import LegalPage from "@/components/ui/LegalPage";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Saavutettavuusseloste – Tahkon Amanda",
+  title: "Saavutettavuusseloste", // Pohja layout.tsx:ssä lisää perään " – Tahkon Amanda"
+  alternates: { canonical: "/saavutettavuus" }, // Sivun ensisijainen osoite hakukoneille
   description: "Tahkon Amandan sivuston saavutettavuus: WCAG 2.1 AA -tavoite, testaus ja palaute.",
 };
 

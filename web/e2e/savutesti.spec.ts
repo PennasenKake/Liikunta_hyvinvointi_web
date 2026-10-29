@@ -93,6 +93,48 @@ test.describe("Saavutettavuus", () => {
   });
 });
 
+test.describe("Hakukoneoptimointi", () => {
+  test("robots.txt sallii indeksoinnin ja kertoo sivukartan osoitteen", async ({ request }) => {
+    const res = await request.get("/robots.txt");
+    expect(res.status()).toBe(200);
+    const text = await res.text();
+    expect(text).toContain("Allow: /");
+    expect(text).toMatch(/Sitemap: https?:\/\/.+\/sitemap\.xml/);
+  });
+
+  test("sitemap.xml listaa etusivun ja tietosivut", async ({ request }) => {
+    const res = await request.get("/sitemap.xml");
+    expect(res.status()).toBe(200);
+    const xml = await res.text();
+    for (const path of ["/", ...site.legal.map((l) => l.href)]) {
+      expect(xml).toContain(`${path}</loc>`);
+    }
+  });
+
+  test("etusivulla on rakennetieto palvelualueineen ja jakokuva", async ({ page }) => {
+    await page.goto("/");
+    // LocalBusiness-rakennetieto: kelvollinen JSON, kaikki palvelualueet ja palvelut mukana
+    const json = await page.locator('script[type="application/ld+json"]').textContent();
+    const data = JSON.parse(json ?? "{}");
+    expect(data["@type"]).toBe("LocalBusiness");
+    expect(data.areaServed.map((a: { name: string }) => a.name)).toEqual(site.areas);
+    const services = data.hasOfferCatalog.itemListElement.flatMap((c: { itemListElement: unknown[] }) => c.itemListElement);
+    expect(services).toHaveLength(serviceCategories.reduce((n, c) => n + c.services.length, 0));
+
+    // Jakokuva ja canonical täysinä osoitteina (metadataBase)
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /^https?:\/\/.+opengraph-image/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https?:\/\/[^/]+\/?$/);
+    // Paikkakunnat taivutettuina, kuten otsikossa luontevasti lukee
+    await expect(page).toHaveTitle(/Tahkolla.*Siilinjärvellä.*Kuopiossa.*Rautavaaralla/);
+  });
+
+  test("tietosivujen otsikossa on sivun nimi ja yrityksen nimi", async ({ page }) => {
+    await page.goto("/kayttoehdot");
+    await expect(page).toHaveTitle("Käyttöehdot – Tahkon Amanda");
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/kayttoehdot$/);
+  });
+});
+
 test.describe("Instagram", () => {
   test("karusellin nuolet vierittävät julkaisuja", async ({ page, isMobile }) => {
     test.skip(isMobile, "Mobiilissa selataan pyyhkäisemällä, nuolet ovat piilossa");

@@ -44,9 +44,17 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 **Laatu**
 - [x] Saavutettavuus WCAG 2.1 AA: axe-core 0 löydöstä kaikilla sivuilla, Siirry sisältöön -linkki, näppäimistötuki
-- [x] 20 Playwright-savutestiä (40 ajoa työpöytä- ja mobiiliprofiililla), ajetaan CI:ssä
-- [ ] Hakukoneoptimointi: Open Graph -kuva, rakennetieto (LocalBusiness), sitemap
+- [x] 24 Playwright-savutestiä (48 ajoa työpöytä- ja mobiiliprofiililla), ajetaan CI:ssä
+
+**Hakukoneet ja jakaminen**
+- [x] Paikallinen SEO: LocalBusiness-rakennetieto palvelualueineen (Tahko, Siilinjärvi, Kuopio, Rautavaara) ja palveluineen, paikkakunnat sivun otsikossa
+- [x] `sitemap.xml`, `robots.txt`, canonical-osoitteet ja `metadataBase`
+- [x] Open Graph -jakokuva (1200 × 630) somea ja viestisovelluksia varten
+- [x] Esikatselutila: `NEXT_PUBLIC_NOINDEX=1` pitää testiversion pois hakukoneista
+
+**Tulossa**
 - [ ] Sisällön muokkaus kirjautumalla (Sanity Studio)
+- [ ] Google-kalenterin tunnit, Behold-Instagram-syöte ja verkkoajanvaraus
 
 ## Tekniset ratkaisut
 
@@ -70,6 +78,8 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 **Suorituskyky.** Lighthouse työpöydällä: suorituskyky, saavutettavuus, parhaat käytännöt ja SEO 100/100. Mobiilissa (hidastettu 4G ja suoritin) suorituskyky on 76 ja muut 100. Fontit ladataan `next/font`-työkalulla omalta palvelimelta, eikä kävijän selain tee pyyntöjä Googleen. Kuvat optimoidaan `next/image`-komponentilla WebP-muotoon näytön koon mukaan. Etusivun kokonaiskoko on noin 570 kt, josta valtaosa on valokuvia.
 
 **Oma visuaalinen identiteetti.** Tahko-kuvitus on piirretty SVG:nä generaattoriskriptillä. Kuvituksessa ovat Tahkovuoren rinteet, näkötorni ja Suomen pisin zipline, Tahkon portaat ja niiden päässä Tirol-ravintola, Panorama-tuolihissi ja -metsäkylpylä, Tahkolahti, ponttonisilta, Sokos-hotelli sekä ranta- ja mökkikylä. Kuva on 2400 px leveä, jotta koko maisema näkyy leveälläkin näytöllä. Värit ja fontit on määritelty yhteen paikkaan Tailwind v4:n `@theme`-lohkoon.
+
+**Hakukoneoptimointi yhdestä lähteestä.** Rakennetieto (`lib/seo.ts`) muodostetaan samasta datasta kuin sivun sisältö (`site.ts`, `services.ts`), joten Googlelle kerrotut palvelut ja palvelualueet pysyvät aina samoina kuin sivulla. `robots.txt` ja `sitemap.xml` ovat Next.js:n tiedostokonventioita (`app/robots.ts`, `app/sitemap.ts`), ja sivuston osoite tulee ympäristömuuttujasta `NEXT_PUBLIC_SITE_URL`.
 
 **Aikavyöhykkeet.** Kellonajat muotoillaan aina `Europe/Helsinki`-aikavyöhykkeellä, joten ne näkyvät oikein, vaikka palvelin olisi ulkomailla.
 
@@ -117,6 +127,7 @@ Sivu aukeaa osoitteeseen http://localhost:3000.
 - Instagram-karusellin nuolet toimivat
 - ohituslinkki ja vuoristoviiva toimivat (myös vähennetyn liikkeen kanssa)
 - tietosivut latautuvat ja olematon osoite palauttaa tilakoodin 404
+- `robots.txt`, `sitemap.xml`, rakennetieto, jakokuva ja canonical-osoitteet ovat kunnossa
 
 Ennen ensimmäistä ajoa asenna testiselain: `npx playwright install chromium`.
 
