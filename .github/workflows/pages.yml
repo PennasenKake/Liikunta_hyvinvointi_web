@@ -1,0 +1,74 @@
+# pages.yml: testiversion julkaisu GitHub Pagesiin.
+# Osoite: https://pennasenkake.github.io/Liikunta_hyvinvointi_web/
+#
+# Käynnistyy jokaisesta pushista main-haaraan sekä käsin (Actions → Pages → Run workflow).
+# Build tehdään staattisena (npm run build:pages → web/scripts/build-pages.mjs), koska
+# GitHub Pages tarjoilee vain valmiita tiedostoja. Testiversio on noindex-tilassa,
+# joten hakukoneet eivät indeksoi sitä.
+#
+# Käyttöönotto kerran: Settings → Pages → Build and deployment → Source: GitHub Actions.
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Käsin käynnistys Actions-välilehdeltä
+
+# Vähimmät oikeudet: koodin luku, Pages-julkaisu ja julkaisun tunnistautuminen (OIDC)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Vain yksi julkaisu kerrallaan. Kesken olevaa julkaisua ei keskeytetä, jottei sivusto jää rikki.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Staattinen build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Koodin haku
+        uses: actions/checkout@v7
+
+      - name: Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Riippuvuuksien asennus
+        run: npm ci
+
+      # Pages-asetukset (ei static_site_generator-valintaa: next.config.ts hoitaa Pages-tilan itse)
+      - name: Pages-asetukset
+        uses: actions/configure-pages@v6
+
+      # Tuottaa web/out/-kansion: HTML, kuvat, robots.txt (Disallow) ja .nojekyll
+      - name: Build GitHub Pagesia varten
+        run: npm run build:pages
+
+      - name: Julkaisupaketin tallennus
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: web/out
+
+  deploy:
+    name: Julkaisu
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }} # Näkyy ajon yhteenvedossa linkkinä
+    steps:
+      - name: Julkaisu GitHub Pagesiin
+        id: deployment
+        uses: actions/deploy-pages@v5
