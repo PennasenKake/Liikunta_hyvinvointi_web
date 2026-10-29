@@ -2,7 +2,7 @@
 // Client Component, koska mobiilissa kuvaus avautuu ja sulkeutuu klikkaamalla (tila).
 //
 // Näkymät:
-// - Mobiili (alle 1024 px): kuvake ja nimi painikkeena. Klikkaus näyttää tehotason ja kuvauksen.
+// - Mobiili (alle 1024 px): kuvake ja nimi painikkeena. Klikkaus näyttää kuvauksen.
 //   Näin 13 palvelun lista mahtuu puhelimessa parille ruudulle.
 // - Työpöytä (lg): kaikki tiedot näkyvät aina, eikä painiketta tarvita.
 //
@@ -12,31 +12,12 @@
 
 import { useEffect, useId, useState } from "react";
 import ServiceIcon from "@/components/ui/ServiceIcon";
-import { intensityLabels, serviceId, type Intensity, type Service } from "@/lib/services";
+import { serviceId, type Service } from "@/lib/services";
 
 type Props = {
   service: Service;
   iconTone: string; // Kuvakkeen taustan ja värin Tailwind-luokat palstan mukaan
 };
-
-// Tehotaso kolmena pisteenä ja tekstinä. Pisteet ovat koriste (aria-hidden),
-// ruudunlukija lukee tekstin, esim. "Tehotaso: Kohtalainen".
-function IntensityLine({ level }: { level: Intensity }) {
-  return (
-    <p className="flex items-center gap-2 text-sm text-muted">
-      <span className="sr-only">Tehotaso:</span>
-      <span aria-hidden="true" className="inline-flex gap-1">
-        {[1, 2, 3].map((i) => (
-          <span
-            key={i}
-            className={`size-2 rounded-full ${i <= level ? "bg-accent" : "border border-border bg-white"}`}
-          />
-        ))}
-      </span>
-      {intensityLabels[level]}
-    </p>
-  );
-}
 
 export default function ServiceItem({ service: s, iconTone }: Props) {
   const [open, setOpen] = useState(false);
@@ -97,12 +78,7 @@ export default function ServiceItem({ service: s, iconTone }: Props) {
             pl-15: mobiilissa teksti alkaa nimen kohdalta, kuvakkeen oikealta puolelta. */}
         <div id={panelId} className={`min-w-0 pb-5 pl-15 lg:block lg:pb-0 lg:pl-0 ${open ? "block" : "hidden"}`}>
           <h4 className="hidden font-serif text-[24px] font-semibold leading-tight lg:block">{s.title}</h4>
-          {s.intensity && (
-            <div className="mb-1.5 lg:mt-1">
-              <IntensityLine level={s.intensity} />
-            </div>
-          )}
-          <p className="leading-relaxed text-muted">{s.description}</p>
+          <p className="leading-relaxed text-muted lg:mt-1">{s.description}</p>
         </div>
       </div>
     </li>

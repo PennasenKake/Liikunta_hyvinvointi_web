@@ -96,7 +96,7 @@ Liikunta_hyvinvointi_web/
 │       │
 │       └── lib/                       Data ja logiikka ilman käyttöliittymää
 │           ├── site.ts                ✅ Nimi, yhteystiedot, Y-tunnus, navigaatio
-│           ├── services.ts            ✅ Palvelut, tehotasot, kestot ja paikkakunnat
+│           ├── services.ts            ✅ Palvelut, kuvakkeet, kuvaukset ja varaustapa
 │           ├── pricing.ts             ✅ Hinnasto
 │           ├── about.ts               ✅ Minusta-osion sisältö
 │           ├── calendar.ts            ✅ Tapahtumat (esimerkkidata) ja "lisää kalenteriin"

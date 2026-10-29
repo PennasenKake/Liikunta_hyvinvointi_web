@@ -78,7 +78,9 @@ export default function TahkoLine({ id, from, to, shape = "tahko", flip = false 
           stroke={`url(#${gradientId})`}
           strokeWidth="2.6"
           strokeLinecap="round"
-          className="tahko-line"
+          // Peilatussa siluetissa polun alku on oikealla. --rev piirtää polun lopusta alkuun,
+          // jolloin viiva etenee ruudulla aina vasemmalta oikealle.
+          className={flip ? "tahko-line tahko-line--rev" : "tahko-line"}
         />
       </svg>
     </div>

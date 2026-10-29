@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml/badge.svg)](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml)
 
-> **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Next.js 16, TypeScript and Tailwind CSS v4. Accessible (WCAG 2.1 AA), fast and fully custom-designed. Content management via Sanity and class schedule via Google Calendar are in progress.
+> **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Next.js 16, React 19, TypeScript and Tailwind CSS v4. Fully custom design with a hand-drawn SVG illustration of Tahko, scroll-driven animations and WCAG 2.1 AA accessibility. Lighthouse (desktop): 100 / 100 / 100 / 100. Covered by Playwright smoke tests and GitHub Actions CI. Content management (Sanity) and class schedule (Google Calendar) are in progress.
 
 Responsiivinen verkkosivusto liikunta- ja hyvinvointipalveluita tarjoavalle Tahkon Amandalle.
 Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
@@ -16,63 +16,75 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 | Osa | Teknologia |
 |---|---|
-| Sovelluskehys | Next.js 16 (App Router, Server Components) |
-| Kieli | TypeScript |
-| Tyylit | Tailwind CSS v4 |
+| Sovelluskehys | Next.js 16 (App Router, Server Components, Cache Components) |
+| Käyttöliittymä | React 19, TypeScript |
+| Tyylit | Tailwind CSS v4 (`@theme`-teema) |
+| Testit | Playwright (savutestit), axe-core (saavutettavuus) |
+| CI | GitHub Actions: tyyppitarkistus, ESLint, build ja testit jokaisesta pushista |
 | Sisällönhallinta | Sanity *(tulossa)* |
 | Tapahtumat | Google Calendar API *(tulossa)* |
 | Instagram-syöte | Behold *(tulossa)* |
 
 ## Ominaisuudet
 
-- [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, alavalikot palveluihin, mobiilivalikko
-- [x] Hero-osio omalla Tahko-kuvituksella
-- [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset
-- [x] Miksi liikkua, Hinnasto ja Minusta (osin paikkamerkkisisällöllä)
+**Sivun osat**
+- [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, palaa ylös vieritettäessä, alavalikot palveluihin, mobiilivalikko
+- [x] Hero, joka täyttää ensimmäisen näkymän, ja oma SVG-kuvitus Tahkosta
+- [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset, suorat linkit palveluihin (`/#vesijumppa`)
+- [x] Miksi liikkua, Hinnasto ja Minusta *(osin paikkamerkkisisältöä)*
 - [x] Tulevat tunnit: lisäys omaan kalenteriin ja jakaminen *(esimerkkidata, Google-kalenteri tulossa)*
-- [x] Instagram-karuselli nuolilla ja pyyhkäisyllä *(väliaikaiset kuvat, Behold-syöte tulossa)*
-- [x] Footer: sivusto, yhteystiedot, tietoa ja ehdot, kumppanit, Y-tunnus
+- [x] Instagram-karuselli nuolilla, pyyhkäisyllä ja näppäimistöllä *(väliaikaiset kuvat, Behold tulossa)*
+- [x] Footer: sivusto, yhteystiedot, tietoa ja ehdot, kumppanit
 - [x] Käyttöehdot, tietosuojaseloste, evästeasetukset ja saavutettavuusseloste *(luonnokset)*
-- [x] 404-sivu
-- [x] Saavutettavuus WCAG 2.1 AA (axe-core: 0 löydöstä)
-- [x] Automaattiset savutestit (Playwright) ja CI (GitHub Actions)
-- [x] Scroll reveal -animaatiot (toimii ilman JavaScriptiä, huomioi vähennetyn liikkeen)
-- [x] Vierityksen mukana piirtyvä vuoristoviiva osioiden välissä (pelkkä CSS, vähennetyn liikkeen tuki)
-- [x] Siirry sisältöön -ohituslinkki näppäimistökäyttäjille
-- [ ] Hakukoneoptimointi: Open Graph, rakennetieto, sitemap
+- [x] Oma 404-sivu
+
+**Liike**
+- [x] Scroll reveal: sisältö liukuu näkyviin vieritettäessä
+- [x] Vuoristoviiva osioiden välissä: osioiden raja on vuoren siluetti, jonka harjanteelle viiva piirtyy vasemmalta oikealle vierityksen tahdissa
+
+**Laatu**
+- [x] Saavutettavuus WCAG 2.1 AA: axe-core 0 löydöstä kaikilla sivuilla, Siirry sisältöön -linkki, näppäimistötuki
+- [x] 20 Playwright-savutestiä (40 ajoa työpöytä- ja mobiiliprofiililla), ajetaan CI:ssä
+- [ ] Hakukoneoptimointi: Open Graph -kuva, rakennetieto (LocalBusiness), sitemap
 - [ ] Sisällön muokkaus kirjautumalla (Sanity Studio)
 
 ## Tekniset ratkaisut
 
-**Server Components oletuksena.** Valtaosa sivusta renderöidään palvelimella HTML:ksi, eikä selaimeen lähetetä niille JavaScriptiä. Client Componentteja ovat vain ne osat, joissa on tilaa tai selaimen rajapintoja: yläpalkin vierityslogiikka, alavalikot, mobiilivalikko, palvelurivin avautuminen ja jakopainike. Esimerkiksi yläpalkin sisältö renderöidään palvelimella, ja vain sen vierityskäyttäytyminen ajetaan selaimessa.
+**Server Components oletuksena.** Valtaosa sivusta renderöidään palvelimella HTML:ksi, eikä selaimeen lähetetä niille JavaScriptiä. Client Componentteja ovat vain osat, joissa on tilaa tai selaimen rajapintoja: yläpalkin vierityslogiikka (`HeaderShell`), alavalikot, mobiilivalikko, palvelurivin avautuminen, Instagram-karuselli, jakopainike ja paljastusanimaatio. Esimerkiksi yläpalkin sisältö renderöidään palvelimella, ja `HeaderShell` käärii sen ja hoitaa vain vierityksen.
 
-**Data erillään näkymästä.** Palvelut, hinnat, kalenteri, kuvat ja yhteystiedot ovat `web/src/lib/`-kansiossa. Komponentit vain näyttävät datan. Kun sisältö siirtyy Sanityyn ja Google-kalenteriin, muutokset tehdään `lib/`-tiedostoihin eikä komponentteihin tarvitse koskea.
+**Data erillään näkymästä.** Palvelut, hinnat, kalenteri, kuvat, Instagram-julkaisut ja yhteystiedot ovat `web/src/lib/`-kansiossa. Komponentit vain näyttävät datan. Uusi palvelu ilmestyy automaattisesti sekä Palvelut-osioon että yläpalkin alavalikkoon. Kun sisältö siirtyy Sanityyn ja Google-kalenteriin, muutokset tehdään `lib/`-tiedostoihin.
 
-**Välimuisti valmiina rajapinnoille.** Kalenterihaku käyttää Next.js 16:n `"use cache"`-direktiiviä. Etusivu on staattinen ja päivittyy välimuistista, joten Google Calendar API:a ei kutsuta jokaisella sivulatauksella.
+**Välimuisti valmiina rajapinnoille.** Kalenterihaku käyttää Next.js 16:n `"use cache"`-direktiiviä. Kaikki sivut ovat staattisia, ja etusivu päivittyy välimuistista 15 minuutin välein, joten Google Calendar API:a ei kutsuta jokaisella sivulatauksella.
+
+**Animaatiot, jotka eivät riko mitään.**
+- Vuoristoviiva on pelkkää CSS:ää (`animation-timeline: view()` ja `pathLength="1"`). Selaimissa, jotka eivät tue vierityssidonnaisia animaatioita, viiva näkyy valmiina.
+- Scroll reveal piilottaa sisällön vasta, kun `<head>`-skripti on lisännyt `has-js`-luokan. Ilman JavaScriptiä kaikki näkyy.
+- Kaikki liike jätetään pois, jos käyttäjä on pyytänyt laitteeltaan vähemmän liikettä (`prefers-reduced-motion`).
 
 **Saavutettavuus rakenteessa, ei jälkikäteen.**
-- Semanttinen HTML: `<dl>` hinnastossa, `<address>` yhteystiedoissa, `<time>` tapahtumissa
-- Alavalikot WAI-ARIA Disclosure -mallilla (hiiri, näppäimistö ja kosketus), näppäimistöllä vieritettävä karuselli
-- Näkyvä fokusrengas, kosketusalueet vähintään 44 px, `prefers-reduced-motion`-tuki
-- Kaikkien värien kontrasti laskettu: teksti 6,8–9,6:1 (AA vaatii 4,5:1)
+- Semanttinen HTML: `<dl>` hinnastossa, `<address>` yhteystiedoissa, `<time>` tapahtumissa, alueet ja otsikkohierarkia
+- Alavalikot WAI-ARIA Disclosure -mallilla (hiiri, näppäimistö, kosketus, Esc), yläpalkki ei piiloudu, kun fokus on siinä
+- Samannimisille linkeille saavutettava nimi (`Katso tunnit: Vesijumppa`), näkyvä fokusrengas, kosketusalueet vähintään 44 px
+- Kaikkien värien kontrasti tarkistettu: teksti 6,8–9,6:1 (AA vaatii 4,5:1)
 
-**Suorituskyky.** Fontit ladataan `next/font`-työkalulla omalta palvelimelta (ei pyyntöjä Googleen kävijän selaimesta). Kuvat optimoidaan `next/image`-komponentilla, jolloin puhelin lataa noin 90 kt:n WebP-version 500 kt:n alkuperäisen sijaan. Etusivun kokonaiskoko on noin 360 kt.
+**Suorituskyky.** Lighthouse työpöydällä: suorituskyky, saavutettavuus, parhaat käytännöt ja SEO 100/100. Mobiilissa (hidastettu 4G ja suoritin) suorituskyky on 76 ja muut 100. Fontit ladataan `next/font`-työkalulla omalta palvelimelta, eikä kävijän selain tee pyyntöjä Googleen. Kuvat optimoidaan `next/image`-komponentilla WebP-muotoon näytön koon mukaan. Etusivun kokonaiskoko on noin 570 kt, josta valtaosa on valokuvia.
 
-**Oma visuaalinen identiteetti.** Tahko-kuvitus ja vektorilogo on piirretty SVG:nä: kuvituksessa ovat Tahkovuoren rinteet, näkötorni ja zipline, Tahkon portaat, Tirol-ravintola, Panorama-tuolihissi ja -metsäkylpylä, Tahkolahti, ponttonisilta, Sokos-hotelli ja mökkikylä. Värit ja fontit on määritelty yhteen paikkaan Tailwind v4:n `@theme`-lohkoon.
+**Oma visuaalinen identiteetti.** Tahko-kuvitus on piirretty SVG:nä generaattoriskriptillä. Kuvituksessa ovat Tahkovuoren rinteet, näkötorni ja Suomen pisin zipline, Tahkon portaat ja niiden päässä Tirol-ravintola, Panorama-tuolihissi ja -metsäkylpylä, Tahkolahti, ponttonisilta, Sokos-hotelli sekä ranta- ja mökkikylä. Kuva on 2400 px leveä, jotta koko maisema näkyy leveälläkin näytöllä. Värit ja fontit on määritelty yhteen paikkaan Tailwind v4:n `@theme`-lohkoon.
 
 **Aikavyöhykkeet.** Kellonajat muotoillaan aina `Europe/Helsinki`-aikavyöhykkeellä, joten ne näkyvät oikein, vaikka palvelin olisi ulkomailla.
 
 ## Hakemistorakenne
 
 ```
-├── web/           Next.js-sivusto
+├── web/                Next.js-sivusto
+│   ├── e2e/            Playwright-savutestit
 │   └── src/
-│       ├── app/          Reitit (etusivu, 404, tietosuoja)
-│       ├── components/   layout/ · sections/ · ui/
-│       └── lib/          Data ja apufunktiot
-├── materiaalit/   Logo ja kuvitus (lähdetiedostot)
-├── docs/          Projektin dokumentaatio
-└── studio/        Sanity Studio (tulossa)
+│       ├── app/        Reitit: etusivu, 404, käyttöehdot, tietosuoja, evästeet, saavutettavuus
+│       ├── components/ layout/ (yläpalkki, footer) · sections/ (etusivun osiot) · ui/ (palikat)
+│       └── lib/        Data ja apufunktiot
+├── materiaalit/        Logo ja kuvitus (lähdetiedostot)
+├── docs/               Projektin dokumentaatio
+└── .github/workflows/  CI
 ```
 
 Tarkempi rakenne ja tiedostojen tila: [docs/hakemistorakenne.md](docs/hakemistorakenne.md).
@@ -98,9 +110,17 @@ Sivu aukeaa osoitteeseen http://localhost:3000.
 | `npm run start` | Tuotantobuildin ajaminen paikallisesti |
 | `npm run test:e2e` | Savutestit selaimessa (tekee buildin itse) |
 
-Savutestit ([`web/e2e/`](web/e2e/)) tarkistavat työpöytä- ja mobiiliprofiililla, että etusivu latautuu ilman rikkinäisiä resursseja, navigaatio ja välilehdet toimivat ja olematon osoite palauttaa tilakoodin 404. Ennen ensimmäistä ajoa asenna testiselain: `npx playwright install chromium`.
+**Savutestit** ([`web/e2e/`](web/e2e/)) ajetaan työpöytä- ja mobiiliprofiililla. Ne tarkistavat, että:
+- etusivu latautuu ilman virheitä, rikkinäisiä resursseja ja vaakavieritystä
+- navigaatio, alavalikot, mobiilivalikko ja yläpalkin piiloutuminen toimivat
+- palvelut näkyvät oikeissa palstoissa ja kuvaukset avautuvat mobiilissa
+- Instagram-karusellin nuolet toimivat
+- ohituslinkki ja vuoristoviiva toimivat (myös vähennetyn liikkeen kanssa)
+- tietosivut latautuvat ja olematon osoite palauttaa tilakoodin 404
 
-GitHub Actions ajaa tarkistuksen, buildin ja savutestit automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+Ennen ensimmäistä ajoa asenna testiselain: `npx playwright install chromium`.
+
+GitHub Actions ajaa tarkistuksen, buildin ja savutestit automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). Jos testit epäonnistuvat, HTML-raportti tallentuu ajon Artifacts-osioon.
 
 ## Ympäristömuuttujat
 
