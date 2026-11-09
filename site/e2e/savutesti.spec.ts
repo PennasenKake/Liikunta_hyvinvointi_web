@@ -61,6 +61,41 @@ test.describe("Etusivu", () => {
   });
 });
 
+test.describe("Responsiivisuus", () => {
+  // Kapein yleinen puhelin (320 px) ja puhelin vaakatasossa (667 × 375).
+  // test.use ei toimi describe-lohkon sisällä eri arvoilla, joten koko asetetaan sivulle itse.
+  for (const path of ["/", "/tietosuoja/", "/tata-sivua-ei-ole"]) {
+    test(`320 px: ei vaakavieritystä (${path})`, async ({ page }) => {
+      await page.setViewportSize({ width: 320, height: 640 });
+      await page.goto(path);
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test("puhelin vaakatasossa: otsikko ja päätoiminto näkyvät heti", async ({ page }) => {
+    await page.setViewportSize({ width: 667, height: 375 });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
+    await expect(page.getByRole("link", { name: /Löydä sopiva tunti/ })).toBeInViewport();
+  });
+});
+
+test.describe("Yläpalkki hiirellä", () => {
+  test("piilotettu palkki tulee esiin, kun hiiri viedään ruudun yläreunaan", async ({ page, isMobile }) => {
+    test.skip(isMobile, "Kosketusnäytöillä ei ole hover-tilaa");
+    await page.goto("/");
+    const header = page.locator("header").first();
+    // Vieritys alas piilottaa palkin
+    await page.mouse.move(600, 500);
+    await page.mouse.wheel(0, 1500);
+    await expect(header).toHaveAttribute("data-hidden", "true");
+    // Hiiri yläreunaan → palkki esiin
+    await page.mouse.move(600, 10);
+    await expect(header).toHaveAttribute("data-hidden", "false");
+  });
+});
+
 test.describe("Saavutettavuus", () => {
   test("Siirry sisältöön -linkki tulee näkyviin Tab-näppäimellä ja vie sisältöön", async ({ page, isMobile }) => {
     test.skip(isMobile, "Ohituslinkki on näppäimistökäyttäjille");
@@ -136,6 +171,19 @@ test.describe("Hakukoneoptimointi", () => {
     await page.goto("/kayttoehdot");
     await expect(page).toHaveTitle("Käyttöehdot – Tahkon Amanda");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /\/kayttoehdot\/$/);
+  });
+});
+
+test.describe("Miksi liikkua -galleria", () => {
+  test("kuvakaruselli näyttää kuvat ja nuolet vierittävät", async ({ page, isMobile }) => {
+    await page.goto("/#miksi-liikkua");
+    const list = page.getByRole("list", { name: /Kuvia tunneilta/ });
+    await expect(list).toBeVisible();
+    await expect(list.getByRole("listitem")).toHaveCount(7);
+    test.skip(isMobile, "Mobiilissa selataan pyyhkäisemällä, nuolet ovat piilossa");
+    const before = await list.evaluate((el) => el.scrollLeft);
+    await page.getByRole("button", { name: "Seuraavat kuvat" }).click();
+    await expect.poll(() => list.evaluate((el) => el.scrollLeft)).toBeGreaterThan(before);
   });
 });
 

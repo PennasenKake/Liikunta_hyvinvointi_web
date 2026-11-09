@@ -6,6 +6,12 @@
 //
 // Jokaisella kuvalla on alt-teksti, joka kertoo ruudunlukijan käyttäjälle,
 // mitä kuvassa on. Hyvä alt-teksti kuvaa sisällön, ei sanaa "kuva".
+//
+// KUVAPANKKIKUVAT: sivusto ei saa näyttää kuvapankista tai tekoälyllä tehdyltä.
+// Testivaiheessa paikkamerkkinä saa käyttää kuvapankkikuvaa, mutta silloin kuvalle
+// merkitään stock-tieto (lähde ja lisenssi). Tuotantobuild (scripts/prerender.mjs)
+// pysähtyy virheeseen, jos sivulla on yksikin stock-merkitty kuva. Testiversio
+// (npm run build:pages, noindex) sallii ne.
 
 import { withBase } from "./paths";
 
@@ -14,6 +20,9 @@ export type Photo = {
   alt: string;
   width: number;  // Alkuperäiset mitat: Image-komponentti varaa tilan valmiiksi,
   height: number; // jolloin sivu ei "hypi" kuvan latautuessa (CLS)
+  // Vain kuvapankin paikkamerkeille: mistä kuva on ja millä lisenssillä (esim. "Pexels, Pexels License").
+  // Korvataan Amandan omalla kuvalla ennen tuotantojulkaisua.
+  stock?: { source: string; url: string };
 };
 
 export const photos = {
@@ -27,3 +36,6 @@ export const photos = {
   kahvakuulat: { src: withBase("/kuvat/kahvakuulat.jpg"), alt: "Kahvakuulat telineessä kuntosalilla", width: 291, height: 439 },
   aanimaljatJarvi: { src: withBase("/kuvat/aanimaljat-jarvi.jpg"), alt: "Äänimalja kädessä terassilla järvimaiseman edessä", width: 480, height: 600 },
 } satisfies Record<string, Photo>; // satisfies: tarkistaa tyypin, mutta säilyttää avainten nimet automaattitäydennystä varten
+
+// Kuvapankin paikkamerkit (stock-merkityt). Tuotantobuild tarkistaa, että lista on tyhjä.
+export const stockPhotos: Photo[] = Object.values(photos as Record<string, Photo>).filter((p) => p.stock);

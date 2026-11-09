@@ -1,4 +1,6 @@
-// InstagramCarousel.tsx: Instagram-julkaisujen karuselli (kuten GlossTahkon sivustolla).
+// InstagramCarousel.tsx: kuvakaruselli Instagram-julkaisuille (kuten GlossTahkon sivustolla).
+// Samaa karusellia käytetään myös Miksi liikkua -osion kuvagalleriassa (labels-propsi),
+// jolloin sivun kuvakarusellit näyttävät ja toimivat yhtenäisesti.
 // Interaktiivinen: nuolipainikkeiden tila riippuu vierityskohdasta.
 //
 // Toiminta:
@@ -87,7 +89,15 @@ function Tile({ post }: { post: InstagramPost }) {
   );
 }
 
-export default function InstagramCarousel({ posts }: { posts: InstagramPost[] }) {
+// Ruudunlukijan tekstit: oletuksena Instagram-julkaisut, galleriassa omat tekstit
+type Labels = { list: string; prev: string; next: string };
+const DEFAULT_LABELS: Labels = {
+  list: "Instagram-julkaisut, vieritä sivuttain",
+  prev: "Edelliset julkaisut",
+  next: "Seuraavat julkaisut",
+};
+
+export default function InstagramCarousel({ posts, labels = DEFAULT_LABELS }: { posts: InstagramPost[]; labels?: Labels }) {
   const trackRef = useRef<HTMLUListElement>(null);
   // Ollaanko vierityksen alussa / lopussa (nuolien käytöstä poisto)
   const [edges, setEdges] = useState({ start: true, end: true });
@@ -136,7 +146,7 @@ export default function InstagramCarousel({ posts }: { posts: InstagramPost[] })
         onClick={() => scrollByPage(-1)}
         disabled={edges.start}
         hidden={noOverflow}
-        aria-label="Edelliset julkaisut"
+        aria-label={labels.prev}
         className={`${arrow} left-2`}
       >
         <Chevron direction="left" />
@@ -147,7 +157,7 @@ export default function InstagramCarousel({ posts }: { posts: InstagramPost[] })
       <ul
         ref={trackRef}
         tabIndex={0}
-        aria-label="Instagram-julkaisut, vieritä sivuttain"
+        aria-label={labels.list}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain rounded-2xl pb-2 pt-1 [scrollbar-width:none] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&::-webkit-scrollbar]:hidden"
       >
         {posts.map((post) => (
@@ -160,7 +170,7 @@ export default function InstagramCarousel({ posts }: { posts: InstagramPost[] })
         onClick={() => scrollByPage(1)}
         disabled={edges.end}
         hidden={noOverflow}
-        aria-label="Seuraavat julkaisut"
+        aria-label={labels.next}
         className={`${arrow} right-2`}
       >
         <Chevron direction="right" />

@@ -53,7 +53,8 @@ export default function ServiceItem({ service: s, iconTone }: Props) {
           className="flex min-h-16 w-full items-center gap-4 py-3 text-left"
         >
           {icon}
-          <span className="grow font-serif text-[24px] font-semibold leading-tight">{s.title}</span>
+          {/* min-w-0 + break-words: pitkä nimi ("Kristallimaljarentoutus") rivittyy eikä levitä sivua */}
+          <span className="min-w-0 grow font-serif text-[clamp(1.25rem,6vw,1.5rem)] font-semibold leading-tight break-words hyphens-auto">{s.title}</span>
           {/* Nuoli kääntyy auki-tilassa. motion-reduce: ei animaatiota, jos käyttäjä on sen kieltänyt. */}
           <svg
             viewBox="0 0 24 24"

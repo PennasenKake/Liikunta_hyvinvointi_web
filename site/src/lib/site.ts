@@ -73,4 +73,11 @@ export const site = {
   //   "c" = liikkuva tausta ja keskitetty otsikko ("Liikuntaa, joka tuntuu hyvältä")
   // Vaihto: muuta kirjain ja julkaise. Komponentit: components/sections/hero/.
   heroVariant: "c" as "a" | "b" | "c",
+
+  // Hero C:n taustavideo. null = video puuttuu, jolloin taustalla vaihtuvat valokuvat.
+  // Video lisätään kansioon site/public/video/ kahtena tiedostona (WebM pienempi, MP4 Safarille)
+  // sekä pysäytyskuva (poster), joka näkyy heti ja vähennetyn liikkeen asetuksella.
+  // Suositus: 10–20 s, ei ääntä, 1280 px leveä, alle 3 Mt. Esim.:
+  //   heroVideo: { webm: "/video/hero.webm", mp4: "/video/hero.mp4", poster: "/video/hero-poster.jpg" },
+  heroVideo: null as { webm: string; mp4: string; poster: string } | null,
 } as const; // "as const" tekee arvoista vain luku -muotoisia ja tarkentaa tyypit

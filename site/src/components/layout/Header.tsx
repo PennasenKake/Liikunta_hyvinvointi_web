@@ -42,7 +42,7 @@ export default function Header() {
           group-data-[scrolled=true]/header: HeaderShell asettaa data-scrolled-attribuutin. */}
       <nav
         aria-label="Päävalikko"
-        className="mx-auto flex h-21 max-w-6xl items-center justify-between gap-4 px-4 transition-[height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:h-16 sm:px-6 lg:h-26 lg:group-data-[scrolled=true]/header:h-18"
+        className="mx-auto flex h-21 max-w-6xl items-center justify-between gap-4 px-4 transition-[height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:h-16 sm:px-6 lg:h-26 lg:group-data-[scrolled=true]/header:h-18 short:h-16 lg:short:h-16"
       >
         {/* Logo ja nimi linkkinä etusivulle. href="/" toimii kaikilta sivuilta (myös 404). */}
         <Link href="/" className={`flex min-w-0 items-center gap-3 rounded-full sm:gap-4 ${focusRing}`}>
@@ -55,13 +55,13 @@ export default function Header() {
             width={80}
             height={80}
             priority
-            className="size-16 shrink-0 rounded-full shadow-[0_4px_14px_rgba(20,10,60,0.45)] ring-[3px] ring-white transition-[width,height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:size-12 lg:size-20 lg:group-data-[scrolled=true]/header:size-14"
+            className="size-16 shrink-0 rounded-full shadow-[0_4px_14px_rgba(20,10,60,0.45)] ring-[3px] ring-white transition-[width,height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:size-12 lg:size-20 lg:group-data-[scrolled=true]/header:size-14 short:size-12 lg:short:size-12"
           />
           {/* min-w-0: teksti saa kutistua, jottei palkki vuoda yli kapealla näytöllä */}
           <span className="flex min-w-0 flex-col leading-tight">
-            <span className="font-serif text-2xl font-bold lg:text-[28px]">{site.name}</span>
+            <span className="whitespace-nowrap font-serif text-2xl font-bold max-[359px]:text-xl lg:text-[28px]">{site.name}</span>
             {/* Tagline piiloon alle 360 px näytöillä, jotta nimi ja valikkopainike mahtuvat */}
-            <span className="text-xs font-medium uppercase tracking-[0.14em] text-sky max-[359px]:hidden">
+            <span className="text-xs font-medium uppercase tracking-[0.14em] text-sky max-[359px]:hidden short:hidden">
               {site.tagline}
             </span>
           </span>
@@ -83,7 +83,7 @@ export default function Header() {
                 {/* Hover: alleviivaus värimuutoksen sijaan, koska valkoinen on jo vaalein sävy */}
                 <a
                   href={withBase(item.href)}
-                  className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}
+                  className={`inline-block rounded-sm py-2 underline-offset-8 transition hover:underline ${focusRing}`}
                 >
                   {item.label}
                 </a>

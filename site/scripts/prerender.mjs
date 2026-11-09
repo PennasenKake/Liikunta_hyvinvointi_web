@@ -12,9 +12,16 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDATED, withBase } = await import(
+const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDATED, withBase, stockPhotos } = await import(
   pathToFileURL(resolve("dist-ssr/entry-server.js")).href
 );
+
+// --- 0. Kuvapankkivahti: sivusto ei saa näyttää kuvapankista tehdyltä. ---
+// Stock-merkityt paikkamerkkikuvat (lib/photos.ts) sallitaan vain testiversiossa (VITE_NOINDEX=1).
+if (!NOINDEX && stockPhotos.length > 0) {
+  const list = stockPhotos.map((p) => `  - ${p.src} (${p.stock.source})`).join("\n");
+  throw new Error(`Tuotantobuildissa on kuvapankin paikkamerkkikuvia. Korvaa ne omilla kuvilla:\n${list}`);
+}
 
 const template = await readFile("dist/index.html", "utf-8");
 for (const marker of ["<!--app-head-->", "<!--app-html-->", "<title>"]) {

@@ -27,6 +27,7 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 9 | **Palveluiden tiedot:** kestot, paikkakunnat ja tehotasot (poistettu arvioina, lisätään vahvistettuina) sekä "Sopii:"-tekstien tarkistus | Palvelut-osio | `lib/services.ts` | ⬜ |
 | 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu | Käyttöehdot | `pages/kayttoehdot.tsx` | ⬜ |
 | 11 | **InBody-tulosten säilytys:** säilytetäänkö ja missä muodossa | Tietosuojaseloste | `pages/tietosuoja.tsx` | ⬜ |
+| 12 | **Taustavideo heroon** (vapaaehtoinen): 10–20 s vaakavideo tunnilta tai Tahkon maisemasta, ei ääntä, ei tunnistettavia asiakkaita ilman lupaa | Etusivun yläosa (hero C) | `lib/site.ts` → `heroVideo` | ⬜ |
 
 ## Tarkistettavat asiat
 
