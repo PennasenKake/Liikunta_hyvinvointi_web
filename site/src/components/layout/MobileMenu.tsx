@@ -78,7 +78,8 @@ export default function MobileMenu({ items }: { items: MenuItem[] }) {
       {open && (
         <div
           id="mobiilivalikko"
-          className="absolute inset-x-0 top-full max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-white/10 bg-white text-ink shadow-xl"
+          // menu-in (index.css): paneeli liukuu pehmeästi esiin. Vähennetty liike: ilman animaatiota.
+          className="menu-in absolute inset-x-0 top-full max-h-[calc(100svh-4rem)] overflow-y-auto border-t border-white/10 bg-white text-ink shadow-xl"
         >
           <ul className="px-6 py-3 text-lg font-medium">
             {items.map((item) => {
@@ -86,9 +87,27 @@ export default function MobileMenu({ items }: { items: MenuItem[] }) {
               const subId = `alavalikko-${item.href.replace(/\W/g, "")}`;
               return (
                 <li key={item.href} className="border-b border-line last:border-0">
-                  <div className="flex items-center justify-between">
-                    <a href={withBase(item.href)} onClick={close} className="block grow py-3.5 focus-visible:outline-2 focus-visible:outline-accent">
-                      {item.label}
+                  {/* Rivi: hover (hiiri) ja active (kosketus) korostavat koko rivin.
+                      -mx-3 + px-3: korostus ulottuu hieman tekstin ohi, mutta teksti pysyy linjassa.
+                      Auki olevan alavalikon rivi pysyy korostettuna (data-open). */}
+                  <div
+                    data-open={isOpen}
+                    className="group/row relative -mx-3 flex items-center justify-between rounded-xl px-3 transition-colors duration-200 hover:bg-lilac-soft active:bg-lilac data-[open=true]:bg-lilac-soft motion-reduce:transition-none"
+                  >
+                    {/* Violetti merkkiviiva vasemmassa reunassa: kasvaa esiin hoverissa ja auki olevalla rivillä */}
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 scale-y-0 rounded-full bg-accent transition-transform duration-200 group-hover/row:scale-y-100 group-data-[open=true]/row:scale-y-100 motion-reduce:transition-none"
+                    />
+                    <a
+                      href={withBase(item.href)}
+                      onClick={close}
+                      className="block grow rounded-lg py-3.5 focus-visible:outline-2 focus-visible:outline-accent"
+                    >
+                      {/* Teksti liukuu hieman oikealle ja muuttuu violetiksi: kevyt vihje, ei hyppää */}
+                      <span className="inline-block transition duration-200 group-hover/row:translate-x-1.5 group-hover/row:text-accent group-data-[open=true]/row:text-accent motion-reduce:transition-none">
+                        {item.label}
+                      </span>
                     </a>
                     {item.children && (
                       <button
@@ -97,29 +116,38 @@ export default function MobileMenu({ items }: { items: MenuItem[] }) {
                         aria-expanded={isOpen}
                         aria-controls={subId}
                         aria-label={`${item.label}: näytä palvelut`}
-                        className="flex size-12 items-center justify-center rounded-md text-accent focus-visible:outline-2 focus-visible:outline-accent"
+                        className="flex size-12 items-center justify-center rounded-full text-accent transition-colors duration-200 hover:bg-white active:bg-lilac-strong focus-visible:outline-2 focus-visible:outline-accent motion-reduce:transition-none"
                       >
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
-                             className={`size-5 transition-transform motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}>
+                             className={`size-5 transition-transform duration-300 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}>
                           <path d="m6 9 6 6 6-6" />
                         </svg>
                       </button>
                     )}
                   </div>
 
-                  {/* Alavalikko: palvelut kuvakkeineen, sisennettynä */}
+                  {/* Alavalikko: palvelut kuvakkeineen. Hover: valkoinen pohja, kuvake ympyrässä,
+                      ja nuoli tulee esiin oikealle: "tästä pääset palveluun". */}
                   {item.children && isOpen && (
-                    <ul id={subId} className="mb-3 rounded-xl bg-lilac-soft p-2 text-base">
+                    <ul id={subId} className="menu-in mb-3 mt-1 rounded-xl bg-lilac-soft p-2 text-base">
                       {item.children.map((child) => (
                         <li key={child.href}>
                           <a
                             href={withBase(child.href)}
                             onClick={close}
-                            className="flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 focus-visible:outline-2 focus-visible:outline-accent"
+                            className="group/sub flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 transition-colors duration-200 hover:bg-white hover:text-accent active:bg-white focus-visible:outline-2 focus-visible:outline-accent motion-reduce:transition-none"
                           >
-                            <ServiceIcon name={child.icon} className="size-5 shrink-0 text-accent" />
-                            {child.label}
+                            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-white text-accent transition-colors duration-200 group-hover/sub:bg-lilac motion-reduce:transition-none">
+                              <ServiceIcon name={child.icon} className="size-4.5" />
+                            </span>
+                            <span className="grow">{child.label}</span>
+                            <span
+                              aria-hidden="true"
+                              className="-translate-x-1 text-accent opacity-0 transition duration-200 group-hover/sub:translate-x-0 group-hover/sub:opacity-100 motion-reduce:transition-none"
+                            >
+                              →
+                            </span>
                           </a>
                         </li>
                       ))}
