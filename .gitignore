@@ -1,12 +1,12 @@
 # Juuren .gitignore: projektin materiaalit, joita ei julkaista.
-# (Next.js-sovelluksen omat säännöt ovat tiedostossa web/.gitignore.)
+# (Sivuston omat säännöt ovat tiedostossa site/.gitignore.)
 
 # Referenssikuvat ja mockupit: vain paikallisesti.
 # Sisältää muiden ottamia valokuvia ja kuvapankkimaisia kuvia (tekijänoikeudet).
 materiaalit/mockups/
 
 # Amandan omat valokuvat alkuperäiskoossa: vain paikallisesti.
-# Sivustolle viedään pienennetyt versiot kansioon web/public/.
+# Sivustolle viedään pienennetyt versiot kansioon site/public/.
 materiaalit/kuvat/
 
 # Asiakkaan kanssa sovitut ehdot eivät kuulu julkiseen repoon.

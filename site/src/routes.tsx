@@ -2,7 +2,6 @@
 //
 // Jokainen reitti esirenderöidään buildissa omaksi HTML-tiedostokseen
 // (scripts/prerender.mjs): "/" → index.html, "/kayttoehdot/" → kayttoehdot/index.html.
-// Next.js-versiossa sama tieto oli hajallaan sivujen metadata-vienneissä.
 //
 // Uusi sivu: lisää komponentti src/pages/-kansioon ja rivi tähän listaan.
 // Sitemap, otsikko, kuvaus ja canonical-osoite päivittyvät silloin automaattisesti.

@@ -34,8 +34,7 @@
 
 /*
   Fontit: omat tiedostot @fontsource-paketeista (tuodaan main.tsx:ssä), ei pyyntöjä Googleen.
-  Tavallinen @theme riittää, koska fonttien nimet ovat kiinteitä. (Next.js-versiossa
-  tarvittiin @theme inline, koska next/font asetti nimet CSS-muuttujiin ajonaikaisesti.)
+  Tavallinen @theme riittää, koska fonttien nimet ovat kiinteitä.
   Tulos: font-serif = Cormorant Garamond, font-sans = Jost.
 */
 @theme {

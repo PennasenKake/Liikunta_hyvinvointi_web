@@ -41,7 +41,6 @@ export default function Footer() {
                 alt=""
                 width={64}
                 height={64}
-                unoptimized
                 className="size-16 rounded-full ring-[3px] ring-white"
               />
               <p className="flex flex-col leading-tight">

@@ -7,7 +7,7 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig({
   // react(): JSX ja nopea päivitys kehityksessä. tailwindcss(): Tailwind v4 käsittelee
-  // CSS:n Viten build-putkessa (Next.js-versiossa sama tehtiin Turbopack-lisäosalla).
+  // CSS:n Viten build-putkessa.
   plugins: [react(), tailwindcss()],
 
   // Polku, jonka alla sivu julkaistaan. Oma domain: "/" (oletus).
@@ -15,7 +15,7 @@ export default defineConfig({
   // joten scripts/build-pages.mjs asettaa VITE_BASE=/Liikunta_hyvinvointi_web/.
   base: process.env.VITE_BASE ?? "/",
 
-  // "@/lib/site" → src/lib/site.ts (sama alias kuin Next.js-versiossa, joten importit säilyivät)
+  // "@/lib/site" → src/lib/site.ts
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },

@@ -55,7 +55,6 @@ export default function Header() {
             width={80}
             height={80}
             priority
-            unoptimized
             className="size-16 shrink-0 rounded-full shadow-[0_4px_14px_rgba(20,10,60,0.45)] ring-[3px] ring-white transition-[width,height] duration-300 motion-reduce:transition-none group-data-[scrolled=true]/header:size-12 lg:size-20 lg:group-data-[scrolled=true]/header:size-14"
           />
           {/* min-w-0: teksti saa kutistua, jottei palkki vuoda yli kapealla näytöllä */}

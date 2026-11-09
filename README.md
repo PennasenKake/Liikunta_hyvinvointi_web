@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml/badge.svg)](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml)
 
-> **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Next.js 16, React 19, TypeScript and Tailwind CSS v4. Fully custom design with a hand-drawn SVG illustration of Tahko, scroll-driven animations and WCAG 2.1 AA accessibility. Lighthouse (desktop): 100 / 100 / 100 / 100. Covered by Playwright smoke tests and GitHub Actions CI. Content management (Sanity) and class schedule (Google Calendar) are in progress.
+> **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Vite, React 19, TypeScript and Tailwind CSS v4, with every page prerendered to static HTML at build time (no server needed). Custom design with a hand-drawn SVG illustration of Tahko, scroll-driven animations and WCAG 2.1 AA accessibility. Covered by Vitest unit tests, Playwright smoke tests and GitHub Actions CI.
 
 Responsiivinen verkkosivusto liikunta- ja hyvinvointipalveluita tarjoavalle Tahkon Amandalle.
 Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
@@ -16,141 +16,111 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 | Osa | Teknologia |
 |---|---|
-| Sovelluskehys | Next.js 16 (App Router, Server Components, Cache Components) |
+| Build | Vite 8 + esirenderöinti (`entry-server.tsx` + `scripts/prerender.mjs`) |
 | Käyttöliittymä | React 19, TypeScript |
-| Tyylit | Tailwind CSS v4 (`@theme`-teema) |
-| Testit | Playwright (savutestit), axe-core (saavutettavuus) |
-| CI | GitHub Actions: tyyppitarkistus, ESLint, build ja testit jokaisesta pushista |
-| Sisällönhallinta | Sanity *(tulossa)* |
-| Tapahtumat | Google Calendar API *(tulossa)* |
-| Instagram-syöte | Behold *(tulossa)* |
+| Tyylit | Tailwind CSS v4 (`@theme`-teema), omat fontit `@fontsource`-paketeista |
+| Testit | Vitest (yksikkötestit), Playwright (savutestit) |
+| Laatu | oxlint, `tsc`-tyyppitarkistus |
+| CI ja julkaisu | GitHub Actions: tarkistukset ja testit, testiversio GitHub Pagesiin |
 
 ## Ominaisuudet
 
 **Sivun osat**
-- [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, palaa ylös vieritettäessä, alavalikot palveluihin, mobiilivalikko
-- [x] Hero, joka täyttää ensimmäisen näkymän, ja oma SVG-kuvitus Tahkosta
+- [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, alavalikot palveluihin, mobiilivalikko
+- [x] Hero kolmena versiona (A, B, C), valinta yhdellä asetuksella
 - [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset, suorat linkit palveluihin (`/#vesijumppa`)
 - [x] Miksi liikkua, Hinnasto ja Minusta *(osin paikkamerkkisisältöä)*
-- [x] Tulevat tunnit: lisäys omaan kalenteriin ja jakaminen *(esimerkkidata, Google-kalenteri tulossa)*
-- [x] Instagram-karuselli nuolilla, pyyhkäisyllä ja näppäimistöllä *(väliaikaiset kuvat, Behold tulossa)*
-- [x] Footer: sivusto, yhteystiedot, tietoa ja ehdot, kumppanit
+- [x] Tulevat tunnit: lisäys omaan kalenteriin ja jakaminen *(esimerkkidata)*
+- [x] Instagram-karuselli nuolilla, pyyhkäisyllä ja näppäimistöllä *(väliaikaiset kuvat)*
+- [x] Alatunniste, jonka yläreunassa piirretty Tahko-maisema
 - [x] Käyttöehdot, tietosuojaseloste, evästeasetukset ja saavutettavuusseloste *(luonnokset)*
 - [x] Oma 404-sivu
 
-**Liike**
-- [x] Scroll reveal: sisältö liukuu näkyviin vieritettäessä
-- [x] Vuoristoviiva osioiden välissä: osioiden raja on vuoren siluetti, jonka harjanteelle viiva piirtyy vasemmalta oikealle vierityksen tahdissa
+**Hakukoneet ja jakaminen**
+- [x] Jokainen sivu valmiina HTML:nä: Google näkee sisällön ilman JavaScriptiä
+- [x] Sivukohtainen otsikko, kuvaus, canonical-osoite ja Open Graph -jakokuva
+- [x] LocalBusiness-rakennetieto palvelualueineen ja palveluineen
+- [x] `sitemap.xml` ja `robots.txt` buildissa, esikatselutila (`VITE_NOINDEX=1`)
 
 **Laatu**
-- [x] Saavutettavuus WCAG 2.1 AA: axe-core 0 löydöstä kaikilla sivuilla, Siirry sisältöön -linkki, näppäimistötuki
-- [x] 24 Playwright-savutestiä (48 ajoa työpöytä- ja mobiiliprofiililla), ajetaan CI:ssä
-
-**Hakukoneet ja jakaminen**
-- [x] Paikallinen SEO: LocalBusiness-rakennetieto palvelualueineen (Tahko, Siilinjärvi, Kuopio, Rautavaara) ja palveluineen, paikkakunnat sivun otsikossa
-- [x] `sitemap.xml`, `robots.txt`, canonical-osoitteet ja `metadataBase`
-- [x] Open Graph -jakokuva (1200 × 630) somea ja viestisovelluksia varten
-- [x] Esikatselutila: `NEXT_PUBLIC_NOINDEX=1` pitää testiversion pois hakukoneista
+- [x] Saavutettavuus WCAG 2.1 AA: ohituslinkki, näppäimistötuki, kontrastit, liikkeen pysäytys ja `prefers-reduced-motion`
+- [x] Ei evästeitä, ei seurantaa, ei pyyntöjä kolmansille osapuolille (fontit omina tiedostoina)
 
 **Tulossa**
-- [ ] Sisällön muokkaus kirjautumalla (Sanity Studio)
-- [ ] Google-kalenterin tunnit, Behold-Instagram-syöte ja verkkoajanvaraus
+- [ ] Sisällön muokkaus kirjautumalla (Git-pohjainen CMS, esim. Sveltia)
+- [ ] Google-kalenterin tunnit ja Instagram-syöte
+- [ ] Tuotantojulkaisu omaan verkkotunnukseen
 
-## Tekniset ratkaisut
+## Miten sivu rakentuu
 
-**Server Components oletuksena.** Valtaosa sivusta renderöidään palvelimella HTML:ksi, eikä selaimeen lähetetä niille JavaScriptiä. Client Componentteja ovat vain osat, joissa on tilaa tai selaimen rajapintoja: yläpalkin vierityslogiikka (`HeaderShell`), alavalikot, mobiilivalikko, palvelurivin avautuminen, Instagram-karuselli, jakopainike ja paljastusanimaatio. Esimerkiksi yläpalkin sisältö renderöidään palvelimella, ja `HeaderShell` käärii sen ja hoitaa vain vierityksen.
+`npm run build` tekee neljä vaihetta peräkkäin:
 
-**Data erillään näkymästä.** Palvelut, hinnat, kalenteri, kuvat, Instagram-julkaisut ja yhteystiedot ovat `web/src/lib/`-kansiossa. Komponentit vain näyttävät datan. Uusi palvelu ilmestyy automaattisesti sekä Palvelut-osioon että yläpalkin alavalikkoon. Kun sisältö siirtyy Sanityyn ja Google-kalenteriin, muutokset tehdään `lib/`-tiedostoihin.
+1. `tsc -b` tarkistaa tyypit
+2. `vite build` rakentaa selainversion kansioon `dist/`
+3. `vite build --ssr src/entry-server.tsx` rakentaa saman Reactin Node.js-versioksi
+4. `scripts/prerender.mjs` renderöi jokaisen reitin (`src/routes.tsx`) valmiiksi HTML:ksi:
+   `dist/index.html`, `dist/tietosuoja/index.html` jne., sekä `404.html`, `sitemap.xml` ja `robots.txt`
 
-**Välimuisti valmiina rajapinnoille.** Kalenterihaku käyttää Next.js 16:n `"use cache"`-direktiiviä. Kaikki sivut ovat staattisia, ja etusivu päivittyy välimuistista 15 minuutin välein, joten Google Calendar API:a ei kutsuta jokaisella sivulatauksella.
-
-**Animaatiot, jotka eivät riko mitään.**
-- Vuoristoviiva on pelkkää CSS:ää (`animation-timeline: view()` ja `pathLength="1"`). Selaimissa, jotka eivät tue vierityssidonnaisia animaatioita, viiva näkyy valmiina.
-- Scroll reveal piilottaa sisällön vasta, kun `<head>`-skripti on lisännyt `has-js`-luokan. Ilman JavaScriptiä kaikki näkyy.
-- Kaikki liike jätetään pois, jos käyttäjä on pyytänyt laitteeltaan vähemmän liikettä (`prefers-reduced-motion`).
-
-**Saavutettavuus rakenteessa, ei jälkikäteen.**
-- Semanttinen HTML: `<dl>` hinnastossa, `<address>` yhteystiedoissa, `<time>` tapahtumissa, alueet ja otsikkohierarkia
-- Alavalikot WAI-ARIA Disclosure -mallilla (hiiri, näppäimistö, kosketus, Esc), yläpalkki ei piiloudu, kun fokus on siinä
-- Samannimisille linkeille saavutettava nimi (`Katso tunnit: Vesijumppa`), näkyvä fokusrengas, kosketusalueet vähintään 44 px
-- Kaikkien värien kontrasti tarkistettu: teksti 6,8–9,6:1 (AA vaatii 4,5:1)
-
-**Suorituskyky.** Lighthouse työpöydällä: suorituskyky, saavutettavuus, parhaat käytännöt ja SEO 100/100. Mobiilissa (hidastettu 4G ja suoritin) suorituskyky on 76 ja muut 100. Fontit ladataan `next/font`-työkalulla omalta palvelimelta, eikä kävijän selain tee pyyntöjä Googleen. Kuvat optimoidaan `next/image`-komponentilla WebP-muotoon näytön koon mukaan. Etusivun kokonaiskoko on noin 570 kt, josta valtaosa on valokuvia.
-
-**Oma visuaalinen identiteetti.** Tahko-kuvitus on piirretty SVG:nä generaattoriskriptillä. Kuvituksessa ovat Tahkovuoren rinteet, näkötorni ja Suomen pisin zipline, Tahkon portaat ja niiden päässä Tirol-ravintola, Panorama-tuolihissi ja -metsäkylpylä, Tahkolahti, ponttonisilta, Sokos-hotelli sekä ranta- ja mökkikylä. Kuva on 2400 px leveä, jotta koko maisema näkyy leveälläkin näytöllä. Värit ja fontit on määritelty yhteen paikkaan Tailwind v4:n `@theme`-lohkoon.
-
-**Hakukoneoptimointi yhdestä lähteestä.** Rakennetieto (`lib/seo.ts`) muodostetaan samasta datasta kuin sivun sisältö (`site.ts`, `services.ts`), joten Googlelle kerrotut palvelut ja palvelualueet pysyvät aina samoina kuin sivulla. `robots.txt` ja `sitemap.xml` ovat Next.js:n tiedostokonventioita (`app/robots.ts`, `app/sitemap.ts`), ja sivuston osoite tulee ympäristömuuttujasta `NEXT_PUBLIC_SITE_URL`.
-
-**Aikavyöhykkeet.** Kellonajat muotoillaan aina `Europe/Helsinki`-aikavyöhykkeellä, joten ne näkyvät oikein, vaikka palvelin olisi ulkomailla.
+Selaimessa React "herättää" valmiin HTML:n eloon (hydraatio). Palvelinta ei tarvita, joten sivun voi julkaista
+mihin tahansa staattiseen hostingiin (GitHub Pages, Cloudflare Pages, Netlify).
 
 ## Hakemistorakenne
 
 ```
-├── web/                Next.js-sivusto
-│   ├── e2e/            Playwright-savutestit
+├── site/                  Sivusto (Vite + React)
+│   ├── e2e/               Playwright-savutestit
+│   ├── public/            Kuvat, logo, Tahko-kuvitus, ikonit, jakokuva
+│   ├── scripts/           prerender.mjs, build-pages.mjs, serve.mjs
 │   └── src/
-│       ├── app/        Reitit: etusivu, 404, käyttöehdot, tietosuoja, evästeet, saavutettavuus
-│       ├── components/ layout/ (yläpalkki, footer) · sections/ (etusivun osiot) · ui/ (palikat)
-│       └── lib/        Data ja apufunktiot
-├── materiaalit/        Logo ja kuvitus (lähdetiedostot)
-├── docs/               Projektin dokumentaatio
-└── .github/workflows/  CI
+│       ├── routes.tsx     Sivut, otsikot ja kuvaukset
+│       ├── pages/         Etusivu, lakisivut ja 404
+│       ├── components/    layout/ · sections/ (hero/: A, B, C) · ui/
+│       └── lib/           Sisältö ja apufunktiot
+├── materiaalit/           Logo ja kuvitus (lähdetiedostot)
+├── docs/                  Dokumentaatio
+└── .github/workflows/     CI ja GitHub Pages
 ```
 
-Tarkempi rakenne ja tiedostojen tila: [docs/hakemistorakenne.md](docs/hakemistorakenne.md).
+Tarkempi rakenne: [docs/hakemistorakenne.md](docs/hakemistorakenne.md).
 Asiakkaalta odotettava sisältö: [docs/sisalto.md](docs/sisalto.md).
 
 ## Käynnistys paikallisesti
 
-Vaatimukset: Node.js 20.9 tai uudempi.
+Vaatimukset: Node.js 22.12 tai uudempi.
 
 ```bash
-cd web
+cd site
 npm install
 npm run dev
 ```
 
-Sivu aukeaa osoitteeseen http://localhost:3000.
+Sivu aukeaa osoitteeseen http://localhost:5173.
 
 | Komento | Tarkoitus |
 |---|---|
 | `npm run dev` | Kehityspalvelin |
-| `npm run check` | Tyyppitarkistus ja ESLint (aja ennen committia) |
-| `npm run build` | Tuotantobuild |
-| `npm run start` | Tuotantobuildin ajaminen paikallisesti |
+| `npm run check` | Tyyppitarkistus, oxlint ja yksikkötestit (aja ennen committia) |
+| `npm run build` | Tuotantobuild ja esirenderöinti (`dist/`) |
+| `node scripts/serve.mjs` | Tarjoilee `dist/`-kansion kuten oikea hosting, http://localhost:4173 |
 | `npm run test:e2e` | Savutestit selaimessa (tekee buildin itse) |
-| `npm run build:pages` | Staattinen build GitHub Pagesia varten (`out/`-kansio) |
+| `npm run build:pages` | Build GitHub Pages -testiversiota varten |
 
-**Savutestit** ([`web/e2e/`](web/e2e/)) ajetaan työpöytä- ja mobiiliprofiililla. Ne tarkistavat, että:
-- etusivu latautuu ilman virheitä, rikkinäisiä resursseja ja vaakavieritystä
-- navigaatio, alavalikot, mobiilivalikko ja yläpalkin piiloutuminen toimivat
-- palvelut näkyvät oikeissa palstoissa ja kuvaukset avautuvat mobiilissa
-- Instagram-karusellin nuolet toimivat
-- ohituslinkki ja vuoristoviiva toimivat (myös vähennetyn liikkeen kanssa)
-- tietosivut latautuvat ja olematon osoite palauttaa tilakoodin 404
-- `robots.txt`, `sitemap.xml`, rakennetieto, jakokuva ja canonical-osoitteet ovat kunnossa
+Ennen ensimmäistä savutestien ajoa asenna testiselain: `npx playwright install chromium`.
 
-Ennen ensimmäistä ajoa asenna testiselain: `npx playwright install chromium`.
+**Hero-versio** valitaan tiedostossa `site/src/lib/site.ts`: `heroVariant: "a" | "b" | "c"`
+(a = tumma tekstilaatikko, b = sulautuvat kuvat, c = liikkuva tausta).
 
-GitHub Actions ajaa tarkistuksen, buildin ja savutestit automaattisesti jokaisesta pushista ja pull requestista ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)). Jos testit epäonnistuvat, HTML-raportti tallentuu ajon Artifacts-osioon.
+**Savutestit** ([`site/e2e/`](site/e2e/)) ajetaan työpöytä- ja mobiiliprofiililla. Ne tarkistavat mm. että
+etusivu latautuu ilman virheitä ja vaakavieritystä, navigaatio ja mobiilivalikko toimivat, tietosivut latautuvat,
+olematon osoite palauttaa 404:n ja `robots.txt`, `sitemap.xml`, rakennetieto ja canonical-osoitteet ovat kunnossa.
 
-## Testiversio GitHub Pagesissa
-
-GitHub Actions julkaisee testiversion jokaisesta pushista main-haaraan ([`.github/workflows/pages.yml`](.github/workflows/pages.yml)).
-
-GitHub Pages tarjoilee vain valmiita tiedostoja ja sivusto on alipolussa, joten testiversio rakennetaan staattisena (`npm run build:pages`). Ero tuotantoon:
-- `next.config.ts` vaihtaa staattiseen vientiin: `output: "export"`, `basePath` ja kuvat ilman optimointia.
-- Cache Components korvataan `experimental.useCache`-asetuksella, joten kalenteri luetaan kerran julkaisussa.
-- `robots.txt` kieltää indeksoinnin ja sivuilla on `noindex`. Sivukarttaa ei julkaista.
-- Kuvien ja `<a>`-linkkien polut saavat alipolun `lib/paths.ts`:n `withBase()`-funktiosta. `<Link>` lisää sen itse.
-
-Tavallinen build, testit ja lopullinen julkaisu (palvelimella, esim. Netlify) eivät muutu.
+GitHub Actions ajaa tarkistukset, buildin ja savutestit jokaisesta pushista ja pull requestista
+([`ci.yml`](.github/workflows/ci.yml)) ja julkaisee testiversion GitHub Pagesiin ([`pages.yml`](.github/workflows/pages.yml)).
 
 ## Ympäristömuuttujat
 
-Sivusto toimii toistaiseksi ilman ympäristömuuttujia. Integraatioita varten kopioi
-[`web/.env.example`](web/.env.example) tiedostoksi `web/.env.local` ja täytä arvot.
-`.env.local` ei koskaan mene versionhallintaan.
+Sivusto toimii ilman ympäristömuuttujia. Malli: [`site/.env.example`](site/.env.example).
+Vite päästää selaimeen vain `VITE_`-alkuiset muuttujat, joten niihin ei koskaan laiteta salaisuuksia.
 
 ## Oikeudet
 

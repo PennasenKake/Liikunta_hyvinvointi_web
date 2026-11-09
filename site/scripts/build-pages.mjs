@@ -5,8 +5,6 @@
 // - VITE_SITE_URL: canonical-osoitteet ja jakokuva osoittavat testiosoitteeseen
 // - VITE_NOINDEX=1: testiversio ei kilpaile tuotantosivun kanssa hakukoneissa
 // - .nojekyll: ilman sitä GitHub Pages piilottaisi alaviivalla alkavat tiedostot
-//
-// Next.js-versioon verrattuna paljon yksinkertaisempi: tiedostoja ei tarvitse siirrellä sivuun.
 
 import { spawnSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
