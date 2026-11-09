@@ -1,111 +1,162 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+/* index.css: koko sivuston yhteiset tyylit (Tailwind v4 + omat säännöt). */
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/*
+  Tailwind v4:n teema. Jokainen --color-* muuttuja luo automaattisesti
+  luokat bg-*, text-*, border-* jne. Esim. --color-accent → bg-accent, text-accent.
+  Värit on poimittu hyväksytystä mockupista (versio B).
+*/
+@theme {
+  /* Teksti */
+  --color-ink: #221d4a;        /* Päätekstit ja otsikot */
+  --color-ink-soft: #3b3760;   /* Pidemmät leipätekstit värillisillä taustoilla */
+  --color-muted: #4a4568;      /* Toissijainen teksti (kontrasti valkoisella yli 4.5:1) */
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Korostus: painikkeet ja linkit, logon violetin sävy */
+  --color-accent: #4e3192;
+  --color-royal: #1a44ae;      /* Logon tumma sininen: yläpalkin liukuvärin alkupää */
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Taustat */
+  --color-surface: #fbfafe;    /* Sivun perustausta, lähes valkoinen */
+  --color-lilac: #e9e3f8;      /* Vaalea violetti */
+  --color-lilac-soft: #f1edfa; /* Vielä vaaleampi violetti, esim. Minusta-osio */
+  --color-lilac-strong: #ddd4f4; /* Lilac-painikkeen hover-tila: askeleen tummempi */
+  --color-sky: #dceaf8;        /* Vaalea sininen */
+  --color-sky-soft: #eaf3fc;   /* Heron taivas */
+  --color-sky-strong: #cfe1f5; /* Sky-painikkeen hover-tila: askeleen tummempi */
+  --color-sky-line: #b9d2ee;   /* Erotinviivat sinisellä taustalla (Miksi liikkua -kortit) */
+  --color-sky-ink: #2b5c96;    /* Sininen kuvakeväri vaalealla sinisellä (kontrasti 5.6:1) */
+
+  /* Reunat ja viivat */
+  --color-line: #e1dcf0;       /* Ohuet erotinviivat */
+  --color-border: #c9c1e6;     /* Painikkeiden ja korttien reunat */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+/*
+  Fontit: omat tiedostot @fontsource-paketeista (tuodaan main.tsx:ssä), ei pyyntöjä Googleen.
+  Tavallinen @theme riittää, koska fonttien nimet ovat kiinteitä. (Next.js-versiossa
+  tarvittiin @theme inline, koska next/font asetti nimet CSS-muuttujiin ajonaikaisesti.)
+  Tulos: font-serif = Cormorant Garamond, font-sans = Jost.
+*/
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost Variable", system-ui, sans-serif;
 }
 
 body {
-  margin: 0;
+  /* Fonttien pehmennys tekee tekstistä siistimmän erityisesti Macilla */
+  -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+html {
+  /* Sticky header (84–104 px näytön leveydestä riippuen) peittäisi ankkurilinkin
+     kohteen otsikon. scroll-padding-top jättää vieritykseen tilaa headerin verran. */
+  scroll-padding-top: 7.5rem;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+/* Pehmeä vieritys ankkurilinkeille, mutta vain jos käyttäjä
+   ei ole pyytänyt käyttöjärjestelmästä vähemmän liikettä. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+/* ---------- Paljastus vieritettäessä (RevealOnScroll.tsx) ----------
+   Piilotus vaatii html.has-js-luokan (index.html), joten ilman JavaScriptiä kaikki näkyy.
+   Käytetään translate-ominaisuutta transform-arvon sijaan, jotta se ei mene ristiin
+   elementtien omien transform-tehosteiden (esim. hover-zoom) kanssa. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Alkutila: piilossa ja hieman alempana */
+  html.has-js [data-reveal]:not([data-rv]) {
+    opacity: 0;
+    translate: 0 1.25rem;
+  }
+
+  /* fade: pelkkä häivytys (alatunniste, pienet otsikot) */
+  html.has-js [data-reveal="fade"]:not([data-rv]) {
+    translate: none;
+  }
+
+  /* Paljastus: siirtymä vain tässä tilassa. Pehmeä, kiireetön liike ilman pomppua. */
+  html.has-js [data-reveal][data-rv="in"] {
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--rv-delay, 0ms),
+      translate 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) var(--rv-delay, 0ms);
   }
 }
-p {
-  margin: 0;
+
+/* ---------- Vuoristoviiva osioiden välissä (TahkoLine.tsx) ----------
+   Oletus: viiva näkyy kokonaan (stroke-dashoffset 0). Animaatio lisätään vain, jos selain
+   tukee vierityssidonnaisia animaatioita EIKÄ kävijä ole pyytänyt vähemmän liikettä. */
+.tahko-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tahko-line {
+      stroke-dashoffset: 1;
+      animation: tahko-draw linear both;
+      /* view(): aikajana on siluetin eteneminen ruudulla. Piirtyminen alkaa, kun siluetti
+         on noussut hieman ruudun alareunasta, ja on valmis, kun se on ruudun yläosassa.
+         Pitkä väli = viiva etenee rauhallisesti vierityksen tahdissa. */
+      animation-timeline: view();
+      animation-range: cover 10% cover 75%;
+    }
+    /* Peilattu siluetti: negatiivinen siirtymä paljastaa viivan polun lopusta päin */
+    .tahko-line--rev {
+      stroke-dashoffset: -1;
+      animation-name: tahko-draw-rev;
+    }
+  }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@keyframes tahko-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes tahko-draw-rev {
+  from {
+    stroke-dashoffset: -1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- Hero C: liikkuva tausta (HeroC.tsx) ----------
+   Kolme kuvaa vaihtuu ristiinhäivytyksellä, ja jokainen zoomautuu hitaasti (Ken Burns).
+   Kierros 18 s, kuvat 6 s välein. Vähennetty liike: vain ensimmäinen kuva, ei liikettä.
+   .hero-paused pysäyttää animaation (WCAG 2.2.2: liikkuvan sisällön voi pysäyttää). */
+.hero-kb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  animation: hero-kb 18s linear infinite;
+}
+.hero-kb:nth-child(1) { animation-delay: -1s; }
+.hero-kb:nth-child(2) { animation-delay: 5s; }
+.hero-kb:nth-child(3) { animation-delay: 11s; }
+.hero-paused .hero-kb { animation-play-state: paused; }
+
+@keyframes hero-kb {
+  0% { opacity: 0; transform: scale(1.03); }
+  6% { opacity: 1; }
+  33% { opacity: 1; }
+  39% { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-kb { animation: none; }
+  .hero-kb:nth-child(1) { opacity: 1; }
 }
