@@ -49,3 +49,21 @@ describe("palvelut", () => {
     expect(["a", "b", "c"]).toContain(site.heroVariant);
   });
 });
+
+describe("kuvat", () => {
+  it("jokaisella kuvalla on alt-teksti ja mitat", async () => {
+    const { photos } = await import("./lib/photos");
+    for (const [name, p] of Object.entries(photos)) {
+      expect(p.alt.length, name).toBeGreaterThan(10);
+      expect(p.width * p.height, name).toBeGreaterThan(0);
+    }
+  });
+
+  it("kuvapankkikuvalla on lähde, jotta se löytyy ja korvataan ennen julkaisua", async () => {
+    const { stockPhotos } = await import("./lib/photos");
+    for (const p of stockPhotos) {
+      expect(p.stock?.source, p.src).toBeTruthy();
+      expect(p.stock?.url, p.src).toMatch(/^https:\/\//);
+    }
+  });
+});

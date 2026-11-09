@@ -57,3 +57,4 @@ export { routes, notFoundRoute };
 export { SITE_ORIGIN, NOINDEX } from "./lib/seo";
 export { CONTENT_UPDATED } from "./lib/seo";
 export { withBase } from "./lib/paths";
+export { stockPhotos } from "./lib/photos";

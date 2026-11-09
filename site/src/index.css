@@ -6,6 +6,9 @@
   luokat bg-*, text-*, border-* jne. Esim. --color-accent → bg-accent, text-accent.
   Värit on poimittu hyväksytystä mockupista (versio B).
 */
+/* Oma variantti matalille näytöille (puhelin vaakatasossa): short:py-4 jne. */
+@custom-variant short (@media (max-height: 500px));
+
 @theme {
   /* Teksti */
   --color-ink: #221d4a;        /* Päätekstit ja otsikot */

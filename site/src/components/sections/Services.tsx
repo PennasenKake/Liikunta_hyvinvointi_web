@@ -26,11 +26,13 @@ export default function Services() {
           Tunteja eri kuntotasoille. Kysy rohkeasti, jos et tiedä mistä aloittaa.
         </p>
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* grid-cols-1 = minmax(0, 1fr): sarake saa kaventua kapeimmallakin näytöllä (320 px),
+            muuten pisin palvelun nimi venyttäisi sen ruudun yli */}
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           {serviceCategories.map((cat) => (
             // id="liikunta" / "hyvinvointi": yläpalkin ja pikalinkkien ankkurit osuvat suoraan palstaan.
             // aria-labelledby: ruudunlukija ilmoittaa alueen nimen ("Liikunta").
-            <div key={cat.id} id={cat.id} role="region" aria-labelledby={`${cat.id}-otsikko`} data-reveal>
+            <div key={cat.id} id={cat.id} role="region" aria-labelledby={`${cat.id}-otsikko`} data-reveal className="min-w-0">
               <div className={`mb-4 rounded-2xl p-6 lg:mb-6 ${tones[cat.id].box}`}>
                 <h3 id={`${cat.id}-otsikko`} className="mb-2 font-serif text-[38px] font-semibold leading-none">
                   {cat.label}
