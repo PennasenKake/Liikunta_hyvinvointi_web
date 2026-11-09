@@ -22,7 +22,7 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 4 | **Koulutukset ja sertifikaatit** | Minusta-osio | `lib/about.ts` → `certifications` | ⬜ |
 | 5 | **Hinnat ja kestot** jokaiselle palvelulle | Hinnasto | `lib/pricing.ts` | ⬜ |
 | 6 | **Instagram-tunnus** | Instagram-osio, Footer | `lib/site.ts` → `instagram` | ⬜ |
-| 7 | **Google-kalenteri** (tunniste) ja tuntien paikat | Tulevat tunnit | `lib/calendar.ts` | ⬜ |
+| 7 | **Google-kalenteri**: julkinen tuntikalenteri ja sen tunnus (ohje: [kalenteri.md](kalenteri.md)) sekä ilmoittautumiskäytäntö | Tulevat tunnit | GitHub-salaisuudet, `lib/calendar.ts` | ⬜ |
 | 8 | **Kumppanilogot ja käyttölupa:** ePassi, Tahko, Nilsiän Yrittäjät | Footer | `lib/site.ts` → `partners` | ⬜ |
 | 9 | **Palveluiden tiedot:** kestot, paikkakunnat ja tehotasot (poistettu arvioina, lisätään vahvistettuina) sekä "Sopii:"-tekstien tarkistus | Palvelut-osio | `lib/services.ts` | ⬜ |
 | 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu | Käyttöehdot | `pages/kayttoehdot.tsx` | ⬜ |

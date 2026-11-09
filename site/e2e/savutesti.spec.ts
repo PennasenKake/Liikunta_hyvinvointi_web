@@ -187,6 +187,31 @@ test.describe("Miksi liikkua -galleria", () => {
   });
 });
 
+test.describe("Kalenteri", () => {
+  test("tunneilla on ilmoittautuminen, kalenteriin lisäys ja jako", async ({ page, request }) => {
+    await page.goto("/#kalenteri");
+    const items = page.locator("#kalenteri ol > li");
+    expect(await items.count()).toBeGreaterThan(0);
+    const first = items.first();
+
+    // Ei päättyneitä tunteja (selain suodattaa omalla kellollaan)
+    const ends = await page.locator("#kalenteri time").evaluateAll((els) => els.map((el) => el.getAttribute("datetime")));
+    for (const start of ends) expect(new Date(start!).getTime()).toBeGreaterThan(Date.now() - 4 * 3_600_000);
+
+    await expect(first.getByRole("link", { name: /^Ilmoittaudu/ })).toHaveAttribute("href", new RegExp(`^mailto:${site.email}`));
+
+    // "+ Kalenteriin" avaa valikon; .ics-tiedosto on olemassa ja oikeaa muotoa
+    await first.getByText("+ Kalenteriin").click();
+    await expect(first.getByRole("link", { name: /Google-kalenteri/ })).toHaveAttribute("href", /calendar\.google\.com/);
+    const ics = await first.getByRole("link", { name: /\.ics/ }).getAttribute("href");
+    const res = await request.get(ics!);
+    expect(res.status()).toBe(200);
+    expect(await res.text()).toMatch(/^BEGIN:VCALENDAR\r\n[\s\S]*BEGIN:VEVENT/);
+
+    await expect(first.getByRole("button", { name: /Jaa/ })).toBeVisible();
+  });
+});
+
 test.describe("Instagram", () => {
   test("karusellin nuolet vierittävät julkaisuja", async ({ page, isMobile }) => {
     test.skip(isMobile, "Mobiilissa selataan pyyhkäisemällä, nuolet ovat piilossa");

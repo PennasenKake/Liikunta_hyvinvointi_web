@@ -12,7 +12,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDATED, withBase, stockPhotos } = await import(
+const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDATED, withBase, stockPhotos, getUpcomingEvents, toIcs } = await import(
   pathToFileURL(resolve("dist-ssr/entry-server.js")).href
 );
 
@@ -79,5 +79,14 @@ if (NOINDEX) {
   console.log("robots.txt ja sitemap.xml kirjoitettu");
 }
 
-// --- 4. Siivous: palvelinversiota ei julkaista ---
+// --- 4. Tuntien .ics-tiedostot (Apple-kalenteri, Outlook): dist/tunnit/<tunnus>.ics ---
+// Sama lista kuin sivulla, joten jokaisen tunnin "Apple, Outlook tai muu" -linkki toimii.
+const siteUrl = `${SITE_ORIGIN}${withBase("/")}`;
+const events = getUpcomingEvents(100);
+for (const e of events) {
+  await write(`dist/tunnit/${e.id}.ics`, toIcs(e, siteUrl));
+}
+console.log(`.ics-tiedostot: ${events.length} tuntia → dist/tunnit/`);
+
+// --- 5. Siivous: palvelinversiota ei julkaista ---
 await rm("dist-ssr", { recursive: true, force: true });
