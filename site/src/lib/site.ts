@@ -34,6 +34,7 @@ export const site = {
     { label: "Minusta", href: "/#minusta" },
     { label: "Tulevat tunnit", href: "/#kalenteri" },
     { label: "Instagram", href: "/#instagram" },
+    { label: "Yhteystiedot", href: "/#yhteystiedot" },
   ],
 
   // Alatunnisteen "Tietoa ja ehdot" -sarake. Jokaisella on oma sivunsa (src/pages/<nimi>.tsx).
@@ -47,7 +48,9 @@ export const site = {
 
   // Korostettu toimintakehote valikon lopussa. Erillään nav-listasta,
   // koska se tyylitellään painikkeeksi. Yksi paikka Headerille ja MobileMenulle.
-  contact: { label: "Yhteystiedot", href: "/#yhteystiedot" },
+  // Vie Tulevat tunnit -osioon, jossa jokaisella tunnilla on Ilmoittaudu-painike.
+  // Yhteystiedot löytyvät alatunnisteesta (footerNav) ja heron puhelinpainikkeesta.
+  contact: { label: "Ilmoittaudu tunnille", href: "/#kalenteri" },
 
   // TODO(Amanda): Instagram-tunnus. url: null = linkkiä ei vielä näytetä.
   instagram: {
@@ -71,10 +74,11 @@ export const site = {
   //   "a" = kaksi kuvaa ja tumma tekstilaatikko ("Liiku & rauhoitu")
   //   "b" = kahvakuulat ja järven äänimalja sulautuvat ("Liikunta & hyvinvointi")
   //   "c" = liikkuva tausta ja keskitetty otsikko ("Liikuntaa, joka tuntuu hyvältä")
+  //   "d" = teksti vasemmalla, kuvat/video oikealla ilman huntua ("Liikettä ja lepoa Pohjois-Savossa")
   // Vaihto: muuta kirjain ja julkaise. Komponentit: components/sections/hero/.
-  heroVariant: "c" as "a" | "b" | "c",
+  heroVariant: "d" as "a" | "b" | "c" | "d",
 
-  // Hero C:n taustavideo. null = video puuttuu, jolloin taustalla vaihtuvat valokuvat.
+  // Hero C:n ja D:n taustavideo. null = video puuttuu, jolloin taustalla vaihtuvat valokuvat.
   // Video lisätään kansioon site/public/video/ kahtena tiedostona (WebM pienempi, MP4 Safarille)
   // sekä pysäytyskuva (poster), joka näkyy heti ja vähennetyn liikkeen asetuksella.
   // Suositus: 10–20 s, ei ääntä, 1280 px leveä, alle 3 Mt. Esim.:

@@ -46,7 +46,7 @@ describe("palvelut", () => {
   });
 
   it("hero-versio on sallittu", () => {
-    expect(["a", "b", "c"]).toContain(site.heroVariant);
+    expect(["a", "b", "c", "d"]).toContain(site.heroVariant);
   });
 });
 

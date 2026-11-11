@@ -63,7 +63,7 @@ Liikunta_hyvinvointi_web/
 │       ├── components/
 │       │   ├── layout/                ✅ Header, HeaderShell, NavDropdown, MobileMenu, Footer
 │       │   ├── sections/              ✅ Etusivun osiot (Hero, Palvelut, Miksi liikkua, Hinnasto, Minusta, Kalenteri, Instagram)
-│       │   │   └── hero/              ✅ HeroA, HeroB, HeroC
+│       │   │   └── hero/              ✅ HeroA–D (D käytössä), NextClass
 │       │   ├── ui/                    ✅ Image, Link, ButtonLink, TahkoLine, LegalPage ym.
 │       │   └── RevealOnScroll.tsx     ✅ Vierityspaljastus
 │       └── lib/                       ✅ site, services, pricing, about, photos, instagram, calendar, seo, paths

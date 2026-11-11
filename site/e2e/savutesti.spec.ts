@@ -77,7 +77,7 @@ test.describe("Responsiivisuus", () => {
     await page.setViewportSize({ width: 667, height: 375 });
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
-    await expect(page.getByRole("link", { name: /Löydä sopiva tunti/ })).toBeInViewport();
+    await expect(page.getByRole("link", { name: /Katso tulevat tunnit/ }).first()).toBeInViewport();
   });
 });
 
@@ -209,6 +209,15 @@ test.describe("Kalenteri", () => {
     expect(await res.text()).toMatch(/^BEGIN:VCALENDAR\r\n[\s\S]*BEGIN:VEVENT/);
 
     await expect(first.getByRole("button", { name: /Jaa/ })).toBeVisible();
+  });
+
+  test("hero nostaa seuraavan tunnin, joka löytyy kalenterista", async ({ page }) => {
+    await page.goto("/");
+    const next = page.locator("#top").getByRole("link", { name: /Seuraava tunti/ });
+    await expect(next).toBeVisible();
+    const href = await next.getAttribute("href");
+    const id = href!.split("#")[1];
+    await expect(page.locator(`#${id}`)).toHaveCount(1);
   });
 });
 
