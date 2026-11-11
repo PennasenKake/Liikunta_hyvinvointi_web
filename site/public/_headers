@@ -1,0 +1,31 @@
+# _headers: HTTP-otsakkeet tuotantohostingille (Cloudflare Pages ja Netlify lukevat tämän tiedoston).
+# GitHub Pages ei tue omia otsakkeita, joten testiversiossa nämä eivät ole voimassa.
+#
+# Content-Security-Policy (CSP): selain suorittaa vain sivuston omia tiedostoja.
+# - script-src: oma JavaScript + yksi pieni inline-skripti (index.html: "has-js"), sallittu
+#   tiivisteellä (sha256). Jos skriptiä muutetaan, tiiviste pitää laskea uudelleen:
+#   node -e "console.log(require('crypto').createHash('sha256').update('<skriptin sisältö>').digest('base64'))"
+# - style-src 'unsafe-inline': tyylit ovat HTML:ssä (<style>, nopeampi ensinäkymä) ja osa
+#   elementeistä käyttää style-attribuuttia (esim. heron kuvien ajoitus). Tyylit eivät suorita koodia.
+# - img-src data:: pienet upotetut kuvat. Kun Instagram-syöte (Behold) kytketään, lisää sen
+#   kuvapalvelin tähän (img-src) ja tarvittaessa connect-src:iin.
+# - frame-ancestors 'none': sivua ei voi upottaa toiselle sivulle (clickjacking).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-xfUxgArXx+/9DmsYEEUKHwi7nFyetjXFuv8c33Ej7ww='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Viten tiedostoissa on sisällöstä laskettu tunniste nimessä (index-AbC123.js), joten ne voi
+# säilyttää selaimen välimuistissa vuoden: uusi versio saa aina uuden nimen.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Kuvat ja koristeet: nimi pysyy samana, vaikka kuva vaihtuisi, joten välimuisti viikoksi.
+/kuvat/*
+  Cache-Control: public, max-age=604800
+/koristeet/*
+  Cache-Control: public, max-age=604800

@@ -16,6 +16,7 @@ const types = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css",
   ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2",
   ".woff": "font/woff", ".xml": "application/xml", ".txt": "text/plain; charset=utf-8",
+  ".webp": "image/webp", ".ics": "text/calendar; charset=utf-8", ".json": "application/json",
 };
 
 const isFile = async (p) => (await stat(p).catch(() => null))?.isFile() ?? false;

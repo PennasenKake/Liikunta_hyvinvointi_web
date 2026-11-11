@@ -187,6 +187,23 @@ test.describe("Miksi liikkua -galleria", () => {
   });
 });
 
+test.describe("Kuvat", () => {
+  test("jokainen srcset-kuvaversio löytyy (scripts/optimize-images.mjs)", async ({ page, request }) => {
+    await page.goto("/");
+    const urls = await page.evaluate(() =>
+      [...document.querySelectorAll("img[srcset]")].flatMap((img) =>
+        img.getAttribute("srcset")!.split(",").map((s) => s.trim().split(" ")[0]),
+      ),
+    );
+    expect(urls.length).toBeGreaterThan(0);
+    for (const url of new Set(urls)) {
+      const res = await request.get(url);
+      expect(res.status(), url).toBe(200);
+      expect(res.headers()["content-type"]).toContain("image/webp");
+    }
+  });
+});
+
 test.describe("Lootusmandala", () => {
   test("koriste ei peitä hinnastoa ja piiloutuu suurella kontrastilla", async ({ page }) => {
     await page.goto("/#hinnasto");

@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { photos } from "@/lib/photos";
 import { site } from "@/lib/site";
 import { withBase } from "@/lib/paths";
+import HeroSlides from "./HeroSlides";
 import NextClass from "./NextClass";
 
 // TODO(Amanda): koulutus ja kokemusvuodet (docs/sisalto.md). Hakasulkeissa = paikkamerkki.
@@ -69,11 +70,13 @@ export default function HeroD() {
             <source src={withBase(video.mp4)} type="video/mp4" />
           </video>
         ) : (
-          <>
-            <img className="hero-kb object-[50%_62%]" src={photos.joogasali.src} alt="" fetchPriority="high" decoding="async" />
-            <img className="hero-kb object-[50%_60%]" src={photos.ulkotreeni.src} alt="" loading="lazy" decoding="async" />
-            <img className="hero-kb object-[50%_55%]" src={photos.aanimaljat.src} alt="" loading="lazy" decoding="async" />
-          </>
+          <HeroSlides
+            slides={[
+              { photo: photos.joogasali, position: "object-[50%_62%]" },
+              { photo: photos.ulkotreeni, position: "object-[50%_60%]" },
+              { photo: photos.aanimaljat, position: "object-[50%_55%]" },
+            ]}
+          />
         )}
         {/* Häivytys: mobiilissa kuvan alareuna sulautuu taustaan, työpöydällä vasen puoli
             (teksti) on lähes läpinäkymätön ja oikea puoli näyttää kuvan sellaisenaan. */}

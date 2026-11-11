@@ -23,18 +23,36 @@ export type Photo = {
   // Vain kuvapankin paikkamerkeille: mistä kuva on ja millä lisenssillä (esim. "Pexels, Pexels License").
   // Korvataan Amandan omalla kuvalla ennen tuotantojulkaisua.
   stock?: { source: string; url: string };
+  srcSet?: string; // Kevyet WebP-versiot eri leveyksille (scripts/optimize-images.mjs)
 };
 
+// Sama leveyssääntö kuin scripts/optimize-images.mjs:ssä: vakioleveydet, jotka ovat
+// alkuperäistä kapeampia, sekä alkuperäinen leveys.
+const WIDTHS = [400, 800, 1200, 1600];
+export function widthsFor(original: number) {
+  return [...WIDTHS.filter((w) => w < original), original];
+}
+
+// Kuvan tiedot yhdellä rivillä: polku, srcset ja mitat.
+// file = tiedostonimi kansiossa public/kuvat/ (esim. "joogasali.jpg").
+function photo(file: string, alt: string, width: number, height: number, extra: Partial<Photo> = {}): Photo {
+  const name = file.replace(/\.[^.]+$/, "");
+  const srcSet = widthsFor(width)
+    .map((w) => `${withBase(`/kuvat/opt/${name}-${w}.webp`)} ${w}w`)
+    .join(", ");
+  return { src: withBase(`/kuvat/${file}`), alt, width, height, srcSet, ...extra };
+}
+
 export const photos = {
-  vesijumppa: { src: withBase("/kuvat/vesijumppa-allas.jpg"), alt: "Vesijumppapainot altaan reunalla", width: 1440, height: 1440 },
-  joogasali: { src: withBase("/kuvat/joogasali.jpg"), alt: "Joogamatot ja -blokit valmiina salissa, ikkunasta näkyy mäntymetsä", width: 1200, height: 1600 },
-  ulkotreeni: { src: withBase("/kuvat/ulkotreeni-kentta.jpg"), alt: "Joogamatto, sekuntikello ja vesipullo ulkotreenissä tekonurmella", width: 1200, height: 1600 },
-  sekuntikello: { src: withBase("/kuvat/sekuntikello-kentta.jpg"), alt: "Sekuntikello kädessä urheilukentällä järven rannalla", width: 1286, height: 1286 },
-  inbody: { src: withBase("/kuvat/inbody-mittaus.jpg"), alt: "InBody-kehonkoostumusmittari ja tulostettu mittausraportti", width: 480, height: 480 },
-  joogablokit: { src: withBase("/kuvat/joogablokit.jpg"), alt: "Vaaleanpunaisia ja mintunvihreitä joogablokkeja", width: 480, height: 480 },
-  aanimaljat: { src: withBase("/kuvat/aanimaljat.jpg"), alt: "Kolme äänimaljaa lampaantaljalla lootuskynttilöiden ja valojen keskellä", width: 1200, height: 1600 },
-  kahvakuulat: { src: withBase("/kuvat/kahvakuulat.jpg"), alt: "Kahvakuulat telineessä kuntosalilla", width: 291, height: 439 },
-  aanimaljatJarvi: { src: withBase("/kuvat/aanimaljat-jarvi.jpg"), alt: "Äänimalja kädessä terassilla järvimaiseman edessä", width: 480, height: 600 },
+  vesijumppa: photo("vesijumppa-allas.jpg", "Vesijumppapainot altaan reunalla", 1440, 1440),
+  joogasali: photo("joogasali.jpg", "Joogamatot ja -blokit valmiina salissa, ikkunasta näkyy mäntymetsä", 1200, 1600),
+  ulkotreeni: photo("ulkotreeni-kentta.jpg", "Joogamatto, sekuntikello ja vesipullo ulkotreenissä tekonurmella", 1200, 1600),
+  sekuntikello: photo("sekuntikello-kentta.jpg", "Sekuntikello kädessä urheilukentällä järven rannalla", 1286, 1286),
+  inbody: photo("inbody-mittaus.jpg", "InBody-kehonkoostumusmittari ja tulostettu mittausraportti", 480, 480),
+  joogablokit: photo("joogablokit.jpg", "Vaaleanpunaisia ja mintunvihreitä joogablokkeja", 480, 480),
+  aanimaljat: photo("aanimaljat.jpg", "Kolme äänimaljaa lampaantaljalla lootuskynttilöiden ja valojen keskellä", 1200, 1600),
+  kahvakuulat: photo("kahvakuulat.jpg", "Kahvakuulat telineessä kuntosalilla", 291, 439),
+  aanimaljatJarvi: photo("aanimaljat-jarvi.jpg", "Äänimalja kädessä terassilla järvimaiseman edessä", 480, 600),
 } satisfies Record<string, Photo>; // satisfies: tarkistaa tyypin, mutta säilyttää avainten nimet automaattitäydennystä varten
 
 // Kuvapankin paikkamerkit (stock-merkityt). Tuotantobuild tarkistaa, että lista on tyhjä.

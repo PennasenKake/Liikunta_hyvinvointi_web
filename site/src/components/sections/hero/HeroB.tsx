@@ -38,10 +38,10 @@ export default function HeroB() {
       {/* Kuvapalsta: kuvat päällekkäin. Äänimalja oikealla, kahvakuulat sen päällä vasemmalla. */}
       <div className="relative min-h-[380px] min-w-0 grow-[1.3] basis-[480px]">
         <div className={`absolute inset-y-0 right-0 w-[58%] ${fadeLeft}`}>
-          <Image src={photos.aanimaljatJarvi.src} alt={photos.aanimaljatJarvi.alt} fill priority sizes="35vw" className="object-cover object-[0%_55%]" />
+          <Image src={photos.aanimaljatJarvi.src} srcSet={photos.aanimaljatJarvi.srcSet} alt={photos.aanimaljatJarvi.alt} fill priority sizes="35vw" className="object-cover object-[0%_55%]" />
         </div>
         <div className={`absolute inset-y-0 left-0 w-1/2 ${fadeBoth}`}>
-          <Image src={photos.kahvakuulat.src} alt={photos.kahvakuulat.alt} fill priority sizes="30vw" className="object-cover object-[50%_70%]" />
+          <Image src={photos.kahvakuulat.src} srcSet={photos.kahvakuulat.srcSet} alt={photos.kahvakuulat.alt} fill priority sizes="30vw" className="object-cover object-[50%_70%]" />
         </div>
       </div>
     </section>

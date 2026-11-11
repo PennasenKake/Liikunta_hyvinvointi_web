@@ -1,0 +1,22 @@
+# dependabot.yml: GitHub tarkistaa viikoittain, onko riippuvuuksiin tullut päivityksiä tai
+# tietoturvakorjauksia, ja avaa niistä pull requestin. CI ajaa testit jokaiselle, joten
+# päivityksen voi yhdistää, kun rasti on vihreä.
+
+version: 2
+updates:
+  # Sivuston npm-paketit (site/package.json)
+  - package-ecosystem: npm
+    directory: /site
+    schedule:
+      interval: weekly
+    # Pienet päivitykset yhdessä PR:ssä, ettei PR-ruuhkaa synny
+    groups:
+      pienet-paivitykset:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5
+
+  # GitHub Actions -toimintojen versiot (lukittu SHA:han työnkuluissa)
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

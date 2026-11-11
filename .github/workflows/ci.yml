@@ -13,6 +13,8 @@ on:
     branches: [main]
 
 # Vähimmät oikeudet: työnkulku vain lukee koodia, ei muuta repoa (tietoturva).
+# Toimintojen versiot on lukittu commit-tunnisteeseen (SHA): tagia voi siirtää, SHA:ta ei.
+# Dependabot (.github/dependabot.yml) ehdottaa päivitykset pull requesteina.
 permissions:
   contents: read
 
@@ -36,12 +38,14 @@ jobs:
     steps:
       # 1. Hakee repon koodin palvelimelle
       - name: Koodin haku
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false # GitHub-tunnusta ei jätetä levylle: työnkulku ei pushaa mitään
 
       # 2. Asentaa Noden ja ottaa npm-välimuistin käyttöön.
       #    Välimuisti nopeuttaa seuraavia ajoja, koska paketteja ei ladata joka kerta uudelleen.
       - name: Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22 # Vite 8 vaatii vähintään 22.12:n (site/.node-version)
           cache: npm
@@ -74,7 +78,7 @@ jobs:
       #    ajon Summary-sivulle (Artifacts). Raportissa näkyy, mikä testi kaatui ja miksi.
       - name: Testiraportin tallennus
         if: failure()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: playwright-raportti
           path: site/playwright-report/
