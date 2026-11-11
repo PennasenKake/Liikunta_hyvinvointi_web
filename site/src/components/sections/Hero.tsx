@@ -5,6 +5,7 @@
 import HeroA from "./hero/HeroA";
 import HeroB from "./hero/HeroB";
 import HeroC from "./hero/HeroC";
+import HeroD from "./hero/HeroD";
 import { site } from "@/lib/site";
 
 // Kirjain → komponentti. Record-tyyppi varmistaa, että jokaiselle sallitulle kirjaimelle on komponentti.
@@ -12,6 +13,7 @@ const variants: Record<typeof site.heroVariant, () => React.JSX.Element> = {
   a: HeroA,
   b: HeroB,
   c: HeroC,
+  d: HeroD,
 };
 
 export default function Hero() {

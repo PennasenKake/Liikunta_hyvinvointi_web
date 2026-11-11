@@ -5,18 +5,21 @@
 // Jos selain ei tue jakamista (useimmat työpöytäselaimet), linkki kopioidaan leikepöydälle.
 
 import { useState } from "react";
+import { withBase } from "@/lib/paths";
 
 type Props = {
   title: string; // Esim. "Vesijumppa"
   text: string;  // Esim. "ti 3.11. klo 18.00 · Tahko"
+  anchor?: string; // Tunnin ankkuri, esim. "tunti-abc123": linkki avaa sivun suoraan tämän tunnin kohdalta
 };
 
-export default function ShareButton({ title, text }: Props) {
+export default function ShareButton({ title, text, anchor = "kalenteri" }: Props) {
   // copied = näytetäänkö "Kopioitu"-ilmoitus hetken ajan
   const [copied, setCopied] = useState(false);
 
   async function share() {
-    const url = `${window.location.origin}/#kalenteri`;
+    // withBase: toimii myös GitHub Pagesin alipolussa
+    const url = `${window.location.origin}${withBase("/")}#${anchor}`;
     const data = { title: `${title} – Tahkon Amanda`, text, url };
 
     try {

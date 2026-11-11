@@ -26,3 +26,6 @@ dist-ssr
 # Playwright-testien tulokset
 test-results
 playwright-report
+
+# Kalenterin tunnit: scripts/fetch-calendar.mjs tekee tiedoston ennen buildia
+src/data/calendar.json

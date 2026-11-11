@@ -93,7 +93,7 @@ export default function Header() {
           <li>
             {/* Toimintakehote käänteisenä: valkoinen painike violetilla tekstillä (kontrasti 9.6:1) */}
             <a
-              href={site.contact.href}
+              href={withBase(site.contact.href)}
               className={`rounded-md bg-white px-5 py-3 font-semibold text-accent transition hover:bg-lilac ${focusRing}`}
             >
               {site.contact.label}

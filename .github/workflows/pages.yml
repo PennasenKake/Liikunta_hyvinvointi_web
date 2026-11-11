@@ -1,7 +1,10 @@
 # pages.yml: testiversion julkaisu GitHub Pagesiin.
 # Osoite: https://pennasenkake.github.io/Liikunta_hyvinvointi_web/
 #
-# Käynnistyy jokaisesta pushista main-haaraan sekä käsin (Actions → Pages → Run workflow).
+# Käynnistyy jokaisesta pushista main-haaraan, käsin (Actions → Pages → Run workflow)
+# ja kerran tunnissa, jotta Amandan Google-kalenteriin lisäämät tunnit päivittyvät sivulle.
+# Huom: GitHub pysäyttää ajastetut ajot, jos repossa ei ole tapahtunut mitään 60 päivään.
+# Silloin ajastus käynnistetään uudelleen Actions-välilehdeltä (Enable workflow).
 # Build tehdään staattisena (npm run build:pages → site/scripts/build-pages.mjs), koska
 # GitHub Pages tarjoilee vain valmiita tiedostoja. Testiversio on noindex-tilassa,
 # joten hakukoneet eivät indeksoi sitä.
@@ -14,6 +17,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch: # Käsin käynnistys Actions-välilehdeltä
+  schedule:
+    - cron: "17 * * * *" # Kerran tunnissa (ei tasalta, jolloin GitHubin jonot ovat pisimmät)
 
 # Vähimmät oikeudet: koodin luku, Pages-julkaisu ja julkaisun tunnistautuminen (OIDC)
 permissions:
@@ -53,8 +58,13 @@ jobs:
         uses: actions/configure-pages@v6
 
       # Tuottaa site/dist/-kansion: esirenderöidyt sivut, kuvat, robots.txt (Disallow) ja .nojekyll
+      # Kalenterin tunnit haetaan buildissa (scripts/fetch-calendar.mjs). Ilman salaisuuksia
+      # sivulla näkyvät esimerkkitunnit. Avain on vain tässä vaiheessa, ei sivuston koodissa.
       - name: Build GitHub Pagesia varten
         run: npm run build:pages
+        env:
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 
       - name: Julkaisupaketin tallennus
         uses: actions/upload-pages-artifact@v5

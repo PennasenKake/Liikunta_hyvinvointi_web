@@ -22,12 +22,13 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 4 | **Koulutukset ja sertifikaatit** | Minusta-osio | `lib/about.ts` → `certifications` | ⬜ |
 | 5 | **Hinnat ja kestot** jokaiselle palvelulle | Hinnasto | `lib/pricing.ts` | ⬜ |
 | 6 | **Instagram-tunnus** | Instagram-osio, Footer | `lib/site.ts` → `instagram` | ⬜ |
-| 7 | **Google-kalenteri** (tunniste) ja tuntien paikat | Tulevat tunnit | `lib/calendar.ts` | ⬜ |
+| 7 | **Google-kalenteri**: julkinen tuntikalenteri ja sen tunnus (ohje: [kalenteri.md](kalenteri.md)) sekä ilmoittautumiskäytäntö | Tulevat tunnit | GitHub-salaisuudet, `lib/calendar.ts` | ⬜ |
 | 8 | **Kumppanilogot ja käyttölupa:** ePassi, Tahko, Nilsiän Yrittäjät | Footer | `lib/site.ts` → `partners` | ⬜ |
 | 9 | **Palveluiden tiedot:** kestot, paikkakunnat ja tehotasot (poistettu arvioina, lisätään vahvistettuina) sekä "Sopii:"-tekstien tarkistus | Palvelut-osio | `lib/services.ts` | ⬜ |
 | 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu | Käyttöehdot | `pages/kayttoehdot.tsx` | ⬜ |
 | 11 | **InBody-tulosten säilytys:** säilytetäänkö ja missä muodossa | Tietosuojaseloste | `pages/tietosuoja.tsx` | ⬜ |
-| 12 | **Taustavideo heroon** (vapaaehtoinen): 10–20 s vaakavideo tunnilta tai Tahkon maisemasta, ei ääntä, ei tunnistettavia asiakkaita ilman lupaa | Etusivun yläosa (hero C) | `lib/site.ts` → `heroVideo` | ⬜ |
+| 12 | **Taustavideo heroon** (vapaaehtoinen): 10–20 s vaakavideo tunnilta tai Tahkon maisemasta, ei ääntä, ei tunnistettavia asiakkaita ilman lupaa | Etusivun yläosa (hero D) | `lib/site.ts` → `heroVideo` | ⬜ |
+| 13 | **Heron luottamusrivi:** pääkoulutus yhdellä rivillä ja ohjaajavuodet | Etusivun yläosa | `hero/HeroD.tsx` → `trust` | ⬜ |
 
 ## Tarkistettavat asiat
 
@@ -36,7 +37,7 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | RVP | Sivulla tulkittu "reidet, vatsa ja pakarat" | ⬜ |
 | Palvelukuvaukset | Luonnokset, Amanda voi korjata omalla äänellään (`lib/services.ts`) | ⬜ |
 | Fontit | Suunnitelmassa Lora + Inter, toteutuksessa Cormorant Garamond + Jost (mockup B) | ⬜ |
-| Hero | Kolme versiota (A, B, C), Amanda valitsee. Asetus: `lib/site.ts` → `heroVariant` | ⬜ |
+| Hero | Käytössä D: teksti vasemmalla, kuvat tai video ilman huntua, seuraava tunti kalenterista. A–C säilyvät vaihtoehtoina. Asetus: `lib/site.ts` → `heroVariant` | ⬜ |
 
 ## Saadut kuvat
 

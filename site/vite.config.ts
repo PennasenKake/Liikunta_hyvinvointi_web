@@ -22,6 +22,6 @@ export default defineConfig({
 
   // Vitest: vain yksikkötestit kansiosta src/. Selaintestit (e2e/) ajaa Playwright.
   test: {
-    include: ["src/**/*.test.ts"],
+    include: ["src/**/*.test.ts", "scripts/**/*.test.mjs"],
   },
 });
