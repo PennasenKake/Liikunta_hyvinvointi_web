@@ -45,6 +45,7 @@ function Tile({ post }: { post: InstagramPost }) {
       <span className="relative block aspect-square overflow-hidden rounded-2xl border border-line bg-lilac-soft">
         <Image
           src={post.photo.src}
+          srcSet={post.photo.srcSet}
           alt={post.photo.alt}
           fill
           sizes="(min-width: 992px) 360px, (min-width: 640px) 50vw, 80vw"

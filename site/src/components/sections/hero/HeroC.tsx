@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { photos } from "@/lib/photos";
 import { site } from "@/lib/site";
 import { withBase } from "@/lib/paths";
+import HeroSlides from "./HeroSlides";
 import { serviceCount } from "@/lib/services";
 
 export default function HeroC() {
@@ -56,11 +57,13 @@ export default function HeroC() {
             <source src={withBase(video.mp4)} type="video/mp4" />
           </video>
         ) : (
-          <>
-            <img className="hero-kb object-[50%_60%]" src={photos.ulkotreeni.src} alt="" fetchPriority="high" decoding="async" />
-            <img className="hero-kb object-[50%_55%]" src={photos.joogasali.src} alt="" loading="lazy" decoding="async" />
-            <img className="hero-kb object-[50%_55%]" src={photos.aanimaljat.src} alt="" loading="lazy" decoding="async" />
-          </>
+          <HeroSlides
+            slides={[
+              { photo: photos.ulkotreeni, position: "object-[50%_60%]" },
+              { photo: photos.joogasali, position: "object-[50%_55%]" },
+              { photo: photos.aanimaljat, position: "object-[50%_55%]" },
+            ]}
+          />
         )}
         {/* Huntu: säteittäinen liukuväri, keskellä lähes läpinäkymätön (teksti), reunoilla kuvat näkyvät */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_62%_70%_at_50%_50%,rgba(244,248,253,0.92)_0%,rgba(241,237,250,0.84)_60%,rgba(220,234,248,0.7)_100%)] max-sm:bg-[radial-gradient(ellipse_90%_60%_at_50%_45%,rgba(244,248,253,0.92)_0%,rgba(241,237,250,0.84)_60%,rgba(220,234,248,0.72)_100%)]" />

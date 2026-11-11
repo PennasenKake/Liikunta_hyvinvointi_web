@@ -23,7 +23,16 @@ if (!NOINDEX && stockPhotos.length > 0) {
   throw new Error(`Tuotantobuildissa on kuvapankin paikkamerkkikuvia. Korvaa ne omilla kuvilla:\n${list}`);
 }
 
-const template = await readFile("dist/index.html", "utf-8");
+// Tyylit suoraan HTML:ään (<style>): selaimen ei tarvitse odottaa erillistä CSS-tiedostoa ennen
+// ensimmäistä piirtoa. Tyylitiedosto on pieni (noin 10 kt pakattuna), joten tämä nopeuttaa
+// puhelimen ensinäkymää. Fonttien osoitteet ovat CSS:ssä absoluuttisia, joten ne toimivat samoin.
+let template = await readFile("dist/index.html", "utf-8");
+const cssLink = template.match(/<link rel="stylesheet"[^>]*href="([^"]+\.css)"[^>]*>/);
+if (cssLink) {
+  const cssFile = resolve("dist", cssLink[1].replace(withBase("/"), ""));
+  const css = (await readFile(cssFile, "utf-8")).replace(/<\/style/gi, "<\\/style");
+  template = template.replace(cssLink[0], () => `<style>${css}</style>`);
+}
 for (const marker of ["<!--app-head-->", "<!--app-html-->", "<title>"]) {
   if (!template.includes(marker)) throw new Error(`dist/index.html:stä puuttuu ${marker}`);
 }

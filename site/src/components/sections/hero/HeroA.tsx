@@ -13,10 +13,10 @@ export default function HeroA() {
       {/* Kuvat: mobiilissa kiinteä korkeus, työpöydällä koko heron korkeus */}
       <div className="flex h-[340px] gap-1 lg:absolute lg:inset-0 lg:h-auto">
         <div className="relative min-w-0 flex-[1.5]">
-          <Image src={photos.sekuntikello.src} alt={photos.sekuntikello.alt} fill priority sizes="60vw" className="object-cover object-[70%_40%]" />
+          <Image src={photos.sekuntikello.src} srcSet={photos.sekuntikello.srcSet} alt={photos.sekuntikello.alt} fill priority sizes="60vw" className="object-cover object-[70%_40%]" />
         </div>
         <div className="relative min-w-0 flex-1">
-          <Image src={photos.aanimaljat.src} alt={photos.aanimaljat.alt} fill priority sizes="40vw" className="object-cover" />
+          <Image src={photos.aanimaljat.src} srcSet={photos.aanimaljat.srcSet} alt={photos.aanimaljat.alt} fill priority sizes="40vw" className="object-cover" />
         </div>
       </div>
 

@@ -11,6 +11,10 @@ node_modules
 dist
 dist-ssr
 *.local
+# Ympäristömuuttujat ja salaisuudet: ei koskaan versionhallintaan (malli: .env.example)
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -29,3 +33,6 @@ playwright-report
 
 # Kalenterin tunnit: scripts/fetch-calendar.mjs tekee tiedoston ennen buildia
 src/data/calendar.json
+
+# WebP-versiot: scripts/optimize-images.mjs tekee ne ennen buildia
+public/kuvat/opt/

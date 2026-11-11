@@ -3,6 +3,9 @@
 // Buildin jälkeen sivun HTML on jo valmiina (scripts/prerender.mjs), joten React vain
 // "herättää" sen (hydrateRoot): kytkee tapahtumankäsittelijät olemassa olevaan HTML:ään.
 // Kehityksessä (npm run dev) HTML:ää ei ole, joten sivu rakennetaan tyhjästä (createRoot).
+//
+// Koodi on kirjoitettu Reactin rajapinnalla, mutta selaimeen menee Preact (vite.config.ts:
+// preact()). "react-dom/client" ohjautuu automaattisesti Preactin yhteensopivuuskerrokseen.
 
 import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
