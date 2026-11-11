@@ -51,6 +51,7 @@ Liikunta_hyvinvointi_web/
 │   ├── public/
 │   │   ├── kuvat/                     ✅ Sivun valokuvat (pienennetyt)
 │   │   ├── logo.svg, tahko-hero.svg   ✅ Logo ja Tahko-kuvitus
+│   │   ├── koristeet/                ✅ Lootusmandalan neljä kerrosta (tausta, ulko- ja sisäkehä, keskus)
 │   │   └── icon.png, apple-icon.png, opengraph-image.png  ✅ Ikonit ja jakokuva
 │   └── src/
 │       ├── main.tsx                   ✅ Selain: fontit, tyylit, hydraatio
@@ -64,7 +65,7 @@ Liikunta_hyvinvointi_web/
 │       │   ├── layout/                ✅ Header, HeaderShell, NavDropdown, MobileMenu, Footer
 │       │   ├── sections/              ✅ Etusivun osiot (Hero, Palvelut, Miksi liikkua, Hinnasto, Minusta, Kalenteri, Instagram)
 │       │   │   └── hero/              ✅ HeroA–D (D käytössä), NextClass
-│       │   ├── ui/                    ✅ Image, Link, ButtonLink, TahkoLine, LegalPage ym.
+│       │   ├── ui/                    ✅ Image, Link, ButtonLink, TahkoLine, LotusMandala, LegalPage ym.
 │       │   └── RevealOnScroll.tsx     ✅ Vierityspaljastus
 │       └── lib/                       ✅ site, services, pricing, about, photos, instagram, calendar, seo, paths
 ```

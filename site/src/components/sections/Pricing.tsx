@@ -4,10 +4,16 @@
 
 import SectionHeading from "@/components/ui/SectionHeading";
 import { prices, pricingNote } from "@/lib/pricing";
+import LotusMandala from "@/components/ui/LotusMandala";
 
 export default function Pricing() {
   return (
-    <section id="hinnasto" className="bg-white px-6 py-24">
+    // relative isolate overflow-hidden: mandalat asettuvat osion taakse ja leikkautuvat sen reunoihin
+    <section id="hinnasto" className="relative isolate overflow-hidden bg-white px-6 py-24">
+      {/* Lootusmandalat puoliksi reunojen yli, tekstipalstan ulkopuolella (kontrasti pysyy samana).
+          Työpöydällä (lg) kaksi sivuilla, puhelimessa ja tabletilla yksi pieni vasemmassa yläkulmassa. */}
+      <LotusMandala className="-left-28 -top-20 w-56 opacity-40 lg:-left-[290px] lg:top-20 lg:w-[440px] xl:-left-[270px] xl:top-16 xl:w-[580px] xl:opacity-45" />
+      <LotusMandala className="hidden opacity-40 lg:-right-[250px] lg:bottom-10 lg:block lg:w-[380px] xl:-right-[230px] xl:w-[500px] xl:opacity-45" />
       <div className="mx-auto max-w-3xl">
         <SectionHeading title="Hinnasto" intro={pricingNote} align="center" />
 

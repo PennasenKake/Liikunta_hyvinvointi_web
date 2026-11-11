@@ -163,6 +163,21 @@ html {
   .hero-kb:nth-child(1) { opacity: 1; }
 }
 
+/* ---------- Lootusmandala (components/ui/LotusMandala.tsx) ----------
+   Kehät pyörivät hyvin hitaasti eri suuntiin: elävöittää, mutta ei vie huomiota tekstiltä.
+   Pyörii vain, jos kävijä ei ole rajoittanut animaatioita. transform: vain näytönohjain
+   piirtää uudelleen, joten liike ei kuormita sivua. Suuri kontrasti: koriste pois. */
+@media (prefers-reduced-motion: no-preference) {
+  .mandala-spin { animation: mandala-spin 180s linear infinite; }
+  .mandala-spin-rev { animation: mandala-spin 260s linear infinite reverse; }
+}
+@keyframes mandala-spin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-contrast: more), (forced-colors: active) {
+  .lotus-mandala { display: none; }
+}
+
 /* ---------- Mobiilivalikon avautuminen (MobileMenu.tsx) ----------
    Paneeli ja alavalikko liukuvat 6 px alas ja häivyttyvät esiin. Lyhyt (200 ms), jottei
    valikko tunnu hitaalta. Vähennetty liike: ilmestyy heti. */

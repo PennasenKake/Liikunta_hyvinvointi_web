@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 820" role="img" aria-label="Vesivärilaikku">
+<defs>
+ <linearGradient id="kulta" gradientUnits="userSpaceOnUse" x1="120" y1="100" x2="680" y2="720">
+  <stop offset="0" stop-color="#8a6524"/><stop offset=".16" stop-color="#e8cb7c"/><stop offset=".26" stop-color="#fff2c4"/><stop offset=".38" stop-color="#b08436"/>
+  <stop offset=".52" stop-color="#f1d995"/><stop offset=".6" stop-color="#fff5d3"/><stop offset=".72" stop-color="#a0762b"/><stop offset=".86" stop-color="#e8cc80"/><stop offset="1" stop-color="#7e5b1e"/>
+ </linearGradient>
+ <radialGradient id="valo" cx="400" cy="400" r="160" gradientUnits="userSpaceOnUse">
+  <stop offset="0" stop-color="#fffaf0"/><stop offset=".22" stop-color="#fbeed6"/><stop offset=".5" stop-color="#d9c6ea"/><stop offset=".8" stop-color="#8d78bf"/><stop offset="1" stop-color="#4f427f"/>
+ </radialGradient>
+ <linearGradient id="yo" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#3f346c" stop-opacity="0"/><stop offset="1" stop-color="#3a2f66" stop-opacity=".85"/></linearGradient>
+ <linearGradient id="lehti" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98ec4"/><stop offset=".45" stop-color="#e3c4dd"/><stop offset="1" stop-color="#fbeef2"/></linearGradient>
+ <linearGradient id="lehtiTaka" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9f7ab8"/><stop offset="1" stop-color="#e2cde6"/></linearGradient>
+ <linearGradient id="lehtiEtu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9b1d3"/><stop offset=".5" stop-color="#f4e0ec"/><stop offset="1" stop-color="#fff8f6"/></linearGradient>
+ <radialGradient id="hehku" cx="400" cy="380" r="130" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff8e2" stop-opacity=".95"/><stop offset=".5" stop-color="#ffefc8" stop-opacity=".45"/><stop offset="1" stop-color="#ffefc8" stop-opacity="0"/></radialGradient>
+ <filter id="vesivari" x="-20%" y="-20%" width="140%" height="140%">
+  <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="11" result="n"/>
+  <feDisplacementMap in="SourceGraphic" in2="n" scale="70" xChannelSelector="R" yChannelSelector="G" result="d"/>
+  <feGaussianBlur in="d" stdDeviation="6"/>
+ </filter>
+ <filter id="vesivari2" x="-20%" y="-20%" width="140%" height="140%">
+  <feTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="4" seed="3" result="n"/>
+  <feDisplacementMap in="SourceGraphic" in2="n" scale="55" xChannelSelector="G" yChannelSelector="R" result="d"/>
+  <feGaussianBlur in="d" stdDeviation="3"/>
+ </filter>
+ <clipPath id="kiekko"><circle cx="400" cy="410" r="150"/></clipPath>
+</defs>
+<g filter="url(#vesivari)" opacity=".85"><ellipse cx="400" cy="415" rx="268" ry="300" fill="#cdb9e1"/></g>
+<g filter="url(#vesivari2)" opacity=".7"><ellipse cx="385" cy="420" rx="215" ry="235" fill="#e6d2e8"/><ellipse cx="455" cy="350" rx="90" ry="70" fill="#b9a2d8"/><ellipse cx="330" cy="520" rx="110" ry="70" fill="#a991cc"/></g>
+<g filter="url(#vesivari2)" opacity=".5"><ellipse cx="420" cy="560" rx="120" ry="60" fill="#5d4f92"/></g>
+</svg>
