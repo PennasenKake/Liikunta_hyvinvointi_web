@@ -187,6 +187,23 @@ test.describe("Miksi liikkua -galleria", () => {
   });
 });
 
+test.describe("Lootusmandala", () => {
+  test("koriste ei peitä hinnastoa ja piiloutuu suurella kontrastilla", async ({ page }) => {
+    await page.goto("/#hinnasto");
+    const mandala = page.locator("#hinnasto .lotus-mandala").first();
+    await expect(mandala).toHaveAttribute("aria-hidden", "true");
+    // Hinnan päällä ei ole mitään: klikkaus osuu hintaan eikä koristeeseen
+    const price = page.locator("#hinnasto dd").first();
+    await price.scrollIntoViewIfNeeded();
+    const box = (await price.boundingBox())!;
+    const hit = await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.tagName, [box.x + box.width / 2, box.y + box.height / 2]);
+    expect(hit).toBe("DD");
+    // Windowsin suuri kontrasti: koriste pois
+    await page.emulateMedia({ forcedColors: "active" });
+    await expect(mandala).toBeHidden();
+  });
+});
+
 test.describe("Kalenteri", () => {
   test("tunneilla on ilmoittautuminen, kalenteriin lisäys ja jako", async ({ page, request }) => {
     await page.goto("/#kalenteri");

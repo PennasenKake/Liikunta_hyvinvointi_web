@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 820" role="img" aria-label="Mandalan ulkokehä">
+<defs>
+ <linearGradient id="kulta" gradientUnits="userSpaceOnUse" x1="120" y1="100" x2="680" y2="720">
+  <stop offset="0" stop-color="#8a6524"/><stop offset=".16" stop-color="#e8cb7c"/><stop offset=".26" stop-color="#fff2c4"/><stop offset=".38" stop-color="#b08436"/>
+  <stop offset=".52" stop-color="#f1d995"/><stop offset=".6" stop-color="#fff5d3"/><stop offset=".72" stop-color="#a0762b"/><stop offset=".86" stop-color="#e8cc80"/><stop offset="1" stop-color="#7e5b1e"/>
+ </linearGradient>
+ <radialGradient id="valo" cx="400" cy="400" r="160" gradientUnits="userSpaceOnUse">
+  <stop offset="0" stop-color="#fffaf0"/><stop offset=".22" stop-color="#fbeed6"/><stop offset=".5" stop-color="#d9c6ea"/><stop offset=".8" stop-color="#8d78bf"/><stop offset="1" stop-color="#4f427f"/>
+ </radialGradient>
+ <linearGradient id="yo" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#3f346c" stop-opacity="0"/><stop offset="1" stop-color="#3a2f66" stop-opacity=".85"/></linearGradient>
+ <linearGradient id="lehti" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98ec4"/><stop offset=".45" stop-color="#e3c4dd"/><stop offset="1" stop-color="#fbeef2"/></linearGradient>
+ <linearGradient id="lehtiTaka" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9f7ab8"/><stop offset="1" stop-color="#e2cde6"/></linearGradient>
+ <linearGradient id="lehtiEtu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9b1d3"/><stop offset=".5" stop-color="#f4e0ec"/><stop offset="1" stop-color="#fff8f6"/></linearGradient>
+ <radialGradient id="hehku" cx="400" cy="380" r="130" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff8e2" stop-opacity=".95"/><stop offset=".5" stop-color="#ffefc8" stop-opacity=".45"/><stop offset="1" stop-color="#ffefc8" stop-opacity="0"/></radialGradient>
+ <filter id="vesivari" x="-20%" y="-20%" width="140%" height="140%">
+  <feTurbulence type="fractalNoise" baseFrequency=".012" numOctaves="3" seed="11" result="n"/>
+  <feDisplacementMap in="SourceGraphic" in2="n" scale="70" xChannelSelector="R" yChannelSelector="G" result="d"/>
+  <feGaussianBlur in="d" stdDeviation="6"/>
+ </filter>
+ <filter id="vesivari2" x="-20%" y="-20%" width="140%" height="140%">
+  <feTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="4" seed="3" result="n"/>
+  <feDisplacementMap in="SourceGraphic" in2="n" scale="55" xChannelSelector="G" yChannelSelector="R" result="d"/>
+  <feGaussianBlur in="d" stdDeviation="3"/>
+ </filter>
+ <clipPath id="kiekko"><circle cx="400" cy="410" r="150"/></clipPath>
+</defs>
+<path d="M400.0 240.0 C396.8 168.5 459.8 135.9 477.6 120.2 C485.3 142.8 523.5 202.5 485.0 262.8 M485.0 262.8 C518.0 199.3 588.8 202.5 612.1 197.9 C607.5 221.2 610.7 292.0 547.2 325.0 M547.2 325.0 C607.5 286.5 667.2 324.7 689.8 332.4 C674.1 350.2 641.5 413.2 570.0 410.0 M570.0 410.0 C641.5 406.8 674.1 469.8 689.8 487.6 C667.2 495.3 607.5 533.5 547.2 495.0 M547.2 495.0 C610.7 528.0 607.5 598.8 612.1 622.1 C588.8 617.5 518.0 620.7 485.0 557.2 M485.0 557.2 C523.5 617.5 485.3 677.2 477.6 699.8 C459.8 684.1 396.8 651.5 400.0 580.0 M400.0 580.0 C403.2 651.5 340.2 684.1 322.4 699.8 C314.7 677.2 276.5 617.5 315.0 557.2 M315.0 557.2 C282.0 620.7 211.2 617.5 187.9 622.1 C192.5 598.8 189.3 528.0 252.8 495.0 M252.8 495.0 C192.5 533.5 132.8 495.3 110.2 487.6 C125.9 469.8 158.5 406.8 230.0 410.0 M230.0 410.0 C158.5 413.2 125.9 350.2 110.2 332.4 C132.8 324.7 192.5 286.5 252.8 325.0 M252.8 325.0 C189.3 292.0 192.5 221.2 187.9 197.9 C211.2 202.5 282.0 199.3 315.0 262.8 M315.0 262.8 C276.5 202.5 314.7 142.8 322.4 120.2 C340.2 135.9 403.2 168.5 400.0 240.0" fill="none" stroke="url(#kulta)" stroke-width="1.3" stroke-linejoin="round"/>
+<path d="M442.7 250.6 C453.7 198.4 513.5 190.1 531.0 183.1 C533.7 201.8 556.4 257.6 516.7 293.3 M516.7 293.3 C552.4 253.6 608.2 276.3 626.9 279.0 C619.9 296.5 611.6 356.3 559.4 367.3 M559.4 367.3 C610.2 350.7 647.2 398.3 662.0 410.0 C647.2 421.7 610.2 469.3 559.4 452.7 M559.4 452.7 C611.6 463.7 619.9 523.5 626.9 541.0 C608.2 543.7 552.4 566.4 516.7 526.7 M516.7 526.7 C556.4 562.4 533.7 618.2 531.0 636.9 C513.5 629.9 453.7 621.6 442.7 569.4 M442.7 569.4 C459.3 620.2 411.7 657.2 400.0 672.0 C388.3 657.2 340.7 620.2 357.3 569.4 M357.3 569.4 C346.3 621.6 286.5 629.9 269.0 636.9 C266.3 618.2 243.6 562.4 283.3 526.7 M283.3 526.7 C247.6 566.4 191.8 543.7 173.1 541.0 C180.1 523.5 188.4 463.7 240.6 452.7 M240.6 452.7 C189.8 469.3 152.8 421.7 138.0 410.0 C152.8 398.3 189.8 350.7 240.6 367.3 M240.6 367.3 C188.4 356.3 180.1 296.5 173.1 279.0 C191.8 276.3 247.6 253.6 283.3 293.3 M283.3 293.3 C243.6 257.6 266.3 201.8 269.0 183.1 C286.5 190.1 346.3 198.4 357.3 250.6 M357.3 250.6 C340.7 199.8 388.3 162.8 400.0 148.0 C411.7 162.8 459.3 199.8 442.7 250.6" fill="none" stroke="url(#kulta)" stroke-width="1.1" stroke-linejoin="round"/>
+<g fill="url(#kulta)"><circle cx="480.8" cy="108.6" r="2.6"/><circle cx="400.0" cy="136.0" r="1.8"/><circle cx="620.6" cy="189.4" r="2.6"/><circle cx="537.0" cy="172.7" r="1.8"/><circle cx="701.4" cy="329.2" r="2.6"/><circle cx="637.3" cy="273.0" r="1.8"/><circle cx="701.4" cy="490.8" r="2.6"/><circle cx="674.0" cy="410.0" r="1.8"/><circle cx="620.6" cy="630.6" r="2.6"/><circle cx="637.3" cy="547.0" r="1.8"/><circle cx="480.8" cy="711.4" r="2.6"/><circle cx="537.0" cy="647.3" r="1.8"/><circle cx="319.2" cy="711.4" r="2.6"/><circle cx="400.0" cy="684.0" r="1.8"/><circle cx="179.4" cy="630.6" r="2.6"/><circle cx="263.0" cy="647.3" r="1.8"/><circle cx="98.6" cy="490.8" r="2.6"/><circle cx="162.7" cy="547.0" r="1.8"/><circle cx="98.6" cy="329.2" r="2.6"/><circle cx="126.0" cy="410.0" r="1.8"/><circle cx="179.4" cy="189.4" r="2.6"/><circle cx="162.7" cy="273.0" r="1.8"/><circle cx="319.2" cy="108.6" r="2.6"/><circle cx="263.0" cy="172.7" r="1.8"/></g>
+<path d="M564.0 237.0 L565.2 244.8 L573.0 246.0 L565.2 247.1 L564.0 255.0 L562.9 247.1 L555.0 246.0 L562.9 244.8Z" fill="#fffaf0"/>
+<path d="M564.0 565.0 L565.2 572.9 L573.0 574.0 L565.2 575.2 L564.0 583.0 L562.9 575.2 L555.0 574.0 L562.9 572.9Z" fill="#fffaf0"/>
+<path d="M236.0 565.0 L237.1 572.9 L245.0 574.0 L237.1 575.2 L236.0 583.0 L234.8 575.2 L227.0 574.0 L234.8 572.9Z" fill="#fffaf0"/>
+<path d="M236.0 237.0 L237.1 244.8 L245.0 246.0 L237.1 247.1 L236.0 255.0 L234.8 247.1 L227.0 246.0 L234.8 244.8Z" fill="#fffaf0"/>
+</svg>
