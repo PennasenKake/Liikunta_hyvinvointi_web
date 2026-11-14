@@ -114,7 +114,7 @@ test.describe("Saavutettavuus", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     const lines = page.locator(".tahko-line");
-    await expect(lines).toHaveCount(4);
+    await expect(lines).toHaveCount(5);
     // stroke-dashoffset 0 = viiva piirretty kokonaan heti, ei animaatiota
     for (const offset of await lines.evaluateAll((els) => els.map((el) => getComputedStyle(el).strokeDashoffset))) {
       expect(parseFloat(offset)).toBe(0);
@@ -201,6 +201,42 @@ test.describe("Kuvat", () => {
       expect(res.status(), url).toBe(200);
       expect(res.headers()["content-type"]).toContain("image/webp");
     }
+  });
+});
+
+test.describe("Hengähdä hetki", () => {
+  test("vieritys ohjaa hengitystä: lootus sulkeutuu ja avautuu, lopussa kutsu tunnille", async ({ page }) => {
+    await page.goto("/");
+    const track = page.locator(".breath-track");
+    const { top, travel } = await track.evaluate((el) => ({
+      top: el.getBoundingClientRect().top + window.scrollY,
+      travel: el.offsetHeight - window.innerHeight,
+    }));
+    expect(travel).toBeGreaterThan(0);
+    const cue = page.locator(".breath-dynamic p").first();
+    const p = () => page.locator("#hengitys").evaluate((el) => parseFloat(getComputedStyle(el).getPropertyValue("--p")));
+
+    await page.evaluate((y) => window.scrollTo(0, y), top + travel * (0.12 + 0.26 * 0.4));
+    await expect(cue).toHaveText("Hengitä sisään");
+    expect(await p()).toBeLessThan(0.3);
+
+    await page.evaluate((y) => window.scrollTo(0, y), top + travel * (0.12 + 0.26 * 0.95));
+    await expect(cue).toHaveText("Hengitä ulos");
+    expect(await p()).toBeGreaterThan(0.9);
+
+    await page.evaluate((y) => window.scrollTo(0, y), top + travel * 0.97);
+    await expect(page.getByRole("link", { name: /Tule kokemaan koko tunti/ })).toBeVisible();
+  });
+
+  test("vähennetty liike: tavallinen osio, ohjeet listana ja lootus auki", async ({ browser }) => {
+    const context = await browser.newContext({ reducedMotion: "reduce" });
+    const page = await context.newPage();
+    await page.goto("/");
+    await expect(page.locator(".breath-static")).toBeVisible();
+    await expect(page.locator(".breath-dynamic")).toBeHidden();
+    const h = await page.locator(".breath-track").evaluate((el) => el.offsetHeight);
+    expect(h).toBeLessThan(1600);
+    await context.close();
   });
 });
 

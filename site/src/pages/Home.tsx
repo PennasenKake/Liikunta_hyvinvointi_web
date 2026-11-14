@@ -6,6 +6,7 @@ import Hero from "@/components/sections/Hero";
 import QuickLinks from "@/components/sections/QuickLinks";
 import Services from "@/components/sections/Services";
 import WhyMove from "@/components/sections/WhyMove";
+import BreathScroll from "@/components/sections/BreathScroll";
 import Pricing from "@/components/sections/Pricing";
 import About from "@/components/sections/About";
 import Calendar from "@/components/sections/Calendar";
@@ -26,7 +27,10 @@ export default function Home() {
       {/* Vuoristosiluetit osioiden rajoilla: from = yläpuolisen osion väri, to = alapuolisen */}
       <TahkoLine id="palvelut-miksi" from="white" to="sky" shape="huiput" />
       <WhyMove />
-      <TahkoLine id="miksi-hinnasto" from="sky" to="white" shape="tahko" />
+      <TahkoLine id="miksi-hengitys" from="sky" to="sand" shape="tahko" />
+      {/* Hengähdä hetki: vierityksen ohjaama hengitysharjoitus (liike → lepo) */}
+      <BreathScroll />
+      <TahkoLine id="hengitys-hinnasto" from="sand" to="white" shape="harju" />
       <Pricing />
       <TahkoLine id="hinnasto-minusta" from="white" to="lilac-soft" shape="harju" flip />
       <About />

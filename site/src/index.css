@@ -179,6 +179,40 @@ html {
   .lotus-mandala { display: none; }
 }
 
+/* ---------- Hengähdä hetki (BreathScroll.tsx) ----------
+   Vieritystila: osio on korkea ja sisältö pysyy paikallaan (sticky), kukka avautuu ja sulkeutuu
+   muuttujan --p mukaan (0 = nuppu, 1 = auki), kehät kiertyvät vierityksen --s mukaan.
+   Vain kun JavaScript toimii (html.has-js) eikä kävijä ole rajoittanut animaatioita:
+   muuten osio on tavallinen ja ohjeet näkyvät listana. */
+.breath-dynamic, .breath-end { display: none; }
+.breath-end.is-on { display: block; }
+@media (prefers-reduced-motion: no-preference) {
+  html.has-js .breath-track { height: 380vh; }
+  html.has-js .breath-sticky { position: sticky; top: 0; min-height: 100vh; min-height: 100svh; align-content: center; }
+  html.has-js .breath-dynamic { display: block; }
+  html.has-js .breath-static { display: none; }
+  html.has-js .breath-end { display: block; opacity: 0; visibility: hidden; transition: opacity .5s, visibility .5s; }
+  html.has-js .breath-end.is-on { opacity: 1; visibility: visible; }
+}
+@media (prefers-reduced-motion: reduce) { .breath-end { display: block; } }
+html:not(.has-js) .breath-end { display: block; }
+@media (max-width: 1023px) {
+  html.has-js .breath-sticky { padding-top: 1.5rem; padding-bottom: 1.5rem; gap: 0.5rem; }
+  /* Puhelimessa sama ohje on jo vaihtuvassa tekstissä: lyhyempi näkymä mahtuu ruudulle */
+  html.has-js .breath-intro { display: none; }
+}
+.br-petal {
+  transform-box: view-box;
+  transform-origin: 400px 560px;
+  transform: rotate(calc(var(--c) + (var(--o) - var(--c)) * var(--p, 1))) scale(calc(0.82 + 0.18 * var(--p, 1)));
+}
+.br-ring-outer { transform-box: view-box; transform-origin: 400px 410px; transform: rotate(calc(var(--s, 0) * 90deg)); }
+.br-ring-inner { transform-box: view-box; transform-origin: 400px 410px; transform: rotate(calc(var(--s, 0) * -120deg)); }
+.br-glow { transform-box: view-box; transform-origin: 400px 470px; opacity: calc(0.25 + var(--p, 1) * 0.75); transform: scale(calc(0.6 + var(--p, 1) * 0.5)); }
+.br-stamens { opacity: calc(var(--p, 1) * 2.2 - 1); }
+.br-stars path { opacity: calc(0.35 + var(--p, 1) * 0.65); }
+@media (prefers-contrast: more), (forced-colors: active) { .breath-art { display: none; } }
+
 /* ---------- Mobiilivalikon avautuminen (MobileMenu.tsx) ----------
    Paneeli ja alavalikko liukuvat 6 px alas ja häivyttyvät esiin. Lyhyt (200 ms), jottei
    valikko tunnu hitaalta. Vähennetty liike: ilmestyy heti. */
