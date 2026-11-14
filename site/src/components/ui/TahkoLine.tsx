@@ -27,8 +27,8 @@ const RIDGES = {
 } as const;
 
 // Taustavärit teemasta. Tailwindin luokat kirjoitetaan kokonaisina, jotta ne päätyvät CSS:ään.
-const BG = { white: "bg-white", sky: "bg-sky", "lilac-soft": "bg-lilac-soft", surface: "bg-surface" } as const;
-const FILL = { white: "fill-white", sky: "fill-sky", "lilac-soft": "fill-lilac-soft", surface: "fill-surface" } as const;
+const BG = { white: "bg-white", sky: "bg-sky", "lilac-soft": "bg-lilac-soft", surface: "bg-surface", sand: "bg-sand" } as const;
+const FILL = { white: "fill-white", sky: "fill-sky", "lilac-soft": "fill-lilac-soft", surface: "fill-surface", sand: "fill-sand" } as const;
 
 type Tone = keyof typeof BG;
 

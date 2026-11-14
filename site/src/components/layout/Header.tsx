@@ -68,7 +68,7 @@ export default function Header() {
         </Link>
 
         {/* Työpöytänavigaatio: piilossa pienillä näytöillä, näkyvissä lg-leveydestä (1024 px). */}
-        <ul className="hidden items-center gap-6 font-medium lg:flex">
+        <ul className="hidden items-center gap-4 font-medium lg:flex xl:gap-6">
           {menu.map((item) =>
             item.children ? (
               <NavDropdown
@@ -94,7 +94,7 @@ export default function Header() {
             {/* Toimintakehote käänteisenä: valkoinen painike violetilla tekstillä (kontrasti 9.6:1) */}
             <a
               href={withBase(site.contact.href)}
-              className={`rounded-md bg-white px-5 py-3 font-semibold text-accent transition hover:bg-lilac ${focusRing}`}
+              className={`whitespace-nowrap rounded-md bg-white px-4 py-3 font-semibold text-accent transition hover:bg-lilac xl:px-5 ${focusRing}`}
             >
               {site.contact.label}
             </a>
