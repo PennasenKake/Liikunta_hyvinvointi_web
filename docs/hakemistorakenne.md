@@ -20,10 +20,6 @@ Liikunta_hyvinvointi_web/
 │   │   ├── tahkon-amanda-logo-tausta.svg / .png  ✅ Violetilla neliötaustalla (profiilikuvat)
 │   │   ├── logo-merkki.svg            ✅ Ympyrä ja vuoristo ilman tekstejä (favicon)
 │   │   └── logo-512.png               ✅ 512 px rasteriversio
-│   ├── kuvitus/
-│   │   ├── tahko-hero.svg             ✅ Hero-kuvitus taivastaustalla
-│   │   ├── tahko-hero-lapinakyva.svg  ✅ Ilman taivasta (sama kuin site/public/tahko-hero.svg)
-│   │   └── tahko-hero.png             ✅ 4800 × 1400 px (some, esitykset)
 │   ├── mockups/                       🔒 Mockupit ja referenssikuvat (tekijänoikeudet)
 │   └── kuvat/                         🔒 Amandan valokuvat alkuperäiskoossa
 │
@@ -50,7 +46,7 @@ Liikunta_hyvinvointi_web/
 │   ├── e2e/savutesti.spec.ts          ✅ Playwright-savutestit
 │   ├── public/
 │   │   ├── kuvat/                     ✅ Sivun valokuvat (pienennetyt)
-│   │   ├── logo.svg, tahko-hero.svg   ✅ Logo ja Tahko-kuvitus
+│   │   ├── logo.svg                   ✅ Logo
 │   │   ├── koristeet/                ✅ Lootusmandalan neljä kerrosta (tausta, ulko- ja sisäkehä, keskus)
 │   │   └── icon.png, apple-icon.png, opengraph-image.png  ✅ Ikonit ja jakokuva
 │   └── src/

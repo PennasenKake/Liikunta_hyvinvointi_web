@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 
 export default function NotFound() {
   return (
-    // Vaaleansininen tausta, ja alatunnisteen Tahko-piirros näkyy heti alla:
+    // Vaaleansininen tausta, ja alatunnisteen lootusmandala näkyy heti alla:
     // kävijä tunnistaa olevansa yhä oikealla sivustolla.
     <main id="sisalto" tabIndex={-1} className="overflow-hidden bg-sky-soft py-20 outline-none">
       <div className="relative z-10 mx-auto flex max-w-2xl flex-col items-center gap-6 px-6 text-center">

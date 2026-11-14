@@ -3,10 +3,11 @@
 // Niiden alla kumppanit ja alarivi (tekijänoikeus, Y-tunnus, huomautus, takaisin ylös).
 // id="yhteystiedot": valikon Yhteystiedot-linkki vierittää tänne.
 // Värit samat kuin yläpalkissa, jolloin sivu alkaa ja päättyy logon väreihin.
-// Yläreunassa Tahko-piirros (entinen herokuva): rinnemaisema johdattaa alatunnisteeseen.
+// Yläreunassa lootusmandala nousee alatunnisteen takaa: sivu päättyy liikkeen ja levon symboliin.
 
 import Image from "@/components/ui/Image";
 import Link from "@/components/ui/Link";
+import LotusMandala from "@/components/ui/LotusMandala";
 import { site } from "@/lib/site";
 import { withBase } from "@/lib/paths";
 
@@ -23,11 +24,10 @@ const linkClass = "inline-block py-2 underline-offset-4 hover:underline";
 export default function Footer() {
   return (
     <>
-      {/* Tahko-piirros alatunnisteen yläreunassa. Koriste (aria-hidden, alt=""): sisältö on tekstissä.
-          object-cover + object-bottom: kapealla näytöllä reunoja rajataan, vuori ja rinteet pysyvät.
-          Kuva on leveä (2400 × 700), joten korkeus kasvaa näytön leveyden mukana (clamp). */}
-      <div aria-hidden="true" className="relative h-[clamp(180px,22vw,300px)] bg-surface">
-        <Image src={withBase("/tahko-hero.svg")} alt="" fill sizes="100vw" className="object-cover object-bottom" />
+      {/* Lootusmandala alatunnisteen yläreunassa, puoliksi näkyvissä kuin nouseva aurinko.
+          Kehät pyörivät hitaasti (LotusMandala). Koriste: ei tekstiä, joten kontrasti ei ole riski. */}
+      <div aria-hidden="true" className="relative isolate h-[clamp(230px,30vw,380px)] overflow-hidden bg-linear-to-b from-surface to-sand">
+        <LotusMandala className="-top-4 left-1/2 w-[min(78vw,470px)] -translate-x-1/2" />
       </div>
     <footer id="yhteystiedot" className="bg-linear-to-r from-royal to-accent px-6 pb-6 pt-16 text-white">
       <div className="mx-auto max-w-6xl">
