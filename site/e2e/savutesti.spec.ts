@@ -292,6 +292,13 @@ test.describe("Navigaatio", () => {
     await expect(page.locator("#hinnasto")).toBeInViewport();
   });
 
+  test("Yhteystiedot-linkki vierittää alatunnisteen yhteystietoihin", async ({ page, isMobile }) => {
+    await page.goto("/");
+    await clickNavLink(page, isMobile, "Yhteystiedot");
+    await expect(page).toHaveURL(/#yhteystiedot$/);
+    await expect(page.locator("#yhteystiedot")).toBeInViewport();
+  });
+
   test("Hyvinvointi-linkki vierittää Hyvinvointi-palstaan", async ({ page, isMobile }) => {
     await page.goto("/");
     await clickNavLink(page, isMobile, "Hyvinvointi");

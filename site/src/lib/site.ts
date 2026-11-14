@@ -24,6 +24,8 @@ export const site = {
     { label: "Hyvinvointi", href: "/#hyvinvointi" },
     { label: "Hinnasto", href: "/#hinnasto" },
     { label: "Minusta", href: "/#minusta" },
+    // Yhteystiedot ovat alatunnisteessa (id="yhteystiedot"): puhelin, sähköposti ja alueet
+    { label: "Yhteystiedot", href: "/#yhteystiedot" },
   ],
 
   // Alatunnisteen "Sivusto"-sarake: päävalikon kohdat ja muut etusivun osiot
@@ -49,7 +51,7 @@ export const site = {
   // Korostettu toimintakehote valikon lopussa. Erillään nav-listasta,
   // koska se tyylitellään painikkeeksi. Yksi paikka Headerille ja MobileMenulle.
   // Vie Tulevat tunnit -osioon, jossa jokaisella tunnilla on Ilmoittaudu-painike.
-  // Yhteystiedot löytyvät alatunnisteesta (footerNav) ja heron puhelinpainikkeesta.
+  // Yhteystiedot-linkki on päävalikossa (nav) ja vie alatunnisteeseen.
   contact: { label: "Ilmoittaudu tunnille", href: "/#kalenteri" },
 
   // TODO(Amanda): Instagram-tunnus. url: null = linkkiä ei vielä näytetä.
