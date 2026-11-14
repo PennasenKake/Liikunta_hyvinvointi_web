@@ -3,8 +3,8 @@
 // Niiden alla kumppanit ja alarivi (tekijänoikeus, Y-tunnus, huomautus, takaisin ylös).
 // id="yhteystiedot": valikon Yhteystiedot-linkki vierittää tänne.
 // Värit samat kuin yläpalkissa, jolloin sivu alkaa ja päättyy logon väreihin.
-// Yläreunassa lootusmandala nousee alatunnisteen takaa, ja sen sivuilta helminauhakoriste
-// kulkee reunoille: sivu päättyy liikkeen ja levon symboliin.
+// Yläpuolella vaakasuora koristenauha ja lootusmandala, joka nousee alatunnisteen takaa:
+// sivu päättyy liikkeen ja levon symboliin.
 
 import Image from "@/components/ui/Image";
 import Link from "@/components/ui/Link";
@@ -25,20 +25,15 @@ const linkClass = "inline-block py-2 underline-offset-4 hover:underline";
 export default function Footer() {
   return (
     <>
+      {/* Vaakasuora koristenauha: lootus keskellä, helminauhat ja riipukset molemmille sivuille.
+          Puhelimessa lyhyempi versio, jotta yksityiskohdat erottuvat. Koriste: ei tekstiä. */}
+      <div aria-hidden="true" className="bg-surface px-2 pb-2 pt-10 sm:px-4">
+        <img src={withBase("/koristeet/koriste-vaaka.svg")} alt="" width={1600} height={120} loading="lazy" decoding="async" className="mx-auto hidden h-auto w-full max-w-[1600px] sm:block" />
+        <img src={withBase("/koristeet/koriste-vaaka-kapea.svg")} alt="" width={560} height={120} loading="lazy" decoding="async" className="mx-auto h-auto w-full sm:hidden" />
+      </div>
       {/* Lootusmandala alatunnisteen yläreunassa, puoliksi näkyvissä kuin nouseva aurinko.
           Kehät pyörivät hitaasti (LotusMandala). Koriste: ei tekstiä, joten kontrasti ei ole riski. */}
       <div aria-hidden="true" className="relative isolate h-[clamp(230px,30vw,380px)] overflow-hidden bg-linear-to-b from-surface to-sand">
-        {/* Köynnöskoriste: helminauhat ja riipukset keskeltä reunoille, mandalan takana.
-            Puhelimessa leveämpänä (160 %), jotta reunojen riipukset erottuvat. */}
-        <img
-          src={withBase("/koristeet/koynnos.svg")}
-          alt=""
-          width={1600}
-          height={380}
-          loading="lazy"
-          decoding="async"
-          className="pointer-events-none absolute -left-[30%] top-0 -z-20 h-auto w-[160%] max-w-none select-none sm:left-0 sm:w-full"
-        />
         <LotusMandala className="-top-4 left-1/2 w-[min(78vw,470px)] -translate-x-1/2" />
       </div>
     <footer id="yhteystiedot" className="bg-linear-to-r from-royal to-accent px-6 pb-6 pt-16 text-white">
