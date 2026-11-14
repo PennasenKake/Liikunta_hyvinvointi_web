@@ -187,7 +187,7 @@ html {
 .breath-dynamic, .breath-end { display: none; }
 .breath-end.is-on { display: block; }
 @media (prefers-reduced-motion: no-preference) {
-  html.has-js .breath-track { height: 380vh; }
+  html.has-js .breath-track { height: 520vh; } /* 4 hengitystä × (4+7+8): rauhallinen vieritystahti */
   html.has-js .breath-sticky { position: sticky; top: 0; min-height: 100vh; min-height: 100svh; align-content: center; }
   html.has-js .breath-dynamic { display: block; }
   html.has-js .breath-static { display: none; }

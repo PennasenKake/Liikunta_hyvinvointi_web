@@ -205,7 +205,7 @@ test.describe("Kuvat", () => {
 });
 
 test.describe("Hengähdä hetki", () => {
-  test("vieritys ohjaa hengitystä: lootus sulkeutuu ja avautuu, lopussa kutsu tunnille", async ({ page }) => {
+  test("vieritys ohjaa 4–7–8-hengitystä: sulkeutuu, pidätys, avautuu, lopussa kutsu tunnille", async ({ page }) => {
     await page.goto("/");
     const track = page.locator(".breath-track");
     const { top, travel } = await track.evaluate((el) => ({
@@ -216,11 +216,16 @@ test.describe("Hengähdä hetki", () => {
     const cue = page.locator(".breath-dynamic p").first();
     const p = () => page.locator("#hengitys").evaluate((el) => parseFloat(getComputedStyle(el).getPropertyValue("--p")));
 
-    await page.evaluate((y) => window.scrollTo(0, y), top + travel * (0.12 + 0.26 * 0.4));
+    // Ensimmäinen hengitys: 0.08 + 0.2125 × kohta (4–7–8: sisään 0–21 %, pidätä 21–58 %, ulos 58–100 %)
+    const at = (t: number) => top + travel * (0.08 + 0.2125 * t);
+    await page.evaluate((y) => window.scrollTo(0, y), at(0.15));
     await expect(cue).toHaveText("Hengitä sisään");
-    expect(await p()).toBeLessThan(0.3);
 
-    await page.evaluate((y) => window.scrollTo(0, y), top + travel * (0.12 + 0.26 * 0.95));
+    await page.evaluate((y) => window.scrollTo(0, y), at(0.4));
+    await expect(cue).toHaveText("Pidätä");
+    expect(await p()).toBeLessThan(0.2);
+
+    await page.evaluate((y) => window.scrollTo(0, y), at(0.98));
     await expect(cue).toHaveText("Hengitä ulos");
     expect(await p()).toBeGreaterThan(0.9);
 
@@ -235,7 +240,7 @@ test.describe("Hengähdä hetki", () => {
     await expect(page.locator(".breath-static")).toBeVisible();
     await expect(page.locator(".breath-dynamic")).toBeHidden();
     const h = await page.locator(".breath-track").evaluate((el) => el.offsetHeight);
-    expect(h).toBeLessThan(1600);
+    expect(h).toBeLessThan(1800);
     await context.close();
   });
 });

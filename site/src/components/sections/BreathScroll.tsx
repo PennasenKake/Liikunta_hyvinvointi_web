@@ -1,6 +1,6 @@
 // BreathScroll.tsx: "Hengähdä hetki" – vieritykseen sidottu hengitysharjoitus.
-// Kävijä vierittää hitaasti, ja lootus ohjaa hengitystä: sulkeutuu sisäänhengityksessä,
-// avautuu uloshengityksessä. Kolme hengitystä, sitten kutsu tunnille.
+// Kävijä vierittää hitaasti, ja lootus ohjaa 4–7–8-hengitystä: sulkeutuu sisäänhengityksessä (4),
+// pysyy kiinni pidätyksen ajan (7) ja avautuu uloshengityksessä (8). Neljä hengitystä, sitten kutsu tunnille.
 //
 // Toteutus:
 // - Osio on korkea (index.css: .breath-track), ja sen sisällä lootus pysyy paikallaan (sticky).
@@ -19,9 +19,10 @@ import { BREATHS, PETAL_BASE, PETALS, beads, breathState, innerRing, outerRing, 
 import { withBase } from "@/lib/paths";
 
 const CUES: Record<BreathPhase, { title: string; sub: string }> = {
-  alku: { title: "Pysähdy hetkeksi", sub: "Vieritä hitaasti. Kun kukka sulkeutuu, hengitä sisään. Kun se avautuu, hengitä ulos." },
-  sisaan: { title: "Hengitä sisään", sub: "Lootus sulkeutuu" },
-  ulos: { title: "Hengitä ulos", sub: "Päästä irti, lootus avautuu" },
+  alku: { title: "Pysähdy hetkeksi", sub: "Vieritä hitaasti lootuksen tahdissa. Hengitä sisään, pidätä ja hengitä ulos." },
+  sisaan: { title: "Hengitä sisään", sub: "Nenän kautta hiljaa, laske neljään" },
+  pidata: { title: "Pidätä", sub: "Lootus lepää kiinni, laske seitsemään" },
+  ulos: { title: "Hengitä ulos", sub: "Suun kautta hitaasti, laske kahdeksaan" },
   loppu: { title: "Hyvä.", sub: "Tämä on lepoa. Keho tarvitsee sitä yhtä paljon kuin liikettä." },
 };
 
@@ -166,8 +167,8 @@ export default function BreathScroll() {
               Hengähdä hetki
             </h2>
             <p className="breath-intro mb-6 max-w-[46ch] text-lg leading-relaxed text-ink-soft">
-              Vieritä hitaasti ja anna lootuksen ohjata hengitystä. Kun kukka sulkeutuu, hengitä sisään.
-              Kun se avautuu, hengitä ulos.
+              Rauhoittava 4–7–8-hengitys: sisään neljä, pidätä seitsemän, ulos kahdeksan.
+              Vieritä hitaasti ja anna lootuksen ohjata.
             </p>
 
             {/* Vierityksen mukana vaihtuva ohje (vain vieritystilassa) */}
@@ -192,9 +193,10 @@ export default function BreathScroll() {
             {/* Sama ohje listana: vähennetty liike ja ilman JavaScriptiä */}
             <ol className="breath-static list-decimal space-y-1.5 pl-5 text-[17px] text-ink-soft marker:font-semibold marker:text-accent">
               <li>Istu mukavasti ja rentouta hartiat.</li>
-              <li>Hengitä nenän kautta sisään rauhallisesti, noin neljä sekuntia.</li>
-              <li>Hengitä ulos hitaasti, noin kuusi sekuntia, ja päästä irti.</li>
-              <li>Toista kolme kertaa.</li>
+              <li>Hengitä nenän kautta sisään hiljaa ja laske neljään.</li>
+              <li>Pidätä hengitystä ja laske seitsemään.</li>
+              <li>Hengitä suun kautta ulos hitaasti ja laske kahdeksaan.</li>
+              <li>Toista neljä kertaa.</li>
             </ol>
 
             <p className={`breath-end mt-6 ${cue.phase === "loppu" ? "is-on" : ""}`}>
