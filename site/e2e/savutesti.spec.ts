@@ -42,12 +42,16 @@ test.describe("Etusivu", () => {
     await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
 
     // Tärkeimmät osiot löytyvät oikeassa järjestyksessä
-    for (const id of ["palvelut", "hinnasto", "minusta", "kalenteri", "instagram", "yhteystiedot"]) {
-      await expect(page.locator(`#${id}`)).toBeAttached();
-    }
+    const ids = ["palvelut", "miksi-liikkua", "hengitys", "kalenteri", "hinnasto", "minusta", "instagram", "yhteystiedot"];
+    for (const id of ids) await expect(page.locator(`#${id}`)).toBeAttached();
+    const tops = await Promise.all(ids.map((id) => page.locator(`#${id}`).evaluate((el) => el.getBoundingClientRect().top)));
+    expect([...tops].sort((a, b) => a - b)).toEqual(tops);
 
-    // Puhelinnumero on klikattava tel:-linkki
-    await expect(page.locator(`a[href="${site.phoneHref}"]`).first()).toBeVisible();
+    // Puhelinnumero on klikattava tel:-linkki (alatunniste), yhteydenotto sähköpostilla (hero)
+    await expect(page.locator(`a[href="${site.phoneHref}"]`).first()).toBeAttached();
+    const contact = page.locator("#top").getByRole("link", { name: "Ota yhteyttä" });
+    await expect(contact).toHaveAttribute("href", new RegExp(`^mailto:${site.email}\\?subject=`));
+    await expect(page.locator("#hinnasto").getByRole("link", { name: /Pyydä tarjous/ })).toHaveAttribute("href", /^mailto:.*Tarjouspyynt/);
 
     await page.waitForLoadState("networkidle"); // Odotetaan, että kuvat ym. ovat latautuneet
     expect(errors).toEqual([]);
@@ -205,42 +209,58 @@ test.describe("Kuvat", () => {
 });
 
 test.describe("Hengähdä hetki", () => {
-  test("vieritys ohjaa 4–7–8-hengitystä: avautuu, pysyy auki, sulkeutuu, lopussa kutsu tunnille", async ({ page }) => {
-    await page.goto("/");
-    const track = page.locator(".breath-track");
-    const { top, travel } = await track.evaluate((el) => ({
-      top: el.getBoundingClientRect().top + window.scrollY,
-      travel: el.offsetHeight - window.innerHeight,
-    }));
-    expect(travel).toBeGreaterThan(0);
-    const cue = page.locator(".breath-dynamic p").first();
-    const p = () => page.locator("#hengitys").evaluate((el) => parseFloat(getComputedStyle(el).getPropertyValue("--p")));
+  test("ajastettu 4–7–8: teksti, laskuri ja kukka tahdissa, lopussa kutsu tunnille", async ({ page }) => {
+    await page.clock.install(); // Kello hallintaan: rAF ja performance.now etenevät vain käskystä
+    await page.goto("/#hengitys");
+    const section = page.locator("#hengitys");
+    const p = () => section.evaluate((el) => parseFloat(getComputedStyle(el).getPropertyValue("--p")));
+    const title = section.locator("[aria-live] p").first();
 
-    // Ensimmäinen hengitys: 0.08 + 0.2125 × kohta (4–7–8: sisään 0–21 %, pidätä 21–58 %, ulos 58–100 %)
-    const at = (t: number) => top + travel * (0.08 + 0.2125 * t);
-    await page.evaluate((y) => window.scrollTo(0, y), at(0.15));
-    await expect(cue).toHaveText("Hengitä sisään");
+    await section.getByRole("button", { name: /Aloita harjoitus/ }).click();
+    await page.clock.runFor(1000);
+    await expect(title).toHaveText("Valmistaudu");
 
-    await page.evaluate((y) => window.scrollTo(0, y), at(0.4));
-    await expect(cue).toHaveText("Pidätä");
-    expect(await p()).toBeGreaterThan(0.99);
-
-    await page.evaluate((y) => window.scrollTo(0, y), at(0.98));
-    await expect(cue).toHaveText("Hengitä ulos");
+    // Valmistautuminen 3 s + sisään 2,5 s: kukka sulkeutumassa, laskuri 3
+    await page.clock.runFor(4500);
+    await expect(title).toHaveText("Hengitä sisään");
+    await expect(section.getByText("/ 4")).toBeVisible();
+    await expect(section.locator(".tabular-nums")).toHaveText("3");
+    // Pidätys (3 + 4 + 3 s): nuppu kiinni
+    await page.clock.runFor(4500);
+    await expect(title).toHaveText("Pidätä");
     expect(await p()).toBeLessThan(0.2);
+    // Uloshengityksen loppu (3 + 4 + 7 + 7,9 s): kukka lähes auki
+    await page.clock.runFor(11900);
+    await expect(title).toHaveText("Hengitä ulos");
+    expect(await p()).toBeGreaterThan(0.95);
 
-    await page.evaluate((y) => window.scrollTo(0, y), top + travel * 0.97);
+    // Loput kierrokset
+    await page.clock.runFor(60000);
     await expect(page.getByRole("link", { name: /Tule kokemaan koko tunti/ })).toBeVisible();
+    await expect(section.getByRole("button", { name: "Uudelleen" })).toBeVisible();
   });
 
-  test("vähennetty liike: tavallinen osio, ohjeet listana ja lootus auki", async ({ browser }) => {
+  test("Lopeta palauttaa alkutilaan ja kukan auki", async ({ page }) => {
+    await page.clock.install();
+    await page.goto("/#hengitys");
+    const section = page.locator("#hengitys");
+    await section.getByRole("button", { name: /Aloita harjoitus/ }).click();
+    await page.clock.runFor(8000);
+    await section.getByRole("button", { name: "Lopeta" }).click();
+    await expect(section.getByRole("button", { name: /Aloita harjoitus/ })).toBeVisible();
+    expect(await section.evaluate((el) => getComputedStyle(el).getPropertyValue("--p").trim())).toBe("1");
+  });
+
+  test("vähennetty liike: harjoitus toimii, kukka pysyy paikallaan", async ({ browser }) => {
     const context = await browser.newContext({ reducedMotion: "reduce" });
     const page = await context.newPage();
-    await page.goto("/");
-    await expect(page.locator(".breath-static")).toBeVisible();
-    await expect(page.locator(".breath-dynamic")).toBeHidden();
-    const h = await page.locator(".breath-track").evaluate((el) => el.offsetHeight);
-    expect(h).toBeLessThan(1800);
+    await page.clock.install();
+    await page.goto("/#hengitys");
+    const section = page.locator("#hengitys");
+    await section.getByRole("button", { name: /Aloita harjoitus/ }).click();
+    await page.clock.runFor(10000);
+    await expect(section.locator("[aria-live] p").first()).toHaveText("Pidätä");
+    expect(await section.evaluate((el) => getComputedStyle(el).getPropertyValue("--p").trim())).toBe("1");
     await context.close();
   });
 });

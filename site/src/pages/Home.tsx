@@ -6,7 +6,7 @@ import Hero from "@/components/sections/Hero";
 import QuickLinks from "@/components/sections/QuickLinks";
 import Services from "@/components/sections/Services";
 import WhyMove from "@/components/sections/WhyMove";
-import BreathScroll from "@/components/sections/BreathScroll";
+import BreathExercise from "@/components/sections/BreathExercise";
 import Pricing from "@/components/sections/Pricing";
 import About from "@/components/sections/About";
 import Calendar from "@/components/sections/Calendar";
@@ -21,6 +21,8 @@ export default function Home() {
       {/* Rakennetieto (JSON-LD): kertoo Googlelle yrityksen nimen, yhteystiedot, palvelualueet
           ja palvelut. Ei näy sivulla. Testaus: search.google.com/test/rich-results */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(localBusinessJsonLd()) }} />
+      {/* Järjestys kävijän kysymysten mukaan: mitä (palvelut) → miksi (liike ja lepo, kokeile
+          hengitystä) → milloin (tulevat tunnit) → paljonko (hinnasto, tarjous) → kuka (Amanda) → somessa. */}
       <Hero />
       <QuickLinks />
       <Services />
@@ -28,14 +30,14 @@ export default function Home() {
       <TahkoLine id="palvelut-miksi" from="white" to="sky" shape="huiput" />
       <WhyMove />
       <TahkoLine id="miksi-hengitys" from="sky" to="sand" shape="tahko" />
-      {/* Hengähdä hetki: vierityksen ohjaama hengitysharjoitus (liike → lepo) */}
-      <BreathScroll />
-      <TahkoLine id="hengitys-hinnasto" from="sand" to="white" shape="harju" />
+      {/* Hengähdä hetki: ajastettu hengitysharjoitus (liike → lepo), lopuksi kutsu tunnille */}
+      <BreathExercise />
+      <TahkoLine id="hengitys-kalenteri" from="sand" to="white" shape="harju" />
+      <Calendar />
       <Pricing />
       <TahkoLine id="hinnasto-minusta" from="white" to="lilac-soft" shape="harju" flip />
       <About />
-      <TahkoLine id="minusta-kalenteri" from="lilac-soft" to="white" shape="huiput" flip />
-      <Calendar />
+      <TahkoLine id="minusta-instagram" from="lilac-soft" to="surface" shape="huiput" flip />
       <InstagramFeed />
     </main>
   );

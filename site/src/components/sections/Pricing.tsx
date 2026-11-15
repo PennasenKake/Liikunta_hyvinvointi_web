@@ -5,6 +5,8 @@
 import SectionHeading from "@/components/ui/SectionHeading";
 import { prices, pricingNote } from "@/lib/pricing";
 import LotusMandala from "@/components/ui/LotusMandala";
+import { quoteHref } from "@/lib/contact";
+import { site } from "@/lib/site";
 
 export default function Pricing() {
   return (
@@ -33,6 +35,25 @@ export default function Pricing() {
             </div>
           ))}
         </dl>
+
+        {/* Kysy tarjous: valmis sähköpostipohja (kuten Amandan vanhalla sivulla).
+            Osoite myös tekstinä, jos painike ei avaa sähköpostiohjelmaa. */}
+        <div data-reveal className="mt-12 rounded-2xl border border-border bg-lilac-soft/70 px-6 py-8 text-center sm:px-10">
+          <h3 className="font-serif text-[clamp(1.75rem,4vw,2.25rem)] font-semibold leading-tight">Kysy tarjous</h3>
+          <p className="mx-auto mt-2 max-w-[48ch] text-[17px] leading-relaxed text-ink-soft">
+            Yritykselle, ryhmälle tai omaan tapahtumaan. Kerro toiveesi, niin vastaan sähköpostilla ohjausten välissä.
+          </p>
+          <a
+            href={quoteHref}
+            className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent px-7 text-[17px] font-semibold text-white shadow-[0_10px_24px_rgba(78,49,146,0.25)] transition hover:opacity-90"
+          >
+            Pyydä tarjous sähköpostilla <span aria-hidden="true">→</span>
+          </a>
+          <p className="mt-4 text-[15px] text-muted">
+            tai kirjoita osoitteeseen{" "}
+            <a href={`mailto:${site.email}`} className="break-all font-semibold text-accent underline-offset-4 hover:underline">{site.email}</a>
+          </p>
+        </div>
       </div>
     </section>
   );
