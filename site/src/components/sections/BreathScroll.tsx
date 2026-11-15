@@ -1,6 +1,7 @@
 // BreathScroll.tsx: "Hengähdä hetki" – vieritykseen sidottu hengitysharjoitus.
-// Kävijä vierittää hitaasti, ja lootus ohjaa 4–7–8-hengitystä: sulkeutuu sisäänhengityksessä (4),
-// pysyy kiinni pidätyksen ajan (7) ja avautuu uloshengityksessä (8). Neljä hengitystä, sitten kutsu tunnille.
+// Kävijä vierittää hitaasti, ja lootus ohjaa 4–7–8-hengitystä (Andrew Weilin menetelmä).
+// Kukka seuraa keuhkoja: ensin tyhjennys (nupuksi), sitten avautuu sisäänhengityksessä (4),
+// pysyy auki pidätyksen ajan (7) ja sulkeutuu uloshengityksessä (8). Neljä hengitystä, sitten kutsu tunnille.
 //
 // Toteutus:
 // - Osio on korkea (index.css: .breath-track), ja sen sisällä lootus pysyy paikallaan (sticky).
@@ -19,10 +20,10 @@ import { BREATHS, PETAL_BASE, PETALS, beads, breathState, innerRing, outerRing, 
 import { withBase } from "@/lib/paths";
 
 const CUES: Record<BreathPhase, { title: string; sub: string }> = {
-  alku: { title: "Pysähdy hetkeksi", sub: "Vieritä hitaasti lootuksen tahdissa. Hengitä sisään, pidätä ja hengitä ulos." },
-  sisaan: { title: "Hengitä sisään", sub: "Nenän kautta hiljaa, laske neljään" },
-  pidata: { title: "Pidätä", sub: "Lootus lepää kiinni, laske seitsemään" },
-  ulos: { title: "Hengitä ulos", sub: "Suun kautta hitaasti, laske kahdeksaan" },
+  alku: { title: "Pysähdy hetkeksi", sub: "Puhalla ensin kaikki ilma ulos suun kautta. Vieritä sitten hitaasti lootuksen tahdissa." },
+  sisaan: { title: "Hengitä sisään", sub: "Nenän kautta hiljaa, suu kiinni. Laske neljään." },
+  pidata: { title: "Pidätä", sub: "Lootus lepää auki. Laske seitsemään." },
+  ulos: { title: "Hengitä ulos", sub: "Suun kautta pitkään huokaisten. Laske kahdeksaan." },
   loppu: { title: "Hyvä.", sub: "Tämä on lepoa. Keho tarvitsee sitä yhtä paljon kuin liikettä." },
 };
 
@@ -192,11 +193,11 @@ export default function BreathScroll() {
 
             {/* Sama ohje listana: vähennetty liike ja ilman JavaScriptiä */}
             <ol className="breath-static list-decimal space-y-1.5 pl-5 text-[17px] text-ink-soft marker:font-semibold marker:text-accent">
-              <li>Istu mukavasti ja rentouta hartiat.</li>
-              <li>Hengitä nenän kautta sisään hiljaa ja laske neljään.</li>
+              <li>Istu mukavasti, rentouta hartiat ja puhalla kaikki ilma ulos suun kautta.</li>
+              <li>Sulje suu ja hengitä nenän kautta sisään hiljaa, laske neljään.</li>
               <li>Pidätä hengitystä ja laske seitsemään.</li>
-              <li>Hengitä suun kautta ulos hitaasti ja laske kahdeksaan.</li>
-              <li>Toista neljä kertaa.</li>
+              <li>Hengitä suun kautta ulos pitkään huokaisten, laske kahdeksaan.</li>
+              <li>Toista neljä kertaa. Tahdin saa valita itse, kunhan suhde 4 : 7 : 8 säilyy.</li>
             </ol>
 
             <p className={`breath-end mt-6 ${cue.phase === "loppu" ? "is-on" : ""}`}>

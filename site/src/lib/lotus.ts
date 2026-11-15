@@ -65,8 +65,9 @@ export const stamens = range(17).map((i) => {
 // 4–7–8-hengitys: sisään 4, pidätä 7, ulos 8 (laskien). Vierityksen osuudet vastaavat samaa
 // suhdetta, joten rauhallisesti vierittäessä rytmi tuntuu oikealta.
 // Vierityksen eteneminen s (0–1) → kukan avautuminen p (0 = nuppu, 1 = auki) ja vaihe.
-// Rakenne: johdanto (kukka avautuu), 4 hengitystä (sisään: sulkeutuu, pidätä: pysyy kiinni,
-// ulos: avautuu), loppu.
+// Rakenne: johdanto (tyhjennä keuhkot: kukka sulkeutuu nupuksi), 4 hengitystä (sisään: avautuu,
+// pidätä: pysyy auki, ulos: sulkeutuu), loppu (kukka avautuu vielä kerran ja jää auki).
+// Kukka seuraa keuhkoja: täynnä = auki, tyhjä = nuppu.
 
 export const BREATHS = 4;
 export const RHYTHM = { sisaan: 4, pidata: 7, ulos: 8 } as const;
@@ -87,20 +88,24 @@ export function breathState(scroll: number): BreathState {
   const s = clamp(scroll);
   if (s < INTRO) {
     const t = s / INTRO;
-    return { p: CLOSED + (1 - CLOSED) * ease(t), phase: "alku", breath: 0, phaseProgress: t };
+    // Alkaa auki (sama kuin CSS:n oletus --p: 1, ei hyppäystä) ja sulkeutuu nupuksi
+    return { p: 1 - (1 - CLOSED) * ease(t), phase: "alku", breath: 0, phaseProgress: t };
   }
-  if (s >= 1 - OUTRO) return { p: 1, phase: "loppu", breath: BREATHS, phaseProgress: (s - (1 - OUTRO)) / OUTRO };
+  if (s >= 1 - OUTRO) {
+    const t = (s - (1 - OUTRO)) / OUTRO;
+    return { p: CLOSED + (1 - CLOSED) * ease(t), phase: "loppu", breath: BREATHS, phaseProgress: t };
+  }
   const per = (1 - INTRO - OUTRO) / BREATHS;
   const local = (s - INTRO) / per;
   const breath = Math.min(BREATHS - 1, Math.floor(local));
   const t = local - breath;
   if (t < IN_END) {
     const k = t / IN_END;
-    return { p: 1 - (1 - CLOSED) * ease(k), phase: "sisaan", breath: breath + 1, phaseProgress: k };
+    return { p: CLOSED + (1 - CLOSED) * ease(k), phase: "sisaan", breath: breath + 1, phaseProgress: k };
   }
   if (t < HOLD_END) {
-    return { p: CLOSED, phase: "pidata", breath: breath + 1, phaseProgress: (t - IN_END) / (HOLD_END - IN_END) };
+    return { p: 1, phase: "pidata", breath: breath + 1, phaseProgress: (t - IN_END) / (HOLD_END - IN_END) };
   }
   const k = (t - HOLD_END) / (1 - HOLD_END);
-  return { p: CLOSED + (1 - CLOSED) * ease(k), phase: "ulos", breath: breath + 1, phaseProgress: k };
+  return { p: 1 - (1 - CLOSED) * ease(k), phase: "ulos", breath: breath + 1, phaseProgress: k };
 }

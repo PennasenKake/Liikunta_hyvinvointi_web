@@ -3,8 +3,8 @@
 // Niiden alla kumppanit ja alarivi (tekijänoikeus, Y-tunnus, huomautus, takaisin ylös).
 // id="yhteystiedot": valikon Yhteystiedot-linkki vierittää tänne.
 // Värit samat kuin yläpalkissa, jolloin sivu alkaa ja päättyy logon väreihin.
-// Yläpuolella vaakasuora koristenauha ja lootusmandala, joka nousee alatunnisteen takaa:
-// sivu päättyy liikkeen ja levon symboliin.
+// Yläpuolella lootusmandala nousee alatunnisteen sinisestä reunasta, ja sen takana
+// vaakasuora koriste kulkee reunoille: sivu päättyy liikkeen ja levon symboliin.
 
 import Image from "@/components/ui/Image";
 import Link from "@/components/ui/Link";
@@ -25,16 +25,24 @@ const linkClass = "inline-block py-2 underline-offset-4 hover:underline";
 export default function Footer() {
   return (
     <>
-      {/* Vaakasuora koristenauha: lootus keskellä, helminauhat ja riipukset molemmille sivuille.
-          Puhelimessa lyhyempi versio, jotta yksityiskohdat erottuvat. Koriste: ei tekstiä. */}
-      <div aria-hidden="true" className="bg-surface px-2 pb-2 pt-10 sm:px-4">
-        <img src={withBase("/koristeet/koriste-vaaka.svg")} alt="" width={1600} height={120} loading="lazy" decoding="async" className="mx-auto hidden h-auto w-full max-w-[1600px] sm:block" />
-        <img src={withBase("/koristeet/koriste-vaaka-kapea.svg")} alt="" width={560} height={120} loading="lazy" decoding="async" className="mx-auto h-auto w-full sm:hidden" />
-      </div>
-      {/* Lootusmandala alatunnisteen yläreunassa, puoliksi näkyvissä kuin nouseva aurinko.
-          Kehät pyörivät hitaasti (LotusMandala). Koriste: ei tekstiä, joten kontrasti ei ole riski. */}
-      <div aria-hidden="true" className="relative isolate h-[clamp(230px,30vw,380px)] overflow-hidden bg-linear-to-b from-surface to-sand">
-        <LotusMandala className="-top-4 left-1/2 w-[min(78vw,470px)] -translate-x-1/2" />
+      {/* Lootusmandala nousee alatunnisteen sinisestä reunasta kuin aurinko: lootus alkaa
+          sinisen reunasta (translate-y-[26%]: alin 26 % mandalasta jää alatunnisteen taakse).
+          Vaakasuora koriste kulkee mandalan takana sen keskikohdan kautta reunoille.
+          Korkeus lasketaan mandalan leveydestä (800 × 820), jotta suhde pysyy kaikilla leveyksillä.
+          Koriste: ei tekstiä (aria-hidden). */}
+      <div aria-hidden="true" className="relative isolate h-[calc(min(78vw,470px)*0.76+2.5rem)] overflow-hidden bg-linear-to-b from-surface to-sand">
+        {/* Koriste mandalan keskikohdan korkeudella: mandalan keskipiste on noin 25 % sen korkeudesta
+            sinisen reunan yläpuolella. Puhelimessa leveämpi (rajautuu reunoista), jotta yksityiskohdat erottuvat. */}
+        <img
+          src={withBase("/koristeet/koriste-vaaka.svg")}
+          alt=""
+          width={1600}
+          height={120}
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute bottom-[calc(min(78vw,470px)*0.246)] left-1/2 -z-20 h-auto w-[240%] max-w-none -translate-x-1/2 translate-y-1/2 select-none sm:w-full sm:max-w-[1600px]"
+        />
+        <LotusMandala className="bottom-0 left-1/2 w-[min(78vw,470px)] -translate-x-1/2 translate-y-[26%]" />
       </div>
     <footer id="yhteystiedot" className="bg-linear-to-r from-royal to-accent px-6 pb-6 pt-16 text-white">
       <div className="mx-auto max-w-6xl">

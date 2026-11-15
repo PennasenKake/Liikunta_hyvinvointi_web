@@ -6,9 +6,9 @@ import { BREATHS, breathState } from "./lotus";
 const at = (n: number, t: number) => 0.08 + ((1 - 0.08 - 0.07) / BREATHS) * (n - 1 + t);
 
 describe("breathState (4–7–8)", () => {
-  it("alkaa nuppuna ja päättyy auki", () => {
-    expect(breathState(0).phase).toBe("alku");
-    expect(breathState(0).p).toBeLessThan(0.2);
+  it("alkaa auki, sulkeutuu nupuksi ennen ensimmäistä hengitystä ja päättyy auki", () => {
+    expect(breathState(0)).toMatchObject({ phase: "alku", p: 1 });
+    expect(breathState(0.0799).p).toBeLessThan(0.2);
     expect(breathState(1)).toMatchObject({ phase: "loppu", p: 1, breath: BREATHS });
   });
 
@@ -38,10 +38,10 @@ describe("breathState (4–7–8)", () => {
     expect(o / i).toBeCloseTo(8 / 4, 1);
   });
 
-  it("kukka on kiinni pidätyksen ajan ja auki uloshengityksen lopussa", () => {
-    expect(breathState(at(2, 0.4)).phase).toBe("pidata");
-    expect(breathState(at(2, 0.4)).p).toBeLessThan(0.2);
-    expect(breathState(at(2, 0.999)).p).toBeGreaterThan(0.95);
+  it("kukka seuraa keuhkoja: avautuu sisään, auki pidätyksen ajan, nupuksi uloshengityksen lopussa", () => {
+    expect(breathState(at(2, 0.01)).p).toBeLessThan(0.2);
+    expect(breathState(at(2, 0.4))).toMatchObject({ phase: "pidata", p: 1 });
+    expect(breathState(at(2, 0.999)).p).toBeLessThan(0.2);
   });
 
   it("liike on jatkuva (ei hyppäyksiä vaiheiden rajoilla)", () => {
