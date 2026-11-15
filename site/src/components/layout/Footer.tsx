@@ -11,6 +11,7 @@ import Link from "@/components/ui/Link";
 import LotusMandala from "@/components/ui/LotusMandala";
 import { site } from "@/lib/site";
 import { withBase } from "@/lib/paths";
+import { contactHref } from "@/lib/contact";
 
 // Sarakkeen otsikko. <h2>, jotta ruudunlukijan otsikkolistassa näkyvät alatunnisteen osat.
 function ColumnTitle({ children }: { children: React.ReactNode }) {
@@ -66,11 +67,12 @@ export default function Footer() {
             <p className="mt-5 max-w-xs leading-relaxed text-sky">
               Liikuntaa ja rentoutusta Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.
             </p>
+            {/* Sähköposti ensisijaisena: Amanda vastaa viesteihin ohjausten välissä */}
             <a
-              href={site.phoneHref}
+              href={contactHref}
               className="mt-5 inline-flex min-h-11 items-center rounded-md bg-white px-5 font-semibold text-accent transition hover:bg-lilac"
             >
-              Soita {site.phone}
+              Ota yhteyttä
             </a>
           </div>
 

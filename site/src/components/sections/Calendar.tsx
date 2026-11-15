@@ -8,6 +8,7 @@
 // - Jaa: puhelimen jakovalikko tai linkin kopiointi
 // Lopussa linkit koko kalenterin tilaamiseen (vain oikealla kalenterilla).
 
+import LotusMandala from "@/components/ui/LotusMandala";
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ShareButton from "./ShareButton";
@@ -76,7 +77,10 @@ export default function Calendar() {
   const subscribe = subscribeLinks();
 
   return (
-    <section id="kalenteri" className="bg-white px-6 py-24">
+    // relative isolate overflow-hidden: lootusmandala osion taakse, leikkautuu reunoihin
+    <section id="kalenteri" className="relative isolate overflow-hidden bg-white px-6 py-24">
+      {/* Lootusmandala oikeassa yläkulmassa, tekstipalstan ulkopuolella (puhelimessa pieni kulmassa) */}
+      <LotusMandala className="-right-24 -top-16 w-52 opacity-35 lg:-right-[220px] lg:top-10 lg:w-[460px] lg:opacity-40" />
       <div className="mx-auto max-w-4xl">
         <SectionHeading
           title="Tulevat tunnit"

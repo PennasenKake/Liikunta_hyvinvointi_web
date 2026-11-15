@@ -179,28 +179,11 @@ html {
   .lotus-mandala { display: none; }
 }
 
-/* ---------- Hengähdä hetki (BreathScroll.tsx) ----------
-   Vieritystila: osio on korkea ja sisältö pysyy paikallaan (sticky), kukka avautuu ja sulkeutuu
-   muuttujan --p mukaan (0 = nuppu, 1 = auki), kehät kiertyvät vierityksen --s mukaan.
-   Vain kun JavaScript toimii (html.has-js) eikä kävijä ole rajoittanut animaatioita:
-   muuten osio on tavallinen ja ohjeet näkyvät listana. */
-.breath-dynamic, .breath-end { display: none; }
-.breath-end.is-on { display: block; }
-@media (prefers-reduced-motion: no-preference) {
-  html.has-js .breath-track { height: 520vh; } /* 4 hengitystä × (4+7+8): rauhallinen vieritystahti */
-  html.has-js .breath-sticky { position: sticky; top: 0; min-height: 100vh; min-height: 100svh; align-content: center; }
-  html.has-js .breath-dynamic { display: block; }
-  html.has-js .breath-static { display: none; }
-  html.has-js .breath-end { display: block; opacity: 0; visibility: hidden; transition: opacity .5s, visibility .5s; }
-  html.has-js .breath-end.is-on { opacity: 1; visibility: visible; }
-}
-@media (prefers-reduced-motion: reduce) { .breath-end { display: block; } }
-html:not(.has-js) .breath-end { display: block; }
-@media (max-width: 1023px) {
-  html.has-js .breath-sticky { padding-top: 1.5rem; padding-bottom: 1.5rem; gap: 0.5rem; }
-  /* Puhelimessa sama ohje on jo vaihtuvassa tekstissä: lyhyempi näkymä mahtuu ruudulle */
-  html.has-js .breath-intro { display: none; }
-}
+/* ---------- Hengähdä hetki (BreathExercise.tsx) ----------
+   Ajastettu harjoitus asettaa muuttujat osiolle: --p = kukan avautuminen (1 = auki, pieni = nuppu),
+   --s = harjoituksen eteneminen (kehien kierto), --q = vaiheen eteneminen (palkki).
+   Ilman JavaScriptiä Aloita-painike piiloon: ohje näkyy listana. */
+html:not(.has-js) .breath-start { display: none; }
 .br-petal {
   transform-box: view-box;
   transform-origin: 400px 560px;

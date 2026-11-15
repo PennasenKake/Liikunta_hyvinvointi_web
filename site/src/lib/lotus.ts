@@ -62,50 +62,50 @@ export const stamens = range(17).map((i) => {
 });
 
 // --- Hengitysrytmi ---------------------------------------------------------------
-// 4–7–8-hengitys: sisään 4, pidätä 7, ulos 8 (laskien). Vierityksen osuudet vastaavat samaa
-// suhdetta, joten rauhallisesti vierittäessä rytmi tuntuu oikealta.
-// Vierityksen eteneminen s (0–1) → kukan avautuminen p (0 = nuppu, 1 = auki) ja vaihe.
-// Rakenne: johdanto (tyhjennä keuhkot: kukka sulkeutuu nupuksi), 4 hengitystä (sisään: avautuu,
-// pidätä: pysyy auki, ulos: sulkeutuu), loppu (kukka avautuu vielä kerran ja jää auki).
-// Kukka seuraa keuhkoja: täynnä = auki, tyhjä = nuppu.
+// 4–7–8-hengitys ajastettuna: sisään 4 s, pidätä 7 s, ulos 8 s. Neljä kierrosta.
+// Kukka kuvaa hengitystä: sisäänhengitys kokoaa terälehdet nupuksi, pidätys pitää nupun
+// kiinni ja uloshengitys avaa kukan. Ennen ensimmäistä kierrosta 3 s valmistautuminen
+// (puhalla ilmat ulos, kukka auki).
+// Teksti, laskuri ja kukka lasketaan samasta kellosta (breathAt), joten ne ovat aina tahdissa.
 
 export const BREATHS = 4;
+export const PREP = 3;
 export const RHYTHM = { sisaan: 4, pidata: 7, ulos: 8 } as const;
-const INTRO = 0.08;
-const OUTRO = 0.07;
-const CLOSED = 0.15;
-const TOTAL = RHYTHM.sisaan + RHYTHM.pidata + RHYTHM.ulos;
-const IN_END = RHYTHM.sisaan / TOTAL;
-const HOLD_END = (RHYTHM.sisaan + RHYTHM.pidata) / TOTAL;
+export const CLOSED = 0.12;
+const CYCLE = RHYTHM.sisaan + RHYTHM.pidata + RHYTHM.ulos;
+export const TOTAL = PREP + BREATHS * CYCLE;
 
-export type BreathPhase = "alku" | "sisaan" | "pidata" | "ulos" | "loppu";
-export type BreathState = { p: number; phase: BreathPhase; breath: number; phaseProgress: number };
+export type BreathPhase = "valmis" | "sisaan" | "pidata" | "ulos" | "loppu";
+export type BreathState = {
+  phase: BreathPhase;
+  breath: number; // monesko kierros (1–4), valmistautumisessa 0
+  count: number; // laskuri vaiheen sisällä: 1, 2, 3 …
+  length: number; // vaiheen pituus sekunteina
+  progress: number; // vaiheen eteneminen 0–1
+  p: number; // kukan avautuminen: 1 = auki, CLOSED = nuppu
+};
 
 const ease = (t: number) => 0.5 - Math.cos(Math.PI * t) / 2; // pehmeä alku ja loppu kuin hengityksessä
 const clamp = (n: number) => Math.min(1, Math.max(0, n));
 
-export function breathState(scroll: number): BreathState {
-  const s = clamp(scroll);
-  if (s < INTRO) {
-    const t = s / INTRO;
-    // Alkaa auki (sama kuin CSS:n oletus --p: 1, ei hyppäystä) ja sulkeutuu nupuksi
-    return { p: 1 - (1 - CLOSED) * ease(t), phase: "alku", breath: 0, phaseProgress: t };
+function phaseState(phase: BreathPhase, breath: number, length: number, t: number, p: number): BreathState {
+  return { phase, breath, length, progress: clamp(t / length), count: Math.min(length, Math.floor(t) + 1), p };
+}
+
+// seconds = aikaa harjoituksen alusta
+export function breathAt(seconds: number): BreathState {
+  const s = Math.max(0, seconds);
+  if (s < PREP) return phaseState("valmis", 0, PREP, s, 1);
+  if (s >= TOTAL) return { phase: "loppu", breath: BREATHS, count: 0, length: 0, progress: 1, p: 1 };
+  const local = s - PREP;
+  const breath = Math.floor(local / CYCLE);
+  const t = local - breath * CYCLE;
+  if (t < RHYTHM.sisaan) {
+    return phaseState("sisaan", breath + 1, RHYTHM.sisaan, t, 1 - (1 - CLOSED) * ease(t / RHYTHM.sisaan));
   }
-  if (s >= 1 - OUTRO) {
-    const t = (s - (1 - OUTRO)) / OUTRO;
-    return { p: CLOSED + (1 - CLOSED) * ease(t), phase: "loppu", breath: BREATHS, phaseProgress: t };
+  if (t < RHYTHM.sisaan + RHYTHM.pidata) {
+    return phaseState("pidata", breath + 1, RHYTHM.pidata, t - RHYTHM.sisaan, CLOSED);
   }
-  const per = (1 - INTRO - OUTRO) / BREATHS;
-  const local = (s - INTRO) / per;
-  const breath = Math.min(BREATHS - 1, Math.floor(local));
-  const t = local - breath;
-  if (t < IN_END) {
-    const k = t / IN_END;
-    return { p: CLOSED + (1 - CLOSED) * ease(k), phase: "sisaan", breath: breath + 1, phaseProgress: k };
-  }
-  if (t < HOLD_END) {
-    return { p: 1, phase: "pidata", breath: breath + 1, phaseProgress: (t - IN_END) / (HOLD_END - IN_END) };
-  }
-  const k = (t - HOLD_END) / (1 - HOLD_END);
-  return { p: 1 - (1 - CLOSED) * ease(k), phase: "ulos", breath: breath + 1, phaseProgress: k };
+  const u = t - RHYTHM.sisaan - RHYTHM.pidata;
+  return phaseState("ulos", breath + 1, RHYTHM.ulos, u, CLOSED + (1 - CLOSED) * ease(u / RHYTHM.ulos));
 }

@@ -17,6 +17,7 @@ import { site } from "@/lib/site";
 import { withBase } from "@/lib/paths";
 import HeroSlides from "./HeroSlides";
 import NextClass from "./NextClass";
+import { contactHref } from "@/lib/contact";
 
 // TODO(Amanda): koulutus ja kokemusvuodet (docs/sisalto.md). Hakasulkeissa = paikkamerkki.
 const trust = ["[Koulutus, esim. liikunnanohjaaja]", "[X] vuotta ohjaajana", site.areas.join(" · ")];
@@ -95,7 +96,7 @@ export default function HeroD() {
             Vesijumppaa, joogaa, HIIT-tunteja ja äänimaljarentoutusta Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.
           </p>
 
-          {/* Kaksi eri tehtävää: tunnit (pää) ja puhelu (mobiilissa yksi napautus) */}
+          {/* Kaksi eri tehtävää: tunnit (pää) ja yhteydenotto sähköpostilla */}
           <div className="mb-6 flex flex-col gap-3 sm:flex-row short:mb-4">
             <a
               href={withBase("/#kalenteri")}
@@ -103,15 +104,16 @@ export default function HeroD() {
             >
               Katso tulevat tunnit <span aria-hidden="true">→</span>
             </a>
+            {/* Yhteydenotto sähköpostilla: Amanda ei ehdi vastata puheluihin ohjausten aikana */}
             <a
-              href={site.phoneHref}
+              href={contactHref}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-white px-7 text-[17px] font-semibold text-accent transition hover:bg-lilac-soft"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z" />
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 7 9 6 9-6" />
               </svg>
-              <span className="sr-only">Soita: </span>
-              {site.phone}
+              Ota yhteyttä
             </a>
           </div>
 
