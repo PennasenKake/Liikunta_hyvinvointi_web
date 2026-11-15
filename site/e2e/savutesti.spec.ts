@@ -205,7 +205,7 @@ test.describe("Kuvat", () => {
 });
 
 test.describe("Hengähdä hetki", () => {
-  test("vieritys ohjaa 4–7–8-hengitystä: sulkeutuu, pidätys, avautuu, lopussa kutsu tunnille", async ({ page }) => {
+  test("vieritys ohjaa 4–7–8-hengitystä: avautuu, pysyy auki, sulkeutuu, lopussa kutsu tunnille", async ({ page }) => {
     await page.goto("/");
     const track = page.locator(".breath-track");
     const { top, travel } = await track.evaluate((el) => ({
@@ -223,11 +223,11 @@ test.describe("Hengähdä hetki", () => {
 
     await page.evaluate((y) => window.scrollTo(0, y), at(0.4));
     await expect(cue).toHaveText("Pidätä");
-    expect(await p()).toBeLessThan(0.2);
+    expect(await p()).toBeGreaterThan(0.99);
 
     await page.evaluate((y) => window.scrollTo(0, y), at(0.98));
     await expect(cue).toHaveText("Hengitä ulos");
-    expect(await p()).toBeGreaterThan(0.9);
+    expect(await p()).toBeLessThan(0.2);
 
     await page.evaluate((y) => window.scrollTo(0, y), top + travel * 0.97);
     await expect(page.getByRole("link", { name: /Tule kokemaan koko tunti/ })).toBeVisible();
