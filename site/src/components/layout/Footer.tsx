@@ -12,6 +12,7 @@ import LotusMandala from "@/components/ui/LotusMandala";
 import { site } from "@/lib/site";
 import { withBase } from "@/lib/paths";
 import { contactHref } from "@/lib/contact";
+import EmailText from "@/components/ui/EmailText";
 
 // Sarakkeen otsikko. <h2>, jotta ruudunlukijan otsikkolistassa näkyvät alatunnisteen osat.
 function ColumnTitle({ children }: { children: React.ReactNode }) {
@@ -101,9 +102,9 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  {/* break-all: pitkä osoite rivittyy kapealla näytöllä eikä aiheuta vaakavieritystä */}
-                  <a href={`mailto:${site.email}`} className={`${linkClass} break-all`}>
-                    {site.email}
+                  {/* EmailText: pitkä osoite rivittyy @-merkin kohdalta eikä aiheuta vaakavieritystä */}
+                  <a href={`mailto:${site.email}`} className={linkClass}>
+                    <EmailText email={site.email} />
                   </a>
                 </li>
                 <li>

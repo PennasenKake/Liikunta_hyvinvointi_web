@@ -12,6 +12,10 @@ export const site = {
   phone: "040 830 5914",          // Näytettävä muoto
   phoneHref: "tel:+358408305914", // Kansainvälinen muoto toimii kaikissa puhelimissa
   email: "amanda.taskinen@outlook.com",
+  // Ilmoittautumislomake (Microsoft Forms). Amanda tekee lomakkeen kuukausi tai sesonkiviikko
+  // kerrallaan; kun lomake vaihtuu, vaihdetaan vain tämä linkki. null = ilmoittautuminen sähköpostilla.
+  // Vastaukset (osallistujien nimet) jäävät Amandan Formsiin: niitä ei koskaan tuoda sivustolle.
+  signupForm: "https://forms.cloud.microsoft/r/SCYtDm1Ypb" as string | null,
   businessId: "3337574-9",
   areas: ["Tahko", "Siilinjärvi", "Kuopio", "Rautavaara"],
 

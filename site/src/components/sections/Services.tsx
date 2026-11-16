@@ -5,6 +5,7 @@
 // Osion rakenne on staattinen. Vain yksittäinen palvelurivi (ServiceItem) on
 // interaktiivinen, koska mobiilissa kuvaus avautuu klikkaamalla.
 
+import { bookingHref } from "@/lib/contact";
 import Link from "@/components/ui/Link";
 import { serviceCategories } from "@/lib/services";
 import ServiceItem from "./ServiceItem";
@@ -63,12 +64,13 @@ export default function Services() {
             >
               Katso tulevat tunnit
             </Link>
-            <Link
-              href="/#yhteystiedot"
+            {/* Ajanvaraus sähköpostilla: Amanda vastaa ohjausten välissä */}
+            <a
+              href={bookingHref}
               className="inline-flex min-h-12 items-center rounded-md border border-border px-6 font-semibold text-accent transition hover:bg-lilac-soft"
             >
               Varaa aika
-            </Link>
+            </a>
           </div>
         </div>
       </div>

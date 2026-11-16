@@ -164,10 +164,28 @@ export default function BreathExercise() {
   }, [status]);
 
   // Aloitus: osio ruudulle niin, että lootus ja ohje näkyvät yhtä aikaa (puhelimessa allekkain)
-  const start = () => {
-    sectionRef.current?.scrollIntoView({ block: "start" });
-    setStatus("running");
-  };
+  const start = () => setStatus("running");
+
+  // Aloituksen jälkeen (kun harjoitusnäkymä on piirretty): vieritetään niin, että lootus ja
+  // ohje näkyvät yhtä aikaa. Kapealla näytöllä lootuksen yläreuna heti yläpalkin alle,
+  // leveällä koko osio ruudun keskelle. Lasketaan vasta piirron jälkeen, koska näkymän
+  // korkeus muuttuu aloitettaessa (ohjelista vaihtuu laskuriin).
+  const artRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (status !== "running") return;
+    const section = sectionRef.current;
+    const art = artRef.current;
+    if (!section || !art) return;
+    const wide = window.matchMedia("(min-width: 1024px)").matches;
+    // Yläpalkin koko korkeus: palkki voi olla juuri piilossa (piiloutuu alas vieritettäessä),
+    // mutta palaa näkyviin, kun sivua vieritetään ylöspäin.
+    const header = document.querySelector("header")?.offsetHeight ?? 0;
+    const target = wide
+      ? section.getBoundingClientRect().top + window.scrollY - Math.max(0, (window.innerHeight - section.offsetHeight) / 2)
+      : art.getBoundingClientRect().top + window.scrollY - header - 12;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: target, behavior: reduce ? "auto" : "smooth" });
+  }, [status]);
 
   // Lopetus tai uusi aloitus: kukka takaisin auki
   const reset = (next: Status) => {
@@ -191,7 +209,7 @@ export default function BreathExercise() {
     >
       <div className="mx-auto grid max-w-6xl items-center gap-4 lg:min-h-[calc(100svh-12rem)] lg:grid-cols-[1fr_1.05fr] lg:gap-12">
         <div className="order-2 lg:order-1">
-          <p className="mb-1 font-serif text-[22px] italic text-accent">Kokeile nyt</p>
+          <p className={`mb-1 font-serif text-[22px] italic text-accent ${running ? "max-lg:hidden" : ""}`}>Kokeile nyt</p>
           <h2 id="hengitys-otsikko" className="mb-3 font-serif text-[clamp(2.25rem,5vw,3.25rem)] font-bold leading-[1.05]">
             Hengähdä hetki
           </h2>
@@ -266,7 +284,11 @@ export default function BreathExercise() {
           <p className="mt-5 text-sm text-muted">Jos alkaa huimata, palaa omaan rytmiisi.</p>
         </div>
 
-        <div className="breath-art order-1 mx-auto aspect-[800/820] w-full max-w-[min(520px,40svh)] lg:order-2 lg:max-w-[540px]">
+        {/* Harjoituksen aikana kapealla näytöllä pienempi lootus: kukka, laskuri ja ohje mahtuvat ruudulle */}
+        <div
+          ref={artRef}
+          className={`breath-art order-1 mx-auto aspect-[800/820] w-full lg:order-2 lg:max-w-[540px] ${running ? "max-w-[min(420px,33svh)]" : "max-w-[min(520px,40svh)]"}`}
+        >
           <Lotus />
         </div>
       </div>

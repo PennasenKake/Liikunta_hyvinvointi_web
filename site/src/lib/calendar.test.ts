@@ -40,9 +40,10 @@ describe("linkit", () => {
     expect(googleCalendarUrl(e)).toContain("dates=20261118T153000Z%2F20261118T164500Z");
   });
   it("ilmoittautuminen on valmiiksi täytetty sähköposti", () => {
-    const href = signupHref(e);
+    const href = signupHref(e, null);
     expect(href).toMatch(/^mailto:[^?]+\?subject=/);
     expect(decodeURIComponent(href)).toContain("Yin jooga");
+    expect(signupHref(e, "https://forms.example/x")).toBe("https://forms.example/x");
   });
   it("tunnin nimi löytää samannimisen palvelun", () => {
     expect(serviceHref("vesijumppa")).toBe("/#vesijumppa");

@@ -8,6 +8,7 @@
 // - Jaa: puhelimen jakovalikko tai linkin kopiointi
 // Lopussa linkit koko kalenterin tilaamiseen (vain oikealla kalenterilla).
 
+import { contactHref } from "@/lib/contact";
 import LotusMandala from "@/components/ui/LotusMandala";
 import { useEffect, useState } from "react";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -63,18 +64,40 @@ function AddToCalendar({ event }: { event: CalendarEvent }) {
   );
 }
 
+const VISIBLE = 5; // Montako tuntia näytetään ennen "Näytä kaikki" -painiketta
+
 export default function Calendar() {
   // Ensimmäinen piirto käyttää buildin hetkeä (sama kuin esirenderöidyssä HTML:ssä).
   // Selaimessa suodatetaan heti oikealla kellolla: jos sivu on rakennettu tunteja sitten,
   // jo päättyneet tunnit katoavat listasta.
   const [events, setEvents] = useState<CalendarEvent[]>(() => getUpcomingEvents());
+  // Puhelimessa kymmenen tunnin lista on pitkä: aluksi näytetään lähimmät, loput painikkeella.
+  // Ilman JavaScriptiä kaikki näkyvät (index.css: .cal-extra piilotetaan vain has-js-tilassa).
+  const [showAll, setShowAll] = useState(false);
   useEffect(() => {
     // Selaimen kello on ulkoinen järjestelmä, jota ei voi lukea renderöinnissä (hydraatio rikkoutuisi)
     // oxlint-disable-next-line react/set-state-in-effect
     setEvents((list) => filterUpcoming(list, Date.now()));
   }, []);
 
+  // Jakolinkki (#tunti-…) voi osoittaa piilossa olevaan tuntiin: avataan koko lista ja vieritetään.
+  // Sekä sivun avautuessa että kun osoitteen #-osa vaihtuu samalla sivulla.
+  useEffect(() => {
+    const reveal = () => {
+      const id = decodeURIComponent(location.hash.slice(1));
+      if (!id.startsWith("tunti-")) return;
+      if (document.getElementById(id)?.classList.contains("cal-extra")) {
+        setShowAll(true);
+        requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
+      }
+    };
+    reveal();
+    window.addEventListener("hashchange", reveal);
+    return () => window.removeEventListener("hashchange", reveal);
+  }, []);
+
   const subscribe = subscribeLinks();
+  const form = site.signupForm;
 
   return (
     // relative isolate overflow-hidden: lootusmandala osion taakse, leikkautuu reunoihin
@@ -84,18 +107,22 @@ export default function Calendar() {
       <div className="mx-auto max-w-4xl">
         <SectionHeading
           title="Tulevat tunnit"
-          intro="Ilmoittaudu tunnille, lisää se omaan kalenteriisi tai jaa ystävälle."
+          intro={
+            form
+              ? "Ilmoittaudu tunnille lomakkeella. Voit myös lisätä tunnin omaan kalenteriisi tai jakaa sen ystävälle."
+              : "Ilmoittaudu tunnille, lisää se omaan kalenteriisi tai jaa ystävälle."
+          }
         />
 
         {/* Tyhjä tila: jos tunteja ei ole, kerrotaan se selkeästi tyhjän listan sijaan */}
         {events.length === 0 ? (
           <p className="rounded-xl border border-dashed border-border p-7 text-muted">
-            Tulevia tunteja ei ole juuri nyt kalenterissa. Kysy lisää:{" "}
-            <a href={site.phoneHref} className="font-semibold text-accent">{site.phone}</a>
+            Tulevia tunteja ei ole juuri nyt kalenterissa.{" "}
+            <a href={contactHref} className="font-semibold text-accent underline-offset-4 hover:underline">Kysy lisää sähköpostilla</a>
           </p>
         ) : (
           <ol className="flex flex-col gap-3.5">
-            {events.map((e) => {
+            {events.map((e, i) => {
               const d = dateParts(e.start);
               const service = serviceHref(e.title);
               return (
@@ -103,7 +130,7 @@ export default function Calendar() {
                   key={e.id}
                   id={`tunti-${e.id}`} // Jakolinkki osoittaa suoraan tähän tuntiin
                   data-reveal
-                  className="relative flex scroll-mt-28 flex-wrap items-center gap-x-5 gap-y-3 rounded-xl border border-line bg-surface px-5 py-5 sm:px-6"
+                  className={`${!showAll && i >= VISIBLE ? "cal-extra " : ""}relative flex scroll-mt-28 flex-wrap items-center gap-x-5 gap-y-3 rounded-xl border border-line bg-surface px-5 py-5 sm:px-6`}
                 >
                   {/* Päivämäärälaatta. <time> kertoo koneille (hakukoneet, kalenterit) tarkan ajan. */}
                   <time dateTime={e.start} className="flex w-16 shrink-0 flex-col items-center border-r border-line pr-5">
@@ -134,9 +161,14 @@ export default function Calendar() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <a href={signupHref(e)} className={`${btn} bg-accent text-white hover:opacity-90`}>
+                    {/* Forms avautuu uuteen välilehteen, jotta tuntilista jää auki taustalle */}
+                    <a
+                      href={signupHref(e)}
+                      {...(form ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className={`${btn} bg-accent text-white hover:opacity-90`}
+                    >
                       Ilmoittaudu
-                      <span className="sr-only">: {e.title} {formatShort(e.start)}</span>
+                      <span className="sr-only">: {e.title} {formatShort(e.start)}{form && " (lomake avautuu uuteen välilehteen)"}</span>
                     </a>
                     <AddToCalendar event={e} />
                     <ShareButton
@@ -149,6 +181,15 @@ export default function Calendar() {
               );
             })}
           </ol>
+        )}
+        {!showAll && events.length > VISIBLE && (
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="cal-more mt-4 inline-flex min-h-12 items-center gap-2 rounded-full border border-border bg-white px-6 font-semibold text-accent transition hover:bg-lilac-soft"
+          >
+            Näytä kaikki tunnit ({events.length})
+          </button>
         )}
 
         {/* Koko kalenterin tilaus: kävijän kalenteri päivittää uudet tunnit itse */}

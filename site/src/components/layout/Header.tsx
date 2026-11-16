@@ -83,7 +83,7 @@ export default function Header() {
                 {/* Hover: alleviivaus värimuutoksen sijaan, koska valkoinen on jo vaalein sävy */}
                 <a
                   href={withBase(item.href)}
-                  className={`inline-block rounded-sm py-2 underline-offset-8 transition hover:underline ${focusRing}`}
+                  className={`inline-flex min-h-11 items-center rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}
                 >
                   {item.label}
                 </a>

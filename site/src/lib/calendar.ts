@@ -154,9 +154,10 @@ export function toIcs(e: CalendarEvent, siteUrl: string, stamp = toUtcStamp(cale
 }
 
 // --- Ilmoittautuminen ------------------------------------------------------------
-// Valmiiksi täytetty sähköposti: toimii kaikilla laitteilla (puhelin ja tietokone).
-// TODO(Amanda): ilmoittautumiskäytäntö (sähköposti, tekstiviesti, puhelu vai ei ilmoittautumista).
-export function signupHref(e: CalendarEvent) {
+// Ensisijaisesti Amandan Forms-lomake (site.signupForm): ilmoittautumiset kertyvät samaan
+// Exceliin kuin ennenkin. Jos lomaketta ei ole, valmiiksi täytetty sähköposti.
+export function signupHref(e: CalendarEvent, form: string | null = site.signupForm) {
+  if (form) return form;
   const subject = `Ilmoittautuminen: ${e.title} ${formatShort(e.start)}`;
   const body = `Hei Amanda,\n\nilmoittaudun tunnille ${e.title} (${formatShort(e.start)}, ${e.location}).\n\nNimi:\nPuhelin:\n`;
   return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;

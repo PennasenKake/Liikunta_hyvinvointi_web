@@ -52,7 +52,7 @@ export default function NavDropdown({ label, href, items, focusRing }: Props) {
       }}
     >
       <div className="flex items-center gap-0.5">
-        <a href={withBase(href)} className={`rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}>
+        <a href={withBase(href)} className={`inline-flex min-h-11 items-center rounded-sm underline-offset-8 transition hover:underline ${focusRing}`}>
           {label}
         </a>
         <button
@@ -61,7 +61,7 @@ export default function NavDropdown({ label, href, items, focusRing }: Props) {
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label={`${label}: näytä palvelut`}
-          className={`flex size-8 items-center justify-center rounded-sm ${focusRing}`}
+          className={`flex h-11 w-8 items-center justify-center rounded-sm ${focusRing}`}
         >
           <svg
             viewBox="0 0 24 24"

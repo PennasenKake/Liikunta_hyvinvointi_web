@@ -184,6 +184,10 @@ html {
    --s = harjoituksen eteneminen (kehien kierto), --q = vaiheen eteneminen (palkki).
    Ilman JavaScriptiä Aloita-painike piiloon: ohje näkyy listana. */
 html:not(.has-js) .breath-start { display: none; }
+
+/* Tulevat tunnit: lähimmät näkyvät, loput "Näytä kaikki" -painikkeella (vain kun JS toimii) */
+html.has-js .cal-extra { display: none; }
+html:not(.has-js) .cal-more { display: none; }
 .br-petal {
   transform-box: view-box;
   transform-origin: 400px 560px;

@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 
 export default function PrivacyPage() {
   return (
-    <LegalPage eyebrow="Tietosuoja" title="Tietosuojaseloste" updated="29.10.2026">
+    <LegalPage eyebrow="Tietosuoja" title="Tietosuojaseloste" updated="16.11.2026">
       <h2>1. Rekisterinpitäjä</h2>
       <p>
         {site.name}, Y-tunnus {site.businessId}. Tietosuoja-asiat:{" "}
@@ -51,6 +51,13 @@ export default function PrivacyPage() {
 
       <h2>6. Kolmannen osapuolen palvelut</h2>
       <ul>
+        <li>
+          {/* TODO(Amanda): tarkista lomakkeen kentät ja vastausten säilytysaika */}
+          <strong>Ilmoittautumislomake (Microsoft Forms):</strong> tunneille ilmoittaudutaan Microsoft Formsin
+          lomakkeella. Lomakkeeseen antamasi tiedot tallentuvat {site.name}n Microsoft-tilille, ja Microsoft
+          käsittelee niitä palvelun tarjoajana. Vastauksia käytetään vain ilmoittautumisten hoitamiseen, eikä
+          niitä julkaista sivustolla.
+        </li>
         <li>
           <strong>Lisää kalenteriin -linkki (Google Kalenteri):</strong> linkki avaa Google Kalenterin uuteen
           välilehteen. Siihen asti tietoja ei lähetetä Googlelle.

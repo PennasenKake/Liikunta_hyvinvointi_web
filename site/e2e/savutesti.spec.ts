@@ -293,7 +293,11 @@ test.describe("Kalenteri", () => {
     const ends = await page.locator("#kalenteri time").evaluateAll((els) => els.map((el) => el.getAttribute("datetime")));
     for (const start of ends) expect(new Date(start!).getTime()).toBeGreaterThan(Date.now() - 4 * 3_600_000);
 
-    await expect(first.getByRole("link", { name: /^Ilmoittaudu/ })).toHaveAttribute("href", new RegExp(`^mailto:${site.email}`));
+    // Ilmoittautuminen Amandan Forms-lomakkeella uudessa välilehdessä
+    const signup = first.getByRole("link", { name: /^Ilmoittaudu/ });
+    await expect(signup).toHaveAttribute("href", site.signupForm!);
+    await expect(signup).toHaveAttribute("target", "_blank");
+    await expect(signup).toHaveAttribute("rel", /noopener/);
 
     // "+ Kalenteriin" avaa valikon; .ics-tiedosto on olemassa ja oikeaa muotoa
     await first.getByText("+ Kalenteriin").click();
@@ -304,6 +308,24 @@ test.describe("Kalenteri", () => {
     expect(await res.text()).toMatch(/^BEGIN:VCALENDAR\r\n[\s\S]*BEGIN:VEVENT/);
 
     await expect(first.getByRole("button", { name: /Jaa/ })).toBeVisible();
+  });
+
+  test("aluksi viisi lähintä tuntia, loput Näytä kaikki -painikkeella", async ({ page }) => {
+    await page.goto("/#kalenteri");
+    const items = page.locator("#kalenteri ol > li");
+    const total = await items.count();
+    test.skip(total <= 5, "Kalenterissa on enintään viisi tuntia");
+    await expect(items.filter({ visible: true })).toHaveCount(5);
+    await page.getByRole("button", { name: `Näytä kaikki tunnit (${total})` }).click();
+    await expect(items.filter({ visible: true })).toHaveCount(total);
+  });
+
+  test("jakolinkki piilossa olevaan tuntiin avaa koko listan", async ({ page }) => {
+    await page.goto("/");
+    const ids = await page.locator("#kalenteri ol > li").evaluateAll((els) => els.map((el) => el.id));
+    test.skip(ids.length <= 5, "Kalenterissa on enintään viisi tuntia");
+    await page.goto(`/#${ids.at(-1)}`);
+    await expect(page.locator(`#${ids.at(-1)}`)).toBeInViewport();
   });
 
   test("hero nostaa seuraavan tunnin, joka löytyy kalenterista", async ({ page }) => {
