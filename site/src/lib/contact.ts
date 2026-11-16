@@ -17,6 +17,12 @@ export const contactHref = mailtoHref(
   "Hei Amanda,\n\n[Kirjoita viestisi tähän]\n\nNimi:\nPuhelin (jos haluat soiton):\n",
 );
 
+// Ajanvaraus yksilöpalveluihin (Palvelut-osion "Varaa aika")
+export const bookingHref = mailtoHref(
+  "Ajanvaraus",
+  "Hei Amanda,\n\nhaluaisin varata ajan.\n\nPalvelu (Personal Training / InBody-mittaus / rentoutus):\nToivottu ajankohta:\nPaikkakunta:\n\nNimi:\nPuhelin:\n",
+);
+
 // Tarjouspyyntö (hinnasto): yritykset, ryhmät ja yksityistunnit
 export const quoteHref = mailtoHref(
   "Tarjouspyyntö",

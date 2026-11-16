@@ -7,6 +7,7 @@ import { prices, pricingNote } from "@/lib/pricing";
 import LotusMandala from "@/components/ui/LotusMandala";
 import { quoteHref } from "@/lib/contact";
 import { site } from "@/lib/site";
+import EmailText from "@/components/ui/EmailText";
 
 export default function Pricing() {
   return (
@@ -51,7 +52,7 @@ export default function Pricing() {
           </a>
           <p className="mt-4 text-[15px] text-muted">
             tai kirjoita osoitteeseen{" "}
-            <a href={`mailto:${site.email}`} className="break-all font-semibold text-accent underline-offset-4 hover:underline">{site.email}</a>
+            <a href={`mailto:${site.email}`} className="font-semibold text-accent underline-offset-4 hover:underline"><EmailText email={site.email} /></a>
           </p>
         </div>
       </div>

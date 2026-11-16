@@ -34,7 +34,8 @@ export default function About() {
         </div>
 
         {/* Kuva tai paikkamerkki. Molemmilla sama koko (h-[520px] → mobiilissa matalampi). */}
-        <div data-reveal className="min-w-0 grow basis-72">
+        {/* Tabletilla kuva rivittyy omalle rivilleen: max-w-md estää koko leveyden jättikuvan */}
+        <div data-reveal className="mx-auto w-full min-w-0 max-w-md grow basis-72 lg:mx-0 lg:max-w-none">
           {about.photo ? (
             <Image
               src={withBase(about.photo.src)}
