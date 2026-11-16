@@ -7,7 +7,7 @@
 // - Sulkeutuu: rastista, Esc-näppäimestä, tummennetun taustan klikkauksesta tai linkin valinnasta.
 // - Sivun vieritys on estetty, kun valikko on auki, jottei tausta liiku sormen alla.
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import type { ServiceIconName } from "@/lib/services";
@@ -20,14 +20,17 @@ export type MenuItem = {
   children?: { label: string; href: string; icon: ServiceIconName }[];
 };
 
-export default function MobileMenu({ items }: { items: MenuItem[] }) {
+// cta: korostettu toimintakehote valikon lopussa (site.contact, "Ilmoittaudu tunnille"), painikkeena eikä tavallisena rivinä
+export default function MobileMenu({ items, cta }: { items: MenuItem[]; cta?: { label: string; href: string } }) {
   // open = onko valikko auki. expanded = minkä kohdan alavalikko on auki (href tai null).
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   // Esc sulkee valikon, ja sivun vieritys estetään valikon ollessa auki.
   // Paluufunktio palauttaa vierityksen ja poistaa kuuntelijan, kun valikko suljetaan.
-  useEffect(() => {
+  // useLayoutEffect: kuuntelija on paikallaan heti valikon auettua (useEffect ajetaan Preactissa
+  // vasta seuraavassa ruudussa, jolloin heti painettu Esc jäisi huomaamatta).
+  useLayoutEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -157,6 +160,17 @@ export default function MobileMenu({ items }: { items: MenuItem[] }) {
               );
             })}
           </ul>
+          {cta && (
+            <div className="px-6 pb-6 pt-1">
+              <a
+                href={withBase(cta.href)}
+                onClick={close}
+                className="flex min-h-12 items-center justify-center rounded-full bg-accent px-6 text-lg font-semibold text-white shadow-[0_10px_24px_rgba(78,49,146,0.25)] transition hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                {cta.label}
+              </a>
+            </div>
+          )}
         </div>
       )}
     </div>

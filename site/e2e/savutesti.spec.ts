@@ -7,6 +7,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { site } from "../src/lib/site";
 import { serviceCategories } from "../src/lib/services";
+import AxeBuilder from "@axe-core/playwright";
 
 // Avaa navigaation linkin oikealla tavalla laitteen mukaan:
 // työpöydällä linkki näkyy suoraan, mobiilissa valikko pitää avata ensin.
@@ -157,8 +158,9 @@ test.describe("Hakukoneoptimointi", () => {
   test("etusivulla on rakennetieto palvelualueineen ja jakokuva", async ({ page }) => {
     await page.goto("/");
     // LocalBusiness-rakennetieto: kelvollinen JSON, kaikki palvelualueet ja palvelut mukana
-    const json = await page.locator('script[type="application/ld+json"]').textContent();
-    const data = JSON.parse(json ?? "{}");
+    const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const all = blocks.map((b) => JSON.parse(b));
+    const data = all.find((d) => d["@type"] === "LocalBusiness");
     expect(data["@type"]).toBe("LocalBusiness");
     expect(data.areaServed.map((a: { name: string }) => a.name)).toEqual(site.areas);
     const services = data.hasOfferCatalog.itemListElement.flatMap((c: { itemListElement: unknown[] }) => c.itemListElement);
@@ -167,8 +169,33 @@ test.describe("Hakukoneoptimointi", () => {
     // Jakokuva ja canonical täysinä osoitteina (entry-server.tsx: head())
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /^https?:\/\/.+opengraph-image/);
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https?:\/\/[^/]+\/?$/);
-    // Paikkakunnat taivutettuina, kuten otsikossa luontevasti lukee
-    await expect(page).toHaveTitle(/Tahkolla.*Siilinjärvellä.*Kuopiossa.*Rautavaaralla/);
+    // Sivusto (WebSite) viittaa yritykseen samalla tunnisteella
+    expect(all.find((d) => d["@type"] === "WebSite")?.publisher["@id"]).toBe(data["@id"]);
+    // Otsikossa ensin mitä ja missä, nimi lopussa; kuvauksessa kaikki neljä paikkakuntaa
+    await expect(page).toHaveTitle(/^Liikunta ja hyvinvointi Tahko.*\| Tahkon Amanda$/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Tahkolla.*Siilinjärvellä.*Kuopiossa.*Rautavaaralla/);
+  });
+
+  test("sivun rakenne: kieli, yksi canonical, otsikkotasot järjestyksessä ja kuvilla alt", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("html")).toHaveAttribute("lang", "fi");
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
+    // Otsikkotasot eivät hyppää yli (h2 → h4 ilman h3:a): ruudunlukija ja hakukone ymmärtävät rakenteen
+    const levels = await page.locator("h1, h2, h3, h4, h5, h6").evaluateAll((els) => els.map((el) => Number(el.tagName[1])));
+    expect(levels[0]).toBe(1);
+    for (let i = 1; i < levels.length; i++) expect(levels[i] - levels[i - 1], `otsikko ${i}`).toBeLessThanOrEqual(1);
+    // Jokaisella kuvalla on alt-määre (koristekuvalla tyhjä alt="")
+    expect(await page.locator("img:not([alt])").count()).toBe(0);
+  });
+
+  test("ikonit ja manifest löytyvät (Googlen hakutuloksen ikoni: 48 px:n monikerta)", async ({ page, request }) => {
+    await page.goto("/");
+    const icons = await page.locator('link[rel="icon"]').evaluateAll((els) => els.map((el) => [el.getAttribute("sizes"), (el as HTMLLinkElement).href]));
+    expect(icons.some(([sizes]) => Number(sizes?.split("x")[0]) % 48 === 0)).toBe(true);
+    for (const [, href] of icons) expect((await request.get(href!)).status()).toBe(200);
+    const manifest = await (await request.get(await page.locator('link[rel="manifest"]').evaluate((el) => (el as HTMLLinkElement).href))).json();
+    expect(manifest.icons.length).toBeGreaterThan(0);
+    expect(manifest.lang).toBe("fi");
   });
 
   test("tietosivujen otsikossa on sivun nimi ja yrityksen nimi", async ({ page }) => {
@@ -248,7 +275,8 @@ test.describe("Hengähdä hetki", () => {
     await page.clock.runFor(8000);
     await section.getByRole("button", { name: "Lopeta" }).click();
     await expect(section.getByRole("button", { name: /Aloita harjoitus/ })).toBeVisible();
-    expect(await section.evaluate((el) => getComputedStyle(el).getPropertyValue("--p").trim())).toBe("1");
+    // expect.poll: odotetaan lopputilaa, koska kuormitetulla koneella siivous voi ehtiä vasta seuraavaan ruutuun
+    await expect.poll(() => section.evaluate((el) => getComputedStyle(el).getPropertyValue("--p").trim())).toBe("1");
   });
 
   test("vähennetty liike: harjoitus toimii, kukka pysyy paikallaan", async ({ browser }) => {
@@ -446,6 +474,11 @@ test.describe("Navigaatio", () => {
     await page.keyboard.press("Escape");
     await expect(menu).toBeHidden();
 
+    // Valikon lopussa korostettu toimintakehote (painike, ei tavallinen rivi)
+    await menuButton.click();
+    await expect(menu.getByRole("link", { name: "Ilmoittaudu tunnille" })).toHaveAttribute("href", /#kalenteri$/);
+    await page.keyboard.press("Escape");
+
     await menuButton.click();
     await menu.getByRole("link", { name: "Minusta" }).click();
     await expect(menu).toBeHidden();
@@ -503,4 +536,19 @@ test.describe("Virhesivut", () => {
     await page.getByRole("link", { name: "Etusivulle" }).click();
     await expect(page).toHaveURL(/\/$/);
   });
+});
+
+// Automaattinen saavutettavuustarkistus (axe-core) kaikille sivuille: WCAG 2.0–2.2 A ja AA.
+// Saavutettavuusseloste lupaa tämän testauksen, joten testi pitää myös lupauksen totena.
+// Vähennetty liike: vierityspaljastuksen häivytys ei vääristä kontrastimittausta kesken animaation.
+test.describe("Saavutettavuus (axe-core)", () => {
+  for (const path of ["/", "/kayttoehdot/", "/tietosuoja/", "/evasteet/", "/saavutettavuus/", "/olematon-sivu"]) {
+    test(`ei WCAG-virheitä: ${path}`, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(path);
+      const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
+      const summary = result.violations.map((v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`);
+      expect(summary).toEqual([]);
+    });
+  }
 });

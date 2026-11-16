@@ -27,11 +27,26 @@ describe("reitit", () => {
 
   it("muiden kuin etusivun otsikossa on yrityksen nimi", () => {
     expect(fullTitle(findRoute("/kayttoehdot/"))).toBe("Käyttöehdot – Tahkon Amanda");
-    expect(fullTitle(findRoute("/"))).toMatch(/^Tahkon Amanda/);
+    // Etusivulla tärkein ensin (mitä + missä), yrityksen nimi lopussa
+    expect(fullTitle(findRoute("/"))).toMatch(/Tahko.*\| Tahkon Amanda$/);
   });
 
   it("hakukonekuvaukset ovat sopivan mittaisia (Google näyttää noin 160 merkkiä)", () => {
-    for (const r of routes) expect(r.description.length, r.path).toBeLessThanOrEqual(170);
+    for (const r of routes) {
+      expect(r.description.length, r.path).toBeLessThanOrEqual(170);
+      expect(r.description.length, r.path).toBeGreaterThanOrEqual(50); // Liian lyhyt: Google kirjoittaa oman
+    }
+  });
+
+  it("otsikot ovat yksilöllisiä ja mahtuvat hakutulokseen (noin 70 merkkiä)", () => {
+    const titles = routes.map(fullTitle);
+    expect(new Set(titles).size).toBe(titles.length);
+    for (const t of titles) expect(t.length, t).toBeLessThanOrEqual(70);
+  });
+
+  it("kuvaukset ovat yksilöllisiä (sama kuvaus monella sivulla heikentää hakutuloksia)", () => {
+    const d = routes.map((r) => r.description);
+    expect(new Set(d).size).toBe(d.length);
   });
 });
 

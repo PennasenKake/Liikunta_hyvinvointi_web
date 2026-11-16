@@ -1,6 +1,6 @@
 // QuickLinks.tsx: neljä pikalinkkiä heti Heron alla.
-// Kortit nousevat negatiivisella marginaalilla Heron kuvituksen päälle.
-// Työpöydällä vähemmän (-mt-8), jotta kuvituksen rantakylä jää näkyviin.
+// Kortit nousevat negatiivisella marginaalilla heron alareunan päälle (hero varaa tilan pb-24:llä).
+// Jokainen kortti vie palveluosion kohtaan (/#liikunta, /#personal-training …).
 
 import { serviceCategories } from "@/lib/services";
 import { withBase } from "@/lib/paths";

@@ -24,8 +24,11 @@ const CUES: Record<Exclude<BreathPhase, "loppu">, { title: string; sub: string }
   ulos: { title: "Hengitä ulos", sub: "Suun kautta pitkään huokaisten. Lootus avautuu." },
 };
 
+// Harjoituksen kesto Aloita-painikkeeseen ("1 min 19 s"), lasketaan rytmistä (lib/lotus.ts)
 const MINUTES = `${Math.floor(TOTAL / 60)} min ${TOTAL % 60} s`;
 
+// Tähdet mandalan ympärillä: [x, y, säde, viive]. Isot tähdet kultaisia, pienet valkoisia.
+// Kirkkaus seuraa kukan avautumista (index.css: .br-stars).
 const STARS: [number, number, number, number][] = [
   [300, 330, 6, 0.2], [500, 320, 5, 0.4], [340, 270, 4, 0.6], [462, 262, 4, 0.8],
   [575, 140, 12, 1], [235, 175, 9, 1.1], [620, 610, 10, 1.2], [180, 600, 8, 1.3],
@@ -51,6 +54,10 @@ function Petals({ list, fill }: { list: (typeof PETALS)["back"]; fill: string })
   );
 }
 
+// Lootus SVG:nä. Kerrokset takaa eteen: vaalea laikku → kultainen ulkokehä helmineen →
+// sisäkehä → tähdet → hehku → takimmaiset ja keskimmäiset terälehdet → heteet → etummaiset ja
+// alimmat terälehdet. Vain terälehdet, hehku, heteet ja tähdet reagoivat muuttujaan --p;
+// kehät kiertyvät harjoituksen edetessä (--s). Koordinaatisto 800 × 820, keskipiste (400, 410).
 function Lotus() {
   return (
     <svg viewBox="0 0 800 820" className="block size-full overflow-visible" aria-hidden="true" focusable="false">

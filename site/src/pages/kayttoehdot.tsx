@@ -29,8 +29,9 @@ export default function TermsPage() {
 
       <h2>3. Ajanvaraus ja maksaminen</h2>
       <p>
-        Ryhmätunneille ilmoittaudutaan ja yksilöpalvelut (Personal Training, InBody-mittaus) varataan puhelimitse,
-        sähköpostilla tai Instagram-viestillä. {/* TODO(Amanda): varausjärjestelmä, jos sellainen otetaan käyttöön */}
+        Ryhmätunneille ilmoittaudutaan sivuston Tulevat tunnit -osion ilmoittautumislomakkeella. Yksilöpalvelut
+        (Personal Training, InBody-mittaus) ja tarjoukset ryhmille ja yrityksille sovitaan sähköpostilla tai
+        puhelimitse.
         Maksutavat: [maksutavat]. Liikuntaedut, kuten ePassi, käyvät niissä palveluissa, joissa ne on mainittu.
       </p>
 

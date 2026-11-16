@@ -20,6 +20,10 @@ export default function CookiesPage() {
         <li>Sivuston omat tiedostot (teksti, kuvat, fontit) sivuston omalta palvelimelta.</li>
         <li>Fontit tulevat sivuston omalta palvelimelta, eivät Googlen palvelimilta.</li>
         <li>Kolmansien osapuolten sisältöjä ei ladata ilman, että painat linkkiä.</li>
+        <li>
+          Ilmoittautumislomake avautuu Microsoft Formsiin uuteen välilehteen. Siellä ovat voimassa Microsoftin omat
+          evästeet ja ehdot, eivät tämän sivuston.
+        </li>
       </ul>
 
       <h2>Jos tämä muuttuu</h2>

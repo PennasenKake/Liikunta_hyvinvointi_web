@@ -19,5 +19,12 @@ export const prices: PriceItem[] = [
   { name: "InBody-mittaus", detail: "Sisältää tulosten läpikäynnin", price: "[HINTA] €" },
 ];
 
+// Hinta numerona hakukoneiden rakennetietoa varten (lib/seo.ts): "25 €" → 25, "alk. 25,50 €" → 25.5.
+// Paikkamerkki tai teksti ilman lukua ("[HINTA] €", "Kysy") → null, jolloin hintaa ei ilmoiteta.
+export function priceValue(price: string): number | null {
+  const m = price.match(/(\d+(?:[.,]\d{1,2})?)\s*€/);
+  return m ? Number(m[1].replace(",", ".")) : null;
+}
+
 // Hinnaston alla näytettävä huomautus
 export const pricingNote = "Kysy myös yritys- ja ryhmätarjousta.";

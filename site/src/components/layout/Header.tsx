@@ -102,7 +102,7 @@ export default function Header() {
         </ul>
 
         {/* Mobiilivalikko näkyy vain alle lg-leveydellä (komponentti piilottaa itsensä) */}
-        <MobileMenu items={[...menu, site.contact]} />
+        <MobileMenu items={menu} cta={site.contact} />
       </nav>
     </HeaderShell>
   );

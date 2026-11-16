@@ -12,7 +12,8 @@ import About from "@/components/sections/About";
 import Calendar from "@/components/sections/Calendar";
 import InstagramFeed from "@/components/sections/InstagramFeed";
 import TahkoLine from "@/components/ui/TahkoLine";
-import { jsonLdString, localBusinessJsonLd } from "@/lib/seo";
+import { eventsJsonLd, jsonLdString, localBusinessJsonLd, websiteJsonLd } from "@/lib/seo";
+import { calendarSource, getUpcomingEvents } from "@/lib/calendar";
 
 export default function Home() {
   return (
@@ -21,6 +22,12 @@ export default function Home() {
       {/* Rakennetieto (JSON-LD): kertoo Googlelle yrityksen nimen, yhteystiedot, palvelualueet
           ja palvelut. Ei näy sivulla. Testaus: search.google.com/test/rich-results */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(localBusinessJsonLd()) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(websiteJsonLd()) }} />
+      {/* Tulevat tunnit tapahtumina (buildin hetken tilanne, päivittyy tunneittaisessa buildissa).
+          Vain oikeasta kalenterista: esimerkkitunteja ei saa ilmoittaa Googlelle tapahtumina. */}
+      {calendarSource === "google" && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(eventsJsonLd(getUpcomingEvents(20))) }} />
+      )}
       {/* Järjestys kävijän kysymysten mukaan: mitä (palvelut) → miksi (liike ja lepo, kokeile
           hengitystä) → milloin (tulevat tunnit) → paljonko (hinnasto, tarjous) → kuka (Amanda) → somessa. */}
       <Hero />

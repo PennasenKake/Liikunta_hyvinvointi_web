@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml/badge.svg)](https://github.com/PennasenKake/Liikunta_hyvinvointi_web/actions/workflows/ci.yml)
 
-> **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Vite, React-style components on Preact, TypeScript and Tailwind CSS v4, with every page prerendered to static HTML at build time (no server needed). Custom design with a hand-drawn SVG illustration of Tahko, scroll-driven animations and WCAG 2.1 AA accessibility. Covered by Vitest unit tests, Playwright smoke tests and GitHub Actions CI.
+> **EN:** Website for a wellness and fitness business in Tahko, Finland. Built with Vite, React-style components on Preact, TypeScript and Tailwind CSS v4, with every page prerendered to static HTML at build time (no server needed). Custom design with hand-drawn SVG lotus mandalas, a timed 4-7-8 breathing exercise, scroll-driven animations, local SEO (structured data, sitemap) and WCAG 2.1 AA accessibility. Covered by Vitest unit tests, Playwright smoke tests and GitHub Actions CI.
 
 Responsiivinen verkkosivusto liikunta- ja hyvinvointipalveluita tarjoavalle Tahkon Amandalle.
 Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
@@ -28,20 +28,24 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 **Sivun osat**
 - [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, alavalikot palveluihin, mobiilivalikko
-- [x] Hero kolmena versiona (A, B, C), valinta yhdellä asetuksella
+- [x] Hero neljänä versiona (A–D, käytössä D), valinta yhdellä asetuksella. Seuraava tunti nostettuna heroon
 - [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset, suorat linkit palveluihin (`/#vesijumppa`)
-- [x] Miksi liikkua, Hinnasto ja Minusta *(osin paikkamerkkisisältöä)*
-- [x] Tulevat tunnit: lisäys omaan kalenteriin ja jakaminen *(esimerkkidata)*
+- [x] Miksi liikkua, Hinnasto (Kysy tarjous) ja Minusta *(osin paikkamerkkisisältöä)*
+- [x] Hengähdä hetki: ajastettu 4–7–8-hengitysharjoitus, jossa lootus ohjaa rytmiä
+- [x] Tulevat tunnit Google-kalenterista (päivitys tunneittain), ilmoittautuminen Microsoft Formsilla, lisäys omaan kalenteriin ja jakaminen
+- [x] Yhteydenotot, tarjouspyynnöt ja ajanvaraus valmiiksi täytettyinä sähköposteina
 - [x] Instagram-karuselli nuolilla, pyyhkäisyllä ja näppäimistöllä *(väliaikaiset kuvat)*
-- [x] Alatunniste, jonka yläreunassa piirretty Tahko-maisema
+- [x] Alatunniste, jonka yläreunassa nouseva lootusmandala
 - [x] Käyttöehdot, tietosuojaseloste, evästeasetukset ja saavutettavuusseloste *(luonnokset)*
 - [x] Oma 404-sivu
 
 **Hakukoneet ja jakaminen**
 - [x] Jokainen sivu valmiina HTML:nä: Google näkee sisällön ilman JavaScriptiä
 - [x] Sivukohtainen otsikko, kuvaus, canonical-osoite ja Open Graph -jakokuva
-- [x] LocalBusiness-rakennetieto palvelualueineen ja palveluineen
-- [x] `sitemap.xml` ja `robots.txt` buildissa, esikatselutila (`VITE_NOINDEX=1`)
+- [x] LocalBusiness-, WebSite- ja Event-rakennetieto (palvelualue, palvelut, hinnat, tunnit)
+- [x] `sitemap.xml`, `robots.txt`, manifest ja hakutuloksen ikonit buildissa, esikatselutila (`VITE_NOINDEX=1`)
+- [x] Paikkamerkkivahti: `JULKAISU=1 npm run build` estää keskeneräisten tekstien julkaisun
+- Tarkemmin: [docs/seo.md](docs/seo.md)
 
 **Laatu**
 - [x] Saavutettavuus WCAG 2.1 AA: ohituslinkki, näppäimistötuki, kontrastit, liikkeen pysäytys ja `prefers-reduced-motion`
@@ -49,7 +53,7 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 **Tulossa**
 - [ ] Sisällön muokkaus kirjautumalla (Git-pohjainen CMS, esim. Sveltia)
-- [ ] Google-kalenterin tunnit ja Instagram-syöte
+- [ ] Instagram-syöte
 - [ ] Tuotantojulkaisu omaan verkkotunnukseen
 
 ## Miten sivu rakentuu
@@ -70,12 +74,12 @@ mihin tahansa staattiseen hostingiin (GitHub Pages, Cloudflare Pages, Netlify).
 ```
 ├── site/                  Sivusto (Vite + Preact, React-rajapinta)
 │   ├── e2e/               Playwright-savutestit
-│   ├── public/            Kuvat, logo, Tahko-kuvitus, ikonit, jakokuva
-│   ├── scripts/           prerender.mjs, build-pages.mjs, serve.mjs
+│   ├── public/            Kuvat, logo, lootuskoristeet, ikonit, jakokuva, _headers
+│   ├── scripts/           prerender.mjs, build-pages.mjs, serve.mjs, fetch-calendar.mjs, optimize-images.mjs
 │   └── src/
 │       ├── routes.tsx     Sivut, otsikot ja kuvaukset
 │       ├── pages/         Etusivu, lakisivut ja 404
-│       ├── components/    layout/ · sections/ (hero/: A, B, C) · ui/
+│       ├── components/    layout/ · sections/ (hero/: A–D) · ui/
 │       └── lib/           Sisältö ja apufunktiot
 ├── materiaalit/           Logo ja kuvitus (lähdetiedostot)
 ├── docs/                  Dokumentaatio
@@ -84,6 +88,8 @@ mihin tahansa staattiseen hostingiin (GitHub Pages, Cloudflare Pages, Netlify).
 
 Tarkempi rakenne: [docs/hakemistorakenne.md](docs/hakemistorakenne.md).
 Asiakkaalta odotettava sisältö: [docs/sisalto.md](docs/sisalto.md).
+Tuntikalenteri: [docs/kalenteri.md](docs/kalenteri.md). Hakukoneoptimointi: [docs/seo.md](docs/seo.md).
+Tietoturvatarkistus: [docs/tietoturvatarkistus.md](docs/tietoturvatarkistus.md). Ohjeet Amandalle: [docs/luovutus.md](docs/luovutus.md).
 
 ## Käynnistys paikallisesti
 
@@ -105,11 +111,14 @@ Sivu aukeaa osoitteeseen http://localhost:5173.
 | `node scripts/serve.mjs` | Tarjoilee `dist/`-kansion kuten oikea hosting, http://localhost:4173 |
 | `npm run test:e2e` | Savutestit selaimessa (tekee buildin itse) |
 | `npm run build:pages` | Build GitHub Pages -testiversiota varten |
+| `JULKAISU=1 npm run build` | Julkaisubuild: pysähtyy, jos tekstissä on paikkamerkkejä (`[HINTA]`) |
 
 Ennen ensimmäistä savutestien ajoa asenna testiselain: `npx playwright install chromium`.
 
-**Hero-versio** valitaan tiedostossa `site/src/lib/site.ts`: `heroVariant: "a" | "b" | "c"`
-(a = tumma tekstilaatikko, b = sulautuvat kuvat, c = liikkuva tausta).
+**Hero-versio** valitaan tiedostossa `site/src/lib/site.ts`: `heroVariant: "a" | "b" | "c" | "d"`
+(a = tumma tekstilaatikko, b = sulautuvat kuvat, c = liikkuva tausta, d = teksti vasemmalla ja vaihtuvat kuvat, käytössä).
+
+**Ilmoittautumislomake** vaihdetaan samassa tiedostossa: `signupForm` (Microsoft Forms -linkki, `null` = sähköposti).
 
 **Savutestit** ([`site/e2e/`](site/e2e/)) ajetaan työpöytä- ja mobiiliprofiililla. Ne tarkistavat mm. että
 etusivu latautuu ilman virheitä ja vaakavieritystä, navigaatio ja mobiilivalikko toimivat, tietosivut latautuvat,
@@ -122,7 +131,8 @@ ehdottaa päivitykset pull requesteina.
 
 ## Tietoturva
 
-- Staattinen sivu: ei palvelinta, tietokantaa, kirjautumista, lomakkeita eikä maksuja.
+- Staattinen sivu: ei palvelinta, tietokantaa, kirjautumista, omia lomakkeita eikä maksuja.
+  Ilmoittautumiset menevät Amandan Microsoft Formsiin, eikä osallistujien tietoja tuoda sivustolle.
 - Ainoa salaisuus on Google Calendar -avain, ja se on vain GitHubin salaisuuksissa ja buildissa,
   ei koskaan selaimessa. Avain on rajattu pelkkään Calendar API:in.
 - Tuotannon HTTP-otsakkeet (CSP, HSTS ym.) ja välimuistisäännöt: [`site/public/_headers`](site/public/_headers)

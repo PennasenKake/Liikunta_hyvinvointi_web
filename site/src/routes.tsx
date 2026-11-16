@@ -21,13 +21,15 @@ export type Route = {
   noindex?: boolean;       // true = ei hakukoneisiin eikä sitemapiin (404-sivu)
 };
 
-// Etusivun otsikossa paikkakunnat: paikallinen haku ("liikunta Siilinjärvi") löytää sivun
+// Hakutuloksen otsikko näkyy noin 60 merkkiin asti: tärkein (mitä + missä) alkuun, nimi loppuun.
+// Kaikki neljä paikkakuntaa ovat kuvauksessa, rakennetiedossa (areaServed) ja sivun tekstissä.
+// Kuvaus enintään noin 155 merkkiä, lopussa toimintakehote.
 export const routes: Route[] = [
   {
     path: "/",
-    title: "Tahkon Amanda – Liikunta ja hyvinvointi Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla",
+    title: "Liikunta ja hyvinvointi Tahko, Kuopio, Siilinjärvi | Tahkon Amanda",
     description:
-      "Vesijumppaa, HIIT:iä, personal trainingia, äänimaljarentoutusta, yin joogaa ja InBody-mittauksia Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.",
+      "Vesijumppa, HIIT, jooga, äänimaljarentoutus ja personal training Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla. Katso tulevat tunnit ja ilmoittaudu.",
     Page: Home,
   },
   {
