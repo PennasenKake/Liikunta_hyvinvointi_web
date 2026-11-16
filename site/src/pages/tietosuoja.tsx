@@ -1,6 +1,8 @@
 // tietosuoja/page.tsx: tietosuojaseloste (reitti "/tietosuoja").
 // Kansion nimi määrää URL-osoitteen: app/tietosuoja/page.tsx → tahkonamanda.fi/tietosuoja.
-// LUONNOS: päivitetään, kun integraatiot (Google-kalenteri, Behold, CMS) otetaan käyttöön.
+// LUONNOS: Amanda tarkistaa kohdat TODO(Amanda) ennen julkaisua. Päivitä, kun uusia palveluita
+// kytketään (Instagram-syöte / Behold, CMS, oma yhteydenottolomake). Google-kalenterin tunnit haetaan
+// buildissa, eikä siinä käsitellä kävijöiden tietoja.
 
 import Link from "@/components/ui/Link";
 import LegalPage from "@/components/ui/LegalPage";

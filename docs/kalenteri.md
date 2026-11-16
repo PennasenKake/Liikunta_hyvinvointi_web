@@ -57,5 +57,10 @@ Silloin: Actions → Pages → *Enable workflow*. Tuotannossa (esim. Cloudflare 
 
 ## Ilmoittautuminen
 
-Painike *Ilmoittaudu* avaa valmiiksi täytetyn sähköpostin Amandalle (`lib/calendar.ts`, `signupHref`).
-TODO(Amanda): sopiiko sähköposti, vai tekstiviesti, puhelu tai ei ilmoittautumista lainkaan.
+Painike *Ilmoittaudu* avaa Amandan Microsoft Forms -lomakkeen uuteen välilehteen (`site.signupForm`
+tiedostossa `src/lib/site.ts`). Vastaukset kertyvät Amandan Formsiin ja Exceliin, eikä niitä tuoda sivustolle.
+Kun Amanda tekee uuden kuukauden lomakkeen, vain linkki vaihdetaan. Jos arvo on `null`, painike avaa
+valmiiksi täytetyn sähköpostin (`lib/calendar.ts`, `signupHref`).
+
+Tulevassa mallissa tunnit voidaan hakea Amandan omasta Excel-tiedostosta Google-kalenterin sijaan:
+vain aikataulu, ei koskaan Formsin vastauksia (osallistujien nimet).

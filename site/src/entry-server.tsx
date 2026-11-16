@@ -9,7 +9,7 @@ import { StrictMode } from "react";
 import { renderToString } from "react-dom/server";
 import App from "./App";
 import { routes, notFoundRoute, fullTitle, type Route } from "./routes";
-import { NOINDEX, SITE_ORIGIN } from "./lib/seo";
+import { GSC_VERIFICATION, NOINDEX, SITE_ORIGIN } from "./lib/seo";
 import { withBase } from "./lib/paths";
 
 // Sivun HTML merkkijonona (menee <div id="root">:n sisään)
@@ -44,8 +44,12 @@ export function head(route: Route): { title: string; tags: string } {
     `<meta property="og:image" content="${image}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
-    `<meta property="og:image:alt" content="Tahkon Amanda – liikunta ja hyvinvointi Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla. Piirros Tahkovuoresta rinteineen." />`,
+    `<meta property="og:image:type" content="image/png" />`,
+    `<meta property="og:image:alt" content="Tahkon Amanda, liikunta ja hyvinvointi: liike ja lepo, kokonainen hyvinvointi. Logo ja lootusmandala, paikkakunnat Tahko, Siilinjärvi, Kuopio ja Rautavaara." />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
+    // Google Search Consolen omistajuuden vahvistus metatagilla (vaihtoehto DNS-vahvistukselle).
+    // Arvo ympäristömuuttujasta VITE_GSC_VERIFICATION, ei koodiin: tyhjä = tagia ei tule.
+    GSC_VERIFICATION ? `<meta name="google-site-verification" content="${esc(GSC_VERIFICATION)}" />` : "",
   ]
     .filter(Boolean)
     .join("\n    ");
@@ -55,7 +59,8 @@ export function head(route: Route): { title: string; tags: string } {
 // Esirenderöinti tarvitsee nämä: reitit, 404-sivu ja tiedot sitemapia ja robots.txt:tä varten
 export { routes, notFoundRoute };
 export { SITE_ORIGIN, NOINDEX } from "./lib/seo";
+export { findPlaceholders } from "./lib/seo";
 export { CONTENT_UPDATED } from "./lib/seo";
 export { withBase } from "./lib/paths";
 export { stockPhotos } from "./lib/photos";
-export { getUpcomingEvents, toIcs } from "./lib/calendar";
+export { calendarSource, getUpcomingEvents, toIcs } from "./lib/calendar";

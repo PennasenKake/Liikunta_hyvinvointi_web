@@ -12,7 +12,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDATED, withBase, stockPhotos, getUpcomingEvents, toIcs } = await import(
+const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDATED, withBase, stockPhotos, getUpcomingEvents, toIcs, findPlaceholders, calendarSource } = await import(
   pathToFileURL(resolve("dist-ssr/entry-server.js")).href
 );
 
@@ -21,6 +21,12 @@ const { render, head, routes, notFoundRoute, SITE_ORIGIN, NOINDEX, CONTENT_UPDAT
 if (!NOINDEX && stockPhotos.length > 0) {
   const list = stockPhotos.map((p) => `  - ${p.src} (${p.stock.source})`).join("\n");
   throw new Error(`Tuotantobuildissa on kuvapankin paikkamerkkikuvia. Korvaa ne omilla kuvilla:\n${list}`);
+}
+
+// --- 0b. Kalenterivahti: julkaisubuildissa (JULKAISU=1) tuntien pitää tulla oikeasta Google-kalenterista.
+// Ilman GOOGLE_CALENDAR_ID/GOOGLE_API_KEY -salaisuuksia sivulle tulisivat esimerkkitunnit (scripts/fetch-calendar.mjs).
+if (process.env.JULKAISU === "1" && calendarSource !== "google") {
+  throw new Error("Julkaisubuildissa on esimerkkitunnit. Lisää GOOGLE_CALENDAR_ID ja GOOGLE_API_KEY (docs/kalenteri.md).");
 }
 
 // Tyylit suoraan HTML:ään (<style>): selaimen ei tarvitse odottaa erillistä CSS-tiedostoa ennen
@@ -33,6 +39,9 @@ if (cssLink) {
   const css = (await readFile(cssFile, "utf-8")).replace(/<\/style/gi, "<\\/style");
   template = template.replace(cssLink[0], () => `<style>${css}</style>`);
 }
+// Manifest tehdään vasta tässä skriptissä (kohta 3b), joten Vite ei tunne sitä eikä lisää
+// osoitteeseen alipolkua (GitHub Pages). Lisätään se itse.
+template = template.replace('href="/site.webmanifest"', () => `href="${withBase("/site.webmanifest")}"`);
 for (const marker of ["<!--app-head-->", "<!--app-html-->", "<title>"]) {
   if (!template.includes(marker)) throw new Error(`dist/index.html:stä puuttuu ${marker}`);
 }
@@ -56,10 +65,23 @@ async function write(file, content) {
 }
 
 // --- 1. Sivut ---
+// Paikkamerkkivahti: oikeaan osoitteeseen ei saa julkaista keskeneräisiä tekstejä ("[HINTA]", "[Paikka]"),
+// koska ne näkyisivät myös Googlen hakutuloksissa. Tavallinen build (CI, testit, GitHub Pages) vain
+// listaa paikkamerkit muistutukseksi. Tuotantojulkaisu ajetaan muuttujalla JULKAISU=1, jolloin build
+// pysähtyy, jos yksikin paikkamerkki on jäljellä:  JULKAISU=1 npm run build
+const placeholders = new Map();
 for (const route of routes) {
   const file = route.path === "/" ? "dist/index.html" : `dist${route.path}index.html`;
-  await write(file, page(route, render(route.path)));
+  const html = render(route.path);
+  for (const p of findPlaceholders(html)) placeholders.set(p, [...(placeholders.get(p) ?? []), route.path]);
+  await write(file, page(route, html));
   console.log(`esirenderöity ${route.path} → ${file}`);
+}
+
+if (placeholders.size > 0) {
+  const list = [...placeholders].map(([p, paths]) => `  ${p} (${[...new Set(paths)].join(", ")})`).join("\n");
+  if (process.env.JULKAISU === "1") throw new Error(`Julkaisubuildissa on paikkamerkkejä. Täydennä tekstit ennen julkaisua:\n${list}`);
+  console.log(`Muistutus: ${placeholders.size} paikkamerkkiä odottaa sisältöä:\n${list}`);
 }
 
 // --- 2. 404-sivu: hosting näyttää tämän tuntemattomille osoitteille (GitHub Pages, Netlify, Cloudflare) ---
@@ -73,7 +95,8 @@ if (NOINDEX) {
   await write("dist/robots.txt", "User-agent: *\nDisallow: /\n");
   console.log("robots.txt: indeksointi kielletty (esikatselu)");
 } else {
-  await write("dist/robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
+  // /tunnit/: kalenteritiedostot (.ics) eivät ole hakutuloksiin tarkoitettuja sivuja
+  await write("dist/robots.txt", `User-agent: *\nAllow: /\nDisallow: ${withBase("/tunnit/")}\n\nSitemap: ${base}/sitemap.xml\n`);
   const urls = routes
     .filter((r) => !r.noindex)
     .map(
@@ -87,6 +110,30 @@ if (NOINDEX) {
   );
   console.log("robots.txt ja sitemap.xml kirjoitettu");
 }
+
+// --- 3b. Web-sovelluksen manifest (Androidin "Lisää aloitusnäyttöön" ja selaimen ikonit) ---
+// Tehdään buildissa eikä public/-kansiossa, koska osoitteet riippuvat alipolusta (GitHub Pages).
+await write(
+  "dist/site.webmanifest",
+  JSON.stringify(
+    {
+      name: "Tahkon Amanda – Liikunta ja hyvinvointi",
+      short_name: "Tahkon Amanda",
+      lang: "fi",
+      start_url: withBase("/"),
+      scope: withBase("/"),
+      display: "browser",
+      background_color: "#fbfafe",
+      theme_color: "#1a44ae",
+      icons: [
+        { src: withBase("/icon-192.png"), sizes: "192x192", type: "image/png" },
+        { src: withBase("/icon.png"), sizes: "512x512", type: "image/png" },
+      ],
+    },
+    null,
+    2,
+  ) + "\n",
+);
 
 // --- 4. Tuntien .ics-tiedostot (Apple-kalenteri, Outlook): dist/tunnit/<tunnus>.ics ---
 // Sama lista kuin sivulla, joten jokaisen tunnin "Apple, Outlook tai muu" -linkki toimii.

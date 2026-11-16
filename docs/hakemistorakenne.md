@@ -28,8 +28,10 @@ Liikunta_hyvinvointi_web/
 │   ├── hakemistorakenne.md            ✅ Tämä tiedosto
 │   ├── muistiinpanot.md               ✅ Verkkosivuston suunnitelma
 │   ├── sisalto.md                     ✅ Palvelut, tekstit, hinnat, yhteystiedot
-│   ├── tietoturvatarkistus.md         ⬜ 7 kohdan tarkistus ennen julkaisua
-│   ├── luovutus.md                    ⬜ Ohjeet Amandalle sisällön muokkaamiseen
+│   ├── kalenteri.md                   ✅ Tuntikalenterin käyttöönotto ja ylläpito
+│   ├── seo.md                         ✅ Hakukoneoptimointi: mitä on valmiina, tarkistus, julkaisun muistilista
+│   ├── tietoturvatarkistus.md         ✅ 7 kohdan tarkistus ennen julkaisua
+│   ├── luovutus.md                    ✅ Ohjeet Amandalle: tunnit, ilmoittautumiset, mitä lähettää Eerolle
 │   └── sopimus.md                     🔒 Laajuus, omistajuus, ylläpito
 │
 ├── site/                              Sivusto (Vite, React, TypeScript, Tailwind)
@@ -37,10 +39,12 @@ Liikunta_hyvinvointi_web/
 │   ├── index.html                     ✅ HTML-pohja (<!--app-head-->, <!--app-html-->)
 │   ├── vite.config.ts                 ✅ Lisäosat (React, Tailwind), base-polku, @-alias, Vitest
 │   ├── playwright.config.ts           ✅ Savutestien asetukset (työpöytä + mobiili)
-│   ├── .env.example                   ✅ VITE_SITE_URL, VITE_NOINDEX
+│   ├── .env.example                   ✅ VITE_SITE_URL, VITE_NOINDEX, VITE_GSC_VERIFICATION, kalenterin avaimet
 │   ├── .oxlintrc.json                 ✅ Lint-säännöt
 │   ├── scripts/
-│   │   ├── prerender.mjs              ✅ Esirenderöinti, 404.html, sitemap.xml, robots.txt
+│   │   ├── prerender.mjs              ✅ Esirenderöinti, 404.html, sitemap.xml, robots.txt, manifest, .ics, paikkamerkkivahti
+│   │   ├── fetch-calendar.mjs         ✅ Tulevat tunnit Google-kalenterista buildissa
+│   │   ├── optimize-images.mjs        ✅ WebP-kuvaversiot (sharp)
 │   │   ├── build-pages.mjs            ✅ GitHub Pages -build (alipolku, noindex, .nojekyll)
 │   │   └── serve.mjs                  ✅ Paikallinen staattinen palvelin (testit ja esikatselu)
 │   ├── e2e/savutesti.spec.ts          ✅ Playwright-savutestit
@@ -48,22 +52,24 @@ Liikunta_hyvinvointi_web/
 │   │   ├── kuvat/                     ✅ Sivun valokuvat (pienennetyt)
 │   │   ├── logo.svg                   ✅ Logo
 │   │   ├── koristeet/                ✅ Lootusmandalan neljä kerrosta (tausta, ulko- ja sisäkehä, keskus)
-│   │   └── icon.png, apple-icon.png, opengraph-image.png  ✅ Ikonit ja jakokuva
+│   │   ├── _headers                   ✅ Tuotannon HTTP-otsakkeet (CSP, HSTS, välimuisti)
+│   │   └── icon-48/96/192.png, icon.png, apple-icon.png, opengraph-image.png  ✅ Ikonit ja jakokuva
 │   └── src/
 │       ├── main.tsx                   ✅ Selain: fontit, tyylit, hydraatio
 │       ├── entry-server.tsx           ✅ Build: render(path) ja sivukohtaiset <head>-tagit
 │       ├── App.tsx                    ✅ Yhteinen asettelu: ohituslinkki, yläpalkki, alatunniste
 │       ├── routes.tsx                 ✅ Sivut, otsikot ja kuvaukset
-│       ├── routes.test.ts             ✅ Vitest-yksikkötestit
-│       ├── index.css                  ✅ Tailwind-teema, vierityspaljastus, vuoristoviiva, hero C
+│       ├── routes.test.ts             ✅ Vitest: reitit, otsikot ja kuvaukset (pituus, yksilöllisyys)
+│       ├── index.css                  ✅ Tailwind-teema, vierityspaljastus, vuoristoviiva, hero C, hengitysharjoitus, lootusmandala
 │       ├── pages/                     ✅ Home, kayttoehdot, tietosuoja, evasteet, saavutettavuus, NotFound
 │       ├── components/
 │       │   ├── layout/                ✅ Header, HeaderShell, NavDropdown, MobileMenu, Footer
-│       │   ├── sections/              ✅ Etusivun osiot (Hero, Palvelut, Miksi liikkua, Hinnasto, Minusta, Kalenteri, Instagram)
+│       │   ├── sections/              ✅ Etusivun osiot (Hero, Palvelut, Miksi liikkua, Hengähdä hetki, Kalenteri, Hinnasto, Minusta, Instagram)
 │       │   │   └── hero/              ✅ HeroA–D (D käytössä), NextClass
-│       │   ├── ui/                    ✅ Image, Link, ButtonLink, TahkoLine, LotusMandala, LegalPage ym.
+│       │   ├── ui/                    ✅ Image, Link, ButtonLink, TahkoLine, LotusMandala, EmailText, LegalPage ym.
 │       │   └── RevealOnScroll.tsx     ✅ Vierityspaljastus
-│       └── lib/                       ✅ site, services, pricing, about, photos, instagram, calendar, seo, paths
+│       └── lib/                       ✅ site, services, pricing, about, photos, instagram, calendar, contact, lotus, seo, paths
+│                                         (+ *.test.ts: kalenteri, yhteydenotto, hengitysrytmi, rakennetieto)
 ```
 
 ## Periaatteet

@@ -5,8 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1a44ae" />
     <meta name="format-detection" content="telephone=no" />
-    <link rel="icon" type="image/png" sizes="64x64" href="/icon-64.png" />
+    <!-- Ikonit: Google näyttää hakutuloksessa sivuston ikonin, jos se on 48 px:n monikerta (48, 96, 192).
+         apple-touch-icon = iPhonen kotivalikko, manifest = Androidin kotivalikko (scripts/prerender.mjs). -->
+    <link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="/apple-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <!-- Kehityksessä näkyvä otsikko. Buildissa scripts/prerender.mjs korvaa sen sivukohtaisella. -->
     <title>Tahkon Amanda – Liikunta ja hyvinvointi</title>
     <!--app-head-->
