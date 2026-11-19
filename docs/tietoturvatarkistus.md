@@ -25,6 +25,7 @@ Tarkistettu: 16.11.2026 (haara `rebuild/vite`).
 | `VITE_NOINDEX` | Kyllä | Esikatselulippu, ei salaisuus |
 | `VITE_GSC_VERIFICATION` | Kyllä | Search Consolen vahvistuskoodi näkyy sivun lähdekoodissa tarkoituksella |
 | `GOOGLE_CALENDAR_ID` | Kyllä, osittain | Julkisen kalenterin tunnus näkyy tilauslinkissä. Ei salaisuus, koska kalenteri on julkinen |
+| `SCHEDULE_EXCEL_URL` | **Ei** | Excel-tuntilistan jakolinkki, vain GitHubin salaisuuksissa ja buildissa. Ei tulosteta lokiin. Tiedostosta luetaan vain aikataulusarakkeet |
 | `GOOGLE_API_KEY` | **Ei** | Vain GitHubin salaisuuksissa ja buildissa. Rajaa Google Cloudissa vain Calendar API:in. Jos avain on joskus ollut koodissa tai chatissa, luo uusi ja poista vanha |
 
 ## Muut suojaukset

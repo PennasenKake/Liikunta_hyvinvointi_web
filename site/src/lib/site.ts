@@ -15,7 +15,17 @@ export const site = {
   // Ilmoittautumislomake (Microsoft Forms). Amanda tekee lomakkeen kuukausi tai sesonkiviikko
   // kerrallaan; kun lomake vaihtuu, vaihdetaan vain tämä linkki. null = ilmoittautuminen sähköpostilla.
   // Vastaukset (osallistujien nimet) jäävät Amandan Formsiin: niitä ei koskaan tuoda sivustolle.
-  signupForm: "https://forms.cloud.microsoft/r/SCYtDm1Ypb" as string | null,
+  // TESTIHAARA (testi/excel-forms): Eeron Google Forms -testilomake. Ennen tuotantoa takaisin
+  // Amandan lomakkeeseen: "https://forms.cloud.microsoft/r/SCYtDm1Ypb" (docs/excel-ja-forms.md, vaihe 6).
+  signupForm: "https://docs.google.com/forms/d/e/1FAIpQLSeqZEI_VXd73HHbgiAS_cojEB6agqF9Gyk4Yiy7CVjLEMMpcA/viewform" as string | null,
+  // Valinnainen: Formsin "valmiiksi täytetty linkki", jossa tunnin kohdalla on {tunti}.
+  // Painike korvaa sen tunnin tekstillä, esim. "Vesijumppa ti 1.12. klo 18.00", jolloin tunti on
+  // lomakkeessa valmiiksi valittuna. Formsin vaihtoehdon pitää olla täsmälleen samaa muotoa.
+  // Ohje: docs/excel-ja-forms.md. null = painike avaa signupForm-lomakkeen sellaisenaan.
+  // Google Forms: entry.<kysymyksen tunnus> = vaihtoehdon teksti. Tunnus 378321794 = "Valitse tunti".
+  // Testattu Chromessa 20.11.2026: "Yin jooga ke 2.12. klo 17.30" tulee valmiiksi valituksi.
+  signupFormPrefill:
+    "https://docs.google.com/forms/d/e/1FAIpQLSeqZEI_VXd73HHbgiAS_cojEB6agqF9Gyk4Yiy7CVjLEMMpcA/viewform?usp=pp_url&entry.378321794={tunti}" as string | null,
   businessId: "3337574-9",
   areas: ["Tahko", "Siilinjärvi", "Kuopio", "Rautavaara"],
 

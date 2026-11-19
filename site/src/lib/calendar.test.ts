@@ -1,6 +1,6 @@
 // calendar.test.ts: kalenterin apufunktioiden yksikkötestit (Vitest, npm test).
 import { describe, expect, it } from "vitest";
-import { filterUpcoming, googleCalendarUrl, serviceHref, signupHref, toIcs, type CalendarEvent } from "./calendar";
+import { filterUpcoming, googleCalendarUrl, serviceHref, signupHref, signupLabel, toIcs, type CalendarEvent } from "./calendar";
 
 const e: CalendarEvent = {
   id: "t1",
@@ -40,10 +40,15 @@ describe("linkit", () => {
     expect(googleCalendarUrl(e)).toContain("dates=20261118T153000Z%2F20261118T164500Z");
   });
   it("ilmoittautuminen on valmiiksi täytetty sähköposti", () => {
-    const href = signupHref(e, null);
+    const href = signupHref(e, null, null);
     expect(href).toMatch(/^mailto:[^?]+\?subject=/);
     expect(decodeURIComponent(href)).toContain("Yin jooga");
-    expect(signupHref(e, "https://forms.example/x")).toBe("https://forms.example/x");
+    expect(signupHref(e, "https://forms.example/x", null)).toBe("https://forms.example/x");
+    // Valmiiksi täytetty Forms-linkki: tunti lomakkeen vaihtoehdon muodossa
+    expect(signupLabel(e)).toBe("Yin jooga ke 18.11. klo 17.30");
+    expect(signupHref(e, "https://forms.example/x", "https://forms.example/x?r1={tunti}")).toBe(
+      `https://forms.example/x?r1=${encodeURIComponent("Yin jooga ke 18.11. klo 17.30")}`,
+    );
   });
   it("tunnin nimi löytää samannimisen palvelun", () => {
     expect(serviceHref("vesijumppa")).toBe("/#vesijumppa");

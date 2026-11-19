@@ -144,7 +144,10 @@ export function eventsJsonLd(events: CalendarEvent[]) {
       },
       organizer: { "@type": "Organization", "@id": `${SITE_URL}/#yritys`, name: site.name, url: `${SITE_URL}/` },
       url: `${SITE_URL}/#tunti-${e.id}`,
-      ...(site.signupForm ? { offers: { "@type": "Offer", url: site.signupForm, availability: "https://schema.org/InStock" } } : {}),
+      // Täysi tunti (Excelin Tila "Täynnä") ilmoitetaan Googlelle loppuunmyytynä
+      ...(site.signupForm
+        ? { offers: { "@type": "Offer", url: site.signupForm, availability: `https://schema.org/${e.full ? "SoldOut" : "InStock"}` } }
+        : {}),
     };
   });
 }

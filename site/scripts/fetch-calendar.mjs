@@ -5,6 +5,8 @@
 // tiedostosta (lib/calendar.ts), joten kävijän selain ei koskaan ota yhteyttä Googleen.
 //
 // Tilat:
+// - SCHEDULE_EXCEL_URL (OneDrive-jakolinkki) tai SCHEDULE_EXCEL_FILE (paikallinen testi):
+//   tunnit Amandan Excelistä (scripts/fetch-excel.mjs, docs/excel-ja-forms.md).
 // - GOOGLE_CALENDAR_ID ja GOOGLE_API_KEY asetettu (GitHub Actions -salaisuudet):
 //   haetaan oikeat tunnit. Jos haku epäonnistuu, skripti päättyy virheeseen, jolloin julkaisu
 //   keskeytyy ja sivulla pysyy edellinen, toimiva versio (parempi kuin tyhjä kalenteri).
@@ -14,6 +16,7 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
+import { fetchExcelEvents, readExcelFile } from "./fetch-excel.mjs";
 
 const OUT = "src/data/calendar.json";
 const DAYS_AHEAD = 60;   // Kuinka pitkälle eteenpäin tunteja haetaan
@@ -133,8 +136,16 @@ async function main() {
   const apiKey = process.env.GOOGLE_API_KEY?.trim();
   const now = new Date();
 
+  const excelUrl = process.env.SCHEDULE_EXCEL_URL?.trim();
+  const excelFile = process.env.SCHEDULE_EXCEL_FILE?.trim();
+
   let result;
-  if (calendarId && apiKey) {
+  if (excelUrl || excelFile) {
+    // Tunnit Amandan Excelistä (scripts/fetch-excel.mjs). Etusijalla, jos molemmat on asetettu.
+    // Epäonnistunut lataus kaataa buildin (alla), jolloin edellinen toimiva versio jää näkyviin.
+    const { events } = excelUrl ? await fetchExcelEvents({ url: excelUrl, now }) : await readExcelFile(excelFile, { now });
+    result = { source: "excel", fetchedAt: now.toISOString(), subscribeUrl: null, googleAddUrl: null, events: events.slice(0, MAX_EVENTS) };
+  } else if (calendarId && apiKey) {
     const events = await fetchGoogleEvents({ calendarId, apiKey, now });
     // Tilauslinkki koko kalenteriin: julkisen kalenterin iCal-osoite (tunnus on julkinen tieto,
     // koska kalenteri on julkinen; API-avainta ei tallenneta)

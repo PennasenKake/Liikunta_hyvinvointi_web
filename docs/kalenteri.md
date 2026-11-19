@@ -62,5 +62,5 @@ tiedostossa `src/lib/site.ts`). Vastaukset kertyvät Amandan Formsiin ja Excelii
 Kun Amanda tekee uuden kuukauden lomakkeen, vain linkki vaihdetaan. Jos arvo on `null`, painike avaa
 valmiiksi täytetyn sähköpostin (`lib/calendar.ts`, `signupHref`).
 
-Tulevassa mallissa tunnit voidaan hakea Amandan omasta Excel-tiedostosta Google-kalenterin sijaan:
-vain aikataulu, ei koskaan Formsin vastauksia (osallistujien nimet).
+Tunnit voidaan hakea myös Amandan Excel-tiedostosta Google-kalenterin sijaan (vain aikataulu, ei koskaan
+Formsin vastauksia): [excel-ja-forms.md](excel-ja-forms.md). Excel on etusijalla, jos molemmat on asetettu.

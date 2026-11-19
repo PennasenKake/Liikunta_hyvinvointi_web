@@ -88,7 +88,7 @@ mihin tahansa staattiseen hostingiin (GitHub Pages, Cloudflare Pages, Netlify).
 
 Tarkempi rakenne: [docs/hakemistorakenne.md](docs/hakemistorakenne.md).
 Asiakkaalta odotettava sisältö: [docs/sisalto.md](docs/sisalto.md).
-Tuntikalenteri: [docs/kalenteri.md](docs/kalenteri.md). Hakukoneoptimointi: [docs/seo.md](docs/seo.md).
+Tuntikalenteri: [docs/kalenteri.md](docs/kalenteri.md), tuntilista Excelistä ja Forms-ilmoittautuminen: [docs/excel-ja-forms.md](docs/excel-ja-forms.md). Hakukoneoptimointi: [docs/seo.md](docs/seo.md).
 Tietoturvatarkistus: [docs/tietoturvatarkistus.md](docs/tietoturvatarkistus.md). Ohjeet Amandalle: [docs/luovutus.md](docs/luovutus.md).
 
 ## Käynnistys paikallisesti
