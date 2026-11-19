@@ -23,10 +23,10 @@ if (!NOINDEX && stockPhotos.length > 0) {
   throw new Error(`Tuotantobuildissa on kuvapankin paikkamerkkikuvia. Korvaa ne omilla kuvilla:\n${list}`);
 }
 
-// --- 0b. Kalenterivahti: julkaisubuildissa (JULKAISU=1) tuntien pitää tulla oikeasta Google-kalenterista.
+// --- 0b. Kalenterivahti: julkaisubuildissa (JULKAISU=1) tuntien pitää tulla oikeasta lähteestä (Google-kalenteri tai Excel).
 // Ilman GOOGLE_CALENDAR_ID/GOOGLE_API_KEY -salaisuuksia sivulle tulisivat esimerkkitunnit (scripts/fetch-calendar.mjs).
-if (process.env.JULKAISU === "1" && calendarSource !== "google") {
-  throw new Error("Julkaisubuildissa on esimerkkitunnit. Lisää GOOGLE_CALENDAR_ID ja GOOGLE_API_KEY (docs/kalenteri.md).");
+if (process.env.JULKAISU === "1" && calendarSource === "esimerkki") {
+  throw new Error("Julkaisubuildissa on esimerkkitunnit. Lisää SCHEDULE_EXCEL_URL tai GOOGLE_CALENDAR_ID ja GOOGLE_API_KEY (docs/excel-ja-forms.md, docs/kalenteri.md).");
 }
 
 // Tyylit suoraan HTML:ään (<style>): selaimen ei tarvitse odottaa erillistä CSS-tiedostoa ennen

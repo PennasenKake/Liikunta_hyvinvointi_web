@@ -25,7 +25,7 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(websiteJsonLd()) }} />
       {/* Tulevat tunnit tapahtumina (buildin hetken tilanne, päivittyy tunneittaisessa buildissa).
           Vain oikeasta kalenterista: esimerkkitunteja ei saa ilmoittaa Googlelle tapahtumina. */}
-      {calendarSource === "google" && (
+      {calendarSource !== "esimerkki" && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(eventsJsonLd(getUpcomingEvents(20))) }} />
       )}
       {/* Järjestys kävijän kysymysten mukaan: mitä (palvelut) → miksi (liike ja lepo, kokeile

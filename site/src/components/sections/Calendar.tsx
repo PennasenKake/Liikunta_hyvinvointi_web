@@ -161,15 +161,23 @@ export default function Calendar() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    {/* Forms avautuu uuteen välilehteen, jotta tuntilista jää auki taustalle */}
-                    <a
-                      href={signupHref(e)}
-                      {...(form ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                      className={`${btn} bg-accent text-white hover:opacity-90`}
-                    >
-                      Ilmoittaudu
-                      <span className="sr-only">: {e.title} {formatShort(e.start)}{form && " (lomake avautuu uuteen välilehteen)"}</span>
-                    </a>
+                    {/* Täysi tunti (Excelin Tila "Täynnä"): ei linkkiä, harmaa merkintä. Kalenteriin lisäys ja jako
+                        toimivat edelleen, jos kävijä haluaa tulla katsomaan tai kysyä peruutuspaikkaa. */}
+                    {e.full ? (
+                      <span className={`${btn} cursor-default bg-line text-muted`}>
+                        Täynnä<span className="sr-only">: {e.title} {formatShort(e.start)}</span>
+                      </span>
+                    ) : (
+                      /* Forms avautuu uuteen välilehteen, jotta tuntilista jää auki taustalle */
+                      <a
+                        href={signupHref(e)}
+                        {...(form ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                        className={`${btn} bg-accent text-white hover:opacity-90`}
+                      >
+                        Ilmoittaudu
+                        <span className="sr-only">: {e.title} {formatShort(e.start)}{form && " (lomake avautuu uuteen välilehteen)"}</span>
+                      </a>
+                    )}
                     <AddToCalendar event={e} />
                     <ShareButton
                       title={e.title}

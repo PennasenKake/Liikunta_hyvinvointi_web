@@ -1,0 +1,52 @@
+# excel-testi.yml: tarkistaa Excel-tuntilistan latauksen ja luvun ilman julkaisua.
+# Käynnistys käsin: Actions → Excel-testi → Run workflow (valitse haara).
+#
+# Mitä tekee: lataa SCHEDULE_EXCEL_URL-salaisuuden osoittaman OneDrive-tiedoston, lukee sen
+# ja tulostaa lokiin tulevat tunnit sekä hylätyt rivit syineen. Ei rakenna eikä julkaise mitään.
+# Linkkiä ei tulosteta lokiin. Ohje: docs/excel-ja-forms.md.
+
+name: Excel-testi
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  excel:
+    name: Excel-tiedoston lataus ja tarkistus
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - name: Koodin haku
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Riippuvuuksien asennus
+        run: npm ci
+
+      - name: Salaisuus asetettu?
+        env:
+          SCHEDULE_EXCEL_URL: ${{ secrets.SCHEDULE_EXCEL_URL }}
+        run: |
+          if [ -z "$SCHEDULE_EXCEL_URL" ]; then
+            echo "::error::Salaisuus SCHEDULE_EXCEL_URL puuttuu (Settings → Secrets and variables → Actions)"
+            exit 1
+          fi
+
+      - name: Excelin lataus ja luku
+        run: node scripts/fetch-excel.mjs
+        env:
+          SCHEDULE_EXCEL_URL: ${{ secrets.SCHEDULE_EXCEL_URL }}

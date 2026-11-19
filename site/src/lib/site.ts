@@ -16,6 +16,11 @@ export const site = {
   // kerrallaan; kun lomake vaihtuu, vaihdetaan vain tämä linkki. null = ilmoittautuminen sähköpostilla.
   // Vastaukset (osallistujien nimet) jäävät Amandan Formsiin: niitä ei koskaan tuoda sivustolle.
   signupForm: "https://forms.cloud.microsoft/r/SCYtDm1Ypb" as string | null,
+  // Valinnainen: Formsin "valmiiksi täytetty linkki", jossa tunnin kohdalla on {tunti}.
+  // Painike korvaa sen tunnin tekstillä, esim. "Vesijumppa ti 1.12. klo 18.00", jolloin tunti on
+  // lomakkeessa valmiiksi valittuna. Formsin vaihtoehdon pitää olla täsmälleen samaa muotoa.
+  // Ohje: docs/excel-ja-forms.md. null = painike avaa signupForm-lomakkeen sellaisenaan.
+  signupFormPrefill: null as string | null,
   businessId: "3337574-9",
   areas: ["Tahko", "Siilinjärvi", "Kuopio", "Rautavaara"],
 

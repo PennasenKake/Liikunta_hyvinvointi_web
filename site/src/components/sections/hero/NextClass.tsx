@@ -10,11 +10,11 @@ import { withBase } from "@/lib/paths";
 export default function NextClass() {
   // Ensimmäinen piirto käyttää buildin hetkeä (sama kuin esirenderöidyssä HTML:ssä),
   // selaimessa vaihdetaan heti oikean kellon mukaiseen seuraavaan tuntiin.
-  const [event, setEvent] = useState(() => getUpcomingEvents(1)[0] ?? null);
+  const [event, setEvent] = useState(() => getUpcomingEvents(10).find((e) => !e.full) ?? null); // Täysiä tunteja ei nosteta
   useEffect(() => {
     // Selaimen kello on ulkoinen järjestelmä, jota ei voi lukea renderöinnissä (hydraatio rikkoutuisi)
     // oxlint-disable-next-line react/set-state-in-effect
-    setEvent(filterUpcoming(getUpcomingEvents(10), Date.now())[0] ?? null);
+    setEvent(filterUpcoming(getUpcomingEvents(10), Date.now()).find((e) => !e.full) ?? null);
   }, []);
 
   // Ei tulevia tunteja: nostoa ei näytetä (Tulevat tunnit -osio kertoo tilanteen)

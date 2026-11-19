@@ -60,11 +60,14 @@ jobs:
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       # Tuottaa site/dist/-kansion: esirenderöidyt sivut, kuvat, robots.txt (Disallow) ja .nojekyll
-      # Kalenterin tunnit haetaan buildissa (scripts/fetch-calendar.mjs). Ilman salaisuuksia
+      # Tunnit haetaan buildissa (scripts/fetch-calendar.mjs ja fetch-excel.mjs). Ilman salaisuuksia
       # sivulla näkyvät esimerkkitunnit. Avain on vain tässä vaiheessa, ei sivuston koodissa.
       - name: Build GitHub Pagesia varten
         run: npm run build:pages
         env:
+          # Tuntien lähde: Excel (SCHEDULE_EXCEL_URL) on etusijalla, muuten Google-kalenteri.
+          # Ilman kumpaakaan sivulla näkyvät esimerkkitunnit. Ohjeet: docs/excel-ja-forms.md, docs/kalenteri.md.
+          SCHEDULE_EXCEL_URL: ${{ secrets.SCHEDULE_EXCEL_URL }}
           GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
 

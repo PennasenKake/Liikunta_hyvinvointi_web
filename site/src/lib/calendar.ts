@@ -18,10 +18,11 @@ export type CalendarEvent = {
   end: string;
   location: string;
   description: string; // Pelkkää tekstiä, voi olla tyhjä
+  full?: boolean;      // Excelin Tila "Täynnä": ilmoittautumispainike harmaana
 };
 
 type CalendarData = {
-  source: "google" | "esimerkki";
+  source: "google" | "excel" | "esimerkki"; // excel = Amandan Excel (scripts/fetch-excel.mjs)
   fetchedAt: string;           // Milloin tunnit haettiin (buildin aika)
   subscribeUrl: string | null; // Julkisen kalenterin iCal-osoite (vain oikealla kalenterilla)
   googleAddUrl: string | null; // "Lisää Google-kalenteriin" koko kalenterille
@@ -94,6 +95,11 @@ export function formatShort(iso: string) {
   return `${date} klo ${formatTime(iso)}`;
 }
 
+// Tunnin teksti Formsin tuntivalintaan: "Vesijumppa ti 1.12. klo 18.00"
+export function signupLabel(e: CalendarEvent) {
+  return `${e.title} ${formatShort(e.start)}`;
+}
+
 // --- Omaan kalenteriin ---------------------------------------------------------
 
 // Google hyväksyy ajat UTC-muodossa YYYYMMDDTHHMMSSZ (esim. 20261103T160000Z). Sama muoto käy iCalendariin.
@@ -156,7 +162,9 @@ export function toIcs(e: CalendarEvent, siteUrl: string, stamp = toUtcStamp(cale
 // --- Ilmoittautuminen ------------------------------------------------------------
 // Ensisijaisesti Amandan Forms-lomake (site.signupForm): ilmoittautumiset kertyvät samaan
 // Exceliin kuin ennenkin. Jos lomaketta ei ole, valmiiksi täytetty sähköposti.
-export function signupHref(e: CalendarEvent, form: string | null = site.signupForm) {
+export function signupHref(e: CalendarEvent, form: string | null = site.signupForm, prefill: string | null = site.signupFormPrefill) {
+  // Valmiiksi täytetty linkki: tunnin nimi ja aika lomakkeen tuntivalintaan (Formsin vaihtoehdon teksti)
+  if (prefill && prefill.includes("{tunti}")) return prefill.replace("{tunti}", encodeURIComponent(signupLabel(e)));
   if (form) return form;
   const subject = `Ilmoittautuminen: ${e.title} ${formatShort(e.start)}`;
   const body = `Hei Amanda,\n\nilmoittaudun tunnille ${e.title} (${formatShort(e.start)}, ${e.location}).\n\nNimi:\nPuhelin:\n`;

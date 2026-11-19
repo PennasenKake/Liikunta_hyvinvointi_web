@@ -12,6 +12,7 @@ Liikunta_hyvinvointi_web/
 ├── LICENSE                            ✅ Kaikki oikeudet pidätetään (koodi nähtävissä portfoliona)
 ├── .github/workflows/ci.yml           ✅ GitHub Actions: tarkistukset, build ja savutestit jokaisesta pushista
 ├── .github/workflows/pages.yml        ✅ Testiversion julkaisu GitHub Pagesiin
+├── .github/workflows/excel-testi.yml  ✅ Excel-tuntilistan lataustesti käsin (ei julkaise)
 │
 ├── materiaalit/                       Lähdemateriaalit, ei sivuston koodia
 │   ├── logo/
@@ -29,6 +30,8 @@ Liikunta_hyvinvointi_web/
 │   ├── muistiinpanot.md               ✅ Verkkosivuston suunnitelma
 │   ├── sisalto.md                     ✅ Palvelut, tekstit, hinnat, yhteystiedot
 │   ├── kalenteri.md                   ✅ Tuntikalenterin käyttöönotto ja ylläpito
+│   ├── excel-ja-forms.md              ✅ Tuntilista Excelistä ja Forms-ilmoittautuminen: testaus ja käyttöönotto
+│   ├── pohjat/tunnit-pohja.xlsx       ✅ Amandan tuntilistapohja
 │   ├── seo.md                         ✅ Hakukoneoptimointi: mitä on valmiina, tarkistus, julkaisun muistilista
 │   ├── tietoturvatarkistus.md         ✅ 7 kohdan tarkistus ennen julkaisua
 │   ├── luovutus.md                    ✅ Ohjeet Amandalle: tunnit, ilmoittautumiset, mitä lähettää Eerolle
@@ -43,7 +46,8 @@ Liikunta_hyvinvointi_web/
 │   ├── .oxlintrc.json                 ✅ Lint-säännöt
 │   ├── scripts/
 │   │   ├── prerender.mjs              ✅ Esirenderöinti, 404.html, sitemap.xml, robots.txt, manifest, .ics, paikkamerkkivahti
-│   │   ├── fetch-calendar.mjs         ✅ Tulevat tunnit Google-kalenterista buildissa
+│   │   ├── fetch-calendar.mjs         ✅ Tulevat tunnit buildissa: Excel, Google-kalenteri tai esimerkkitunnit
+│   │   ├── fetch-excel.mjs            ✅ Excel-tuntilistan lataus OneDrivesta ja luku
 │   │   ├── optimize-images.mjs        ✅ WebP-kuvaversiot (sharp)
 │   │   ├── build-pages.mjs            ✅ GitHub Pages -build (alipolku, noindex, .nojekyll)
 │   │   └── serve.mjs                  ✅ Paikallinen staattinen palvelin (testit ja esikatselu)
