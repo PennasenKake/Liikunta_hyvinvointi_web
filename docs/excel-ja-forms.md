@@ -51,6 +51,13 @@ ei saada ladattua, build pysähtyy, jolloin sivulle jää edellinen toimiva vers
    merkinnällä `{tunti}`**. Jos tämä ei onnistu henkilökohtaisella tilillä, ohita kohta: painike avaa
    lomakkeen ja kävijä valitsee tunnin itse.
 
+### Google Forms Microsoft Formsin sijaan
+
+Testissä voi käyttää myös Google Formsia (testihaarassa käytössä 20.11.2026). Esitäytetty linkki on muotoa
+`…/viewform?usp=pp_url&entry.<tunnus>={tunti}`, jossa tunnus on kysymyksen *Valitse tunti* numero
+(Formsin … → *Hae esitäytetty linkki*). Google Forms tukee esitäyttöä luotettavasti myös ilmaisella tilillä.
+Jos tuotannossa käytetään Google Formsia, tietosuojaseloste ja evästesivu päivitetään (nyt niissä lukee Microsoft Forms).
+
 ## Vaihe 2: asetukset repoon
 
 1. **GitHub → repo → Settings → Secrets and variables → Actions → New repository secret:**

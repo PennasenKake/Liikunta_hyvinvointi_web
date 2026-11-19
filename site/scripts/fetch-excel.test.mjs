@@ -82,10 +82,17 @@ describe("Excel-tiedosto", () => {
 });
 
 describe("lataus", () => {
-  it("jakolinkistä tehdään kolme latausosoitetta", () => {
+  it("vanhan muodon jakolinkistä tehdään kolme latausosoitetta", () => {
     const c = downloadCandidates("https://1drv.ms/x/s!AbC?e=123");
+    expect(c).toHaveLength(3);
     expect(c[0]).toMatch(/^https:\/\/api\.onedrive\.com\/v1\.0\/shares\/u![A-Za-z0-9_-]+\/root\/content$/);
     expect(c[1]).toBe("https://1drv.ms/x/s!AbC?e=123&download=1");
+  });
+
+  it("uuden muodon linkistä (1drv.ms/x/c/…) ensin suora lataus henkilökohtaisesta OneDrivesta", () => {
+    const c = downloadCandidates("https://1drv.ms/x/c/a5681d984e6a9105/IQB6x1t_JRJ?e=VgPpTY");
+    expect(c[0]).toBe("https://my.microsoftpersonalcontent.com/personal/a5681d984e6a9105/_layouts/15/download.aspx?share=IQB6x1t_JRJ");
+    expect(c).toHaveLength(4);
   });
 
   it("hylkää HTML-sivun (esim. kirjautuminen) ja kokeilee seuraavaa tapaa", async () => {

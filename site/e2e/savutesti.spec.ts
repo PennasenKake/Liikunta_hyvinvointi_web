@@ -333,7 +333,15 @@ test.describe("Kalenteri", () => {
 
     // Ilmoittautuminen Amandan Forms-lomakkeella uudessa välilehdessä
     const signup = first.getByRole("link", { name: /^Ilmoittaudu/ });
-    await expect(signup).toHaveAttribute("href", site.signupForm!);
+    // Esitäytetty linkki (site.signupFormPrefill): tunnin nimi ja aika lomakkeen tuntivalintaan
+    const title = (await first.locator("h3").textContent())!.trim();
+    if (site.signupFormPrefill) {
+      const href = (await signup.getAttribute("href"))!;
+      expect(href.startsWith(site.signupFormPrefill.split("{tunti}")[0])).toBe(true);
+      expect(decodeURIComponent(href)).toContain(title);
+    } else {
+      await expect(signup).toHaveAttribute("href", site.signupForm!);
+    }
     await expect(signup).toHaveAttribute("target", "_blank");
     await expect(signup).toHaveAttribute("rel", /noopener/);
 

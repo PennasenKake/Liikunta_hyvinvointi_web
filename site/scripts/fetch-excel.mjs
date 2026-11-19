@@ -25,14 +25,22 @@ const TZ = "Europe/Helsinki";
 // --- Lataus ----------------------------------------------------------------------
 
 // OneDrive-jakolinkistä ladattavat osoitteet kokeilujärjestyksessä:
-// 1. OneDriven jakorajapinta (shares/u!<base64url>), toimii katselulinkille ilman kirjautumista
-// 2. sama linkki ?download=1 -lisällä (SharePoint- ja OneDrive for Business -linkit)
-// 3. linkki sellaisenaan (suora .xlsx-osoite)
+// 1. Uudet henkilökohtaisen OneDriven linkit (1drv.ms/x/c/<tunnus>/<jako>, käytössä 2024 alkaen):
+//    lataus SharePoint-tyylisen download.aspx-osoitteen kautta
+// 2. OneDriven vanha jakorajapinta (shares/u!<base64url>). Testattu 20.11.2026: vastaa uusille
+//    linkeille "unauthenticated", mutta toimii vanhan muodon linkeille, joten pidetään varalla
+// 3. linkki ?download=1 -lisällä (SharePoint- ja OneDrive for Business -linkit)
+// 4. linkki sellaisenaan (suora .xlsx-osoite)
 export function downloadCandidates(shareUrl) {
   const url = shareUrl.trim();
+  const list = [];
+  const m = url.match(/^https:\/\/1drv\.ms\/[a-z]\/c\/([0-9a-f]+)\/([A-Za-z0-9_-]+)/i);
+  if (m) list.push(`https://my.microsoftpersonalcontent.com/personal/${m[1]}/_layouts/15/download.aspx?share=${m[2]}`);
   const encoded = Buffer.from(url).toString("base64").replace(/=+$/, "").replace(/\//g, "_").replace(/\+/g, "-");
-  const withDownload = url + (url.includes("?") ? "&" : "?") + "download=1";
-  return [`https://api.onedrive.com/v1.0/shares/u!${encoded}/root/content`, withDownload, url];
+  list.push(`https://api.onedrive.com/v1.0/shares/u!${encoded}/root/content`);
+  list.push(url + (url.includes("?") ? "&" : "?") + "download=1");
+  list.push(url);
+  return list;
 }
 
 // .xlsx on zip: tiedosto alkaa tavuilla "PK". Näin tunnistetaan, ettei saatu kirjautumissivua (HTML).
@@ -42,17 +50,19 @@ export function isXlsx(bytes) {
 
 export async function downloadWorkbook(shareUrl, { fetchImpl = fetch, log = () => {} } = {}) {
   const tried = [];
-  for (const [i, url] of downloadCandidates(shareUrl).entries()) {
+  const candidates = downloadCandidates(shareUrl);
+  for (const [i, url] of candidates.entries()) {
     try {
       const res = await fetchImpl(url, { redirect: "follow", headers: { "User-Agent": "tahkonamanda-build" } });
       const bytes = new Uint8Array(await res.arrayBuffer());
       if (res.ok && isXlsx(bytes)) {
-        log(`Excel ladattu tavalla ${i + 1}/3 (${Math.round(bytes.length / 1024)} kt)`);
+        // Palvelimen nimi lokiin vianetsintää varten (ei koko osoitetta: se sisältää jakotunnuksen)
+        log(`Excel ladattu tavalla ${i + 1}/${candidates.length} (${new URL(url).host}, ${Math.round(bytes.length / 1024)} kt)`);
         return bytes;
       }
-      tried.push(`tapa ${i + 1}: HTTP ${res.status}${res.ok ? ", ei Excel-tiedosto" : ""}`);
+      tried.push(`tapa ${i + 1} (${new URL(url).host}): HTTP ${res.status}${res.ok ? ", ei Excel-tiedosto" : ""}`);
     } catch (err) {
-      tried.push(`tapa ${i + 1}: ${err.message}`);
+      tried.push(`tapa ${i + 1} (${new URL(url).host}): ${err.message}`);
     }
   }
   // Linkkiä ei tulosteta: se on salaisuus
