@@ -1,5 +1,6 @@
 # excel-testi.yml: tarkistaa Excel-tuntilistan latauksen ja luvun ilman julkaisua.
-# Käynnistys käsin: Actions → Excel-testi → Run workflow (valitse haara).
+# Käynnistys: push testi/-haaraan (automaattinen) tai Actions → Excel-testi → Run workflow,
+# kun tiedosto on main-haarassa.
 #
 # Mitä tekee: lataa SCHEDULE_EXCEL_URL-salaisuuden osoittaman OneDrive-tiedoston, lukee sen
 # ja tulostaa lokiin tulevat tunnit sekä hylätyt rivit syineen. Ei rakenna eikä julkaise mitään.
@@ -9,6 +10,10 @@ name: Excel-testi
 
 on:
   workflow_dispatch:
+  # GitHub näyttää Run workflow -painikkeen vain työnkuluille, jotka ovat oletushaarassa (main).
+  # Siksi testi ajetaan myös automaattisesti jokaisesta pushista testihaaroihin (testi/...).
+  push:
+    branches: ["testi/**"]
 
 permissions:
   contents: read
