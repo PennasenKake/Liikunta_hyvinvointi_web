@@ -10,6 +10,7 @@ import data from "@/data/calendar.json";
 import { site } from "./site";
 import { serviceCategories, serviceId } from "./services";
 import { withBase } from "./paths";
+import { mailtoHref } from "./contact";
 
 export type CalendarEvent = {
   id: string;
@@ -96,6 +97,16 @@ export function formatShort(iso: string) {
 }
 
 // Tunnin teksti Formsin tuntivalintaan: "Vesijumppa ti 1.12. klo 18.00"
+// Peruutus: valmiiksi täytetty sähköposti Amandalle (tunti ja aika valmiina, samassa muodossa kuin
+// lomakkeen Tunti-kentässä, jotta Amanda löytää vastauksen helposti). Lomake ei osaa perua.
+export function cancelHref(e: CalendarEvent) {
+  const label = signupLabel(e);
+  return mailtoHref(
+    `Peruutus: ${label}`,
+    `Hei Amanda,\n\nperun ilmoittautumiseni tunnille ${label}${e.location ? ` (${e.location})` : ""}.\n\nNimi:\n`,
+  );
+}
+
 export function signupLabel(e: CalendarEvent) {
   return `${e.title} ${formatShort(e.start)}`;
 }

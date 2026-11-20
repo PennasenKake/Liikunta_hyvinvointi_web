@@ -354,6 +354,10 @@ test.describe("Kalenteri", () => {
     expect(await res.text()).toMatch(/^BEGIN:VCALENDAR\r\n[\s\S]*BEGIN:VEVENT/);
 
     await expect(first.getByRole("button", { name: /Jaa/ })).toBeVisible();
+
+    // Peruutus: valmis sähköposti Amandalle, tunti ja aika aiheessa
+    const cancel = first.getByRole("link", { name: /^Peru ilmoittautuminen/ });
+    await expect(cancel).toHaveAttribute("href", new RegExp(`^mailto:${site.email}\\?subject=Peruutus`));
   });
 
   test("aluksi viisi lähintä tuntia, loput Näytä kaikki -painikkeella", async ({ page }) => {

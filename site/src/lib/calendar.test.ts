@@ -1,6 +1,6 @@
 // calendar.test.ts: kalenterin apufunktioiden yksikkötestit (Vitest, npm test).
 import { describe, expect, it } from "vitest";
-import { filterUpcoming, googleCalendarUrl, serviceHref, signupHref, signupLabel, toIcs, type CalendarEvent } from "./calendar";
+import { filterUpcoming, googleCalendarUrl, cancelHref, serviceHref, signupHref, signupLabel, toIcs, type CalendarEvent } from "./calendar";
 
 const e: CalendarEvent = {
   id: "t1",
@@ -49,6 +49,12 @@ describe("linkit", () => {
     expect(signupHref(e, "https://forms.example/x", "https://forms.example/x?r1={tunti}")).toBe(
       `https://forms.example/x?r1=${encodeURIComponent("Yin jooga ke 18.11. klo 17.30")}`,
     );
+  });
+  it("peruutus on valmis sähköposti, jossa tunti samassa muodossa kuin lomakkeessa", () => {
+    const url = new URL(cancelHref(e));
+    expect(url.protocol).toBe("mailto:");
+    expect(url.searchParams.get("subject")).toBe("Peruutus: Yin jooga ke 18.11. klo 17.30");
+    expect(url.searchParams.get("body")).toContain("perun ilmoittautumiseni tunnille Yin jooga ke 18.11. klo 17.30");
   });
   it("tunnin nimi löytää samannimisen palvelun", () => {
     expect(serviceHref("vesijumppa")).toBe("/#vesijumppa");
