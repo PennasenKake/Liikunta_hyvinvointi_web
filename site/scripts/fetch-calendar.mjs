@@ -14,6 +14,7 @@
 //
 // API-avain ei koskaan päädy sivuston koodiin: sitä käytetään vain tässä build-vaiheessa.
 
+import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { fetchExcelEvents, readExcelFile } from "./fetch-excel.mjs";
@@ -132,6 +133,14 @@ export async function fetchGoogleEvents({ calendarId, apiKey, now = new Date(), 
 // --- Ajo ----------------------------------------------------------------------
 
 async function main() {
+  // Tuotantotyönkulku (.github/workflows/tuotanto.yml) hakee tunnit omassa vaiheessaan ja vertaa
+  // ne julkaistuun versioon. Silloin build (prebuild) ei hae uudelleen, vaan käyttää juuri
+  // verrattua tiedostoa: julkaistu sivu ja sen tunniste vastaavat varmasti toisiaan.
+  if (process.env.TUNNIT_HAETTU === "1" && existsSync(OUT)) {
+    console.log("kalenteri: tunnit on jo haettu tässä ajossa (TUNNIT_HAETTU=1)");
+    return;
+  }
+
   const calendarId = process.env.GOOGLE_CALENDAR_ID?.trim();
   const apiKey = process.env.GOOGLE_API_KEY?.trim();
   const now = new Date();

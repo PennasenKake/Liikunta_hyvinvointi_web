@@ -1,0 +1,43 @@
+// wrangler.jsonc: tuotantosivuston asetukset Cloudflare Workersissa (ilmainen paketti).
+// Sivusto tarjoillaan staattisina tiedostoina (assets), ja src/index.js hoitaa ajastimen
+// ja Päivitä nyt -sivun. Julkaisu tehdään AINA GitHubin tuotantotyönkulusta
+// (.github/workflows/tuotanto.yml), ei omalta koneelta: npm run deploy tarkistaa sen.
+// Ohje: docs/tuotanto.md
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tahkonamanda",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-23",
+
+  // Esirenderöity sivusto (cd site && npm run build). Tiedostot tarjoillaan ilman Worker-koodia,
+  // eikä niiden pyyntöjä lasketa Workersin päiväkiintiöön. _headers-tiedoston otsakkeet ovat voimassa.
+  "assets": {
+    "directory": "../site/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page"
+  },
+
+  // Tuntien päivitys 15 minuutin välein. Ilmaisessa paketissa saa olla 5 ajastinta.
+  "triggers": {
+    "crons": ["*/15 * * * *"]
+  },
+
+  // Julkiset asetukset. Salaisuudet (GITHUB_TOKEN, PAIVITYS_AVAIN): npx wrangler secret put
+  "vars": {
+    "GITHUB_REPO": "PennasenKake/Liikunta_hyvinvointi_web",
+    "GITHUB_REF": "main"
+  },
+
+  // Lokit näkyvät Cloudflaren hallintapaneelissa (Workers → tahkonamanda → Logs)
+  "observability": { "enabled": true },
+
+  // Oma verkkotunnus. Ota käyttöön, kun tahkonamanda.fi on Cloudflaressa (docs/tuotanto.md, vaihe 1).
+  // Ilman tätä sivusto on osoitteessa https://tahkonamanda.<tili>.workers.dev
+  // www.tahkonamanda.fi ohjataan tänne Cloudflaren uudelleenohjaussäännöllä (docs/tuotanto.md),
+  // jottei samaa sivua ole kahdessa osoitteessa.
+  // "routes": [{ "pattern": "tahkonamanda.fi", "custom_domain": true }],
+
+  // workers.dev-osoite testiä varten. Kun oma verkkotunnus toimii, vaihda false, jottei sama
+  // sivu ole kahdessa osoitteessa (canonical osoittaa joka tapauksessa tahkonamanda.fi:hin).
+  "workers_dev": true
+}

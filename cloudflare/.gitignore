@@ -1,0 +1,6 @@
+# Workerin paikalliset tiedostot: ei versionhallintaan
+node_modules
+.wrangler
+# Paikalliset salaisuudet (npx wrangler dev). Tuotannossa: npx wrangler secret put
+.dev.vars
+.dev.vars.*

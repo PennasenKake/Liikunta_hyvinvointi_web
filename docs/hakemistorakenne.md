@@ -13,6 +13,13 @@ Liikunta_hyvinvointi_web/
 ├── .github/workflows/ci.yml           ✅ GitHub Actions: tarkistukset, build ja savutestit jokaisesta pushista
 ├── .github/workflows/pages.yml        ✅ Testiversion julkaisu GitHub Pagesiin
 ├── .github/workflows/excel-testi.yml  ✅ Excel-tuntilistan lataustesti käsin (ei julkaise)
+├── .github/workflows/tuotanto.yml     ✅ Tuotantojulkaisu Cloudflareen (pois päältä, kunnes TUOTANTO_KAYTOSSA=true)
+│
+├── cloudflare/                        Tuotannon Cloudflare-Worker (docs/tuotanto.md)
+│   ├── src/index.js                   ✅ Ajastin 15 min, Päivitä nyt -sivu, 404-ohjaus
+│   ├── wrangler.jsonc                 ✅ Sivuston tiedostot, ajastin, verkkotunnus
+│   ├── scripts/tarkista-dist.mjs      ✅ Estää julkaisun omalta koneelta tai testibuildista
+│   └── test/index.test.mjs            ✅ Workerin testit (node --test)
 │
 ├── materiaalit/                       Lähdemateriaalit, ei sivuston koodia
 │   ├── logo/
@@ -35,6 +42,7 @@ Liikunta_hyvinvointi_web/
 │   ├── seo.md                         ✅ Hakukoneoptimointi: mitä on valmiina, tarkistus, julkaisun muistilista
 │   ├── tietoturvatarkistus.md         ✅ 7 kohdan tarkistus ennen julkaisua
 │   ├── luovutus.md                    ✅ Ohjeet Amandalle: tunnit, ilmoittautumiset, mitä lähettää Eerolle
+│   ├── tuotanto.md                    ✅ Cloudflare-käyttöönotto, ajastin, Päivitä nyt, vianetsintä
 │   └── sopimus.md                     🔒 Laajuus, omistajuus, ylläpito
 │
 ├── site/                              Sivusto (Vite, React, TypeScript, Tailwind)
