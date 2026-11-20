@@ -1,0 +1,127 @@
+# tuotanto.yml: tuotantosivuston julkaisu Cloudflare Workersiin (tahkonamanda.fi).
+#
+# Käynnistyy:
+#   - jokaisesta pushista main-haaraan (uusi koodi tai sisältö)
+#   - Cloudflaren ajastimesta 15 minuutin välein (cloudflare/src/index.js, workflow_dispatch)
+#   - Amandan Päivitä nyt -sivulta (sama Worker)
+#   - käsin: Actions → Tuotanto → Run workflow (pakota = julkaise, vaikka mikään ei muuttunut)
+#
+# Ajastetut ajot julkaisevat vain, jos tunnit tai koodi ovat muuttuneet: tunnit haetaan,
+# niistä lasketaan tunniste (site/scripts/tunnit-tunniste.mjs), ja sitä verrataan julkaistun
+# sivun tiedostoon /tunnit-tunniste.txt. Muuttumaton ajo päättyy noin minuutissa.
+#
+# Pois päältä, kunnes repon muuttuja TUOTANTO_KAYTOSSA = true. Käyttöönotto: docs/tuotanto.md.
+# Testiversio (GitHub Pages) julkaistaan erikseen pages.yml:llä.
+
+name: Tuotanto
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      syy:
+        description: Käynnistäjä (ajastin, Päivitä nyt tai käsin)
+        type: string
+        default: käsin
+      pakota:
+        description: Julkaise, vaikka tunnit ja koodi ovat ennallaan
+        type: boolean
+        default: false
+
+# Vähimmät oikeudet: vain koodin luku. Julkaisu Cloudflareen tehdään Cloudflaren omalla tunnuksella.
+permissions:
+  contents: read
+
+# Yksi julkaisu kerrallaan. Kesken olevaa ei keskeytetä, ettei sivusto jää puolivalmiiksi.
+concurrency:
+  group: tuotanto
+  cancel-in-progress: false
+
+# Ajon nimi Actions-listassa: näkyy, kuka käynnisti (ajastin, Päivitä nyt, push)
+run-name: Tuotanto (${{ inputs.syy || github.event_name }})
+
+jobs:
+  julkaisu:
+    name: Tunnit, build ja julkaisu
+    if: vars.TUOTANTO_KAYTOSSA == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Ympäristö "tuotanto": salaisuudet vain main-haaran ajoille (Settings → Environments)
+    environment:
+      name: tuotanto
+      url: ${{ vars.TUOTANTO_URL }}
+    defaults:
+      run:
+        working-directory: site
+    env:
+      SCHEDULE_EXCEL_URL: ${{ secrets.SCHEDULE_EXCEL_URL }} # Amandan Excelin jakolinkki
+      TUOTANTO_URL: ${{ vars.TUOTANTO_URL }} # https://tahkonamanda.fi (ei kauttaviivaa loppuun)
+    steps:
+      - name: Koodin haku
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            site/package-lock.json
+            cloudflare/package-lock.json
+
+      - name: Riippuvuuksien asennus
+        run: npm ci
+
+      # Tunnit Amandan Excelistä → src/data/calendar.json. Epäonnistunut haku pysäyttää ajon,
+      # jolloin edellinen toimiva versio jää sivulle.
+      - name: Tuntien haku
+        run: node scripts/fetch-calendar.mjs
+
+      - name: Muutosten tarkistus
+        id: muutos
+        env:
+          PAKOTA: ${{ inputs.pakota == true }}
+        run: |
+          uusi=$(node scripts/tunnit-tunniste.mjs)
+          # Satunnainen kyselyparametri ohittaa mahdolliset välimuistit. Epäonnistunut haku
+          # (esim. ensimmäinen julkaisu) tarkoittaa julkaisua.
+          julkaistu=$(curl -fsS --max-time 15 "$TUOTANTO_URL/tunnit-tunniste.txt?t=$(date +%s)" 2>/dev/null || echo "ei-saatavilla")
+          echo "tunniste=$uusi" >> "$GITHUB_OUTPUT"
+          if [ "$PAKOTA" != "true" ] && [ "$uusi" = "$julkaistu" ]; then
+            echo "julkaise=false" >> "$GITHUB_OUTPUT"
+            echo "Tunnit ja koodi ennallaan, julkaisua ei tarvita." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "julkaise=true" >> "$GITHUB_OUTPUT"
+            echo "Muutoksia löytyi (tai pakotettu), julkaistaan." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # JULKAISU=1: build pysähtyy, jos sivulla on paikkamerkkejä tai esimerkkitunteja.
+      # TUNNIT_HAETTU=1: käytetään yllä haettuja tunteja, joista tunniste laskettiin.
+      - name: Tuotantobuild
+        if: steps.muutos.outputs.julkaise == 'true'
+        run: npm run build
+        env:
+          JULKAISU: "1"
+          TUNNIT_HAETTU: "1"
+          VITE_SITE_URL: ${{ vars.TUOTANTO_URL }}
+
+      - name: Tunniste julkaisuun
+        if: steps.muutos.outputs.julkaise == 'true'
+        env:
+          TUNNISTE: ${{ steps.muutos.outputs.tunniste }}
+        run: printf '%s' "$TUNNISTE" > dist/tunnit-tunniste.txt
+
+      # Cloudflaren tunnus: Workers Scripts: Edit vain Amandan tilille (docs/tuotanto.md, vaihe 3)
+      - name: Julkaisu Cloudflareen
+        if: steps.muutos.outputs.julkaise == 'true'
+        working-directory: cloudflare
+        run: |
+          npm ci
+          npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: "false"

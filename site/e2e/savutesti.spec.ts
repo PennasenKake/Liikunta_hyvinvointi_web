@@ -551,6 +551,14 @@ test.describe("Virhesivut", () => {
     expect(response?.status()).toBe(404);
     await expect(page.getByRole("heading", { level: 1, name: "Taisit eksyä polulta" })).toBeVisible();
 
+    // Yhteydenotto sähköpostilla (ei puhelua), ja pikalinkit vievät etusivun osioihin
+    await expect(page.locator("main").getByRole("link", { name: /@/ })).toHaveAttribute("href", /^mailto:/);
+    // Lähetä viesti: valmis viestipohja, jossa on mukana osoite, jota kävijä yritti avata
+    const viesti = page.locator("main").getByRole("link", { name: "Lähetä viesti" });
+    await expect(viesti).toHaveAttribute("href", /^mailto:.*subject=Sivua%20ei%20l%C3%B6ytynyt/);
+    await expect(viesti).toHaveAttribute("href", /tata-sivua-ei-ole/);
+    await expect(page.getByRole("navigation", { name: "Pikalinkit" }).getByRole("link")).toHaveCount(3);
+
     // Hakukoneet eivät saa indeksoida 404-sivua
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
 

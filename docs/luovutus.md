@@ -15,7 +15,10 @@ Tunnit tulevat sivulle Excel-tiedostostasi OneDrivessa. Excel on ainoa paikka, j
 4. Älä kirjoita Exceliin osallistujien nimiä: tiedosto jaetaan katselulinkillä.
 5. Älä muuta otsikkoriviä äläkä välilehden nimeä (*Tunnit*). Ohje on myös Excelin *Ohje*-välilehdellä.
 
-Muutos näkyy sivulla seuraavassa päivityksessä. Jos tunnin nimi on sama kuin palvelun nimi sivulla
+Muutos näkyy sivulla 15 minuutin kuluessa. Jos haluat sen heti, avaa kirjanmerkki **Päivitä tunnit**
+ja paina *Päivitä nyt*: muutos näkyy noin 3 minuutissa. Älä jaa kirjanmerkin osoitetta muille.
+
+Jos tunnin nimi on sama kuin palvelun nimi sivulla
 (esim. *Yin jooga*), siitä tulee linkki palvelun kuvaukseen.
 
 ### Ilmoittautumiset (lomake)

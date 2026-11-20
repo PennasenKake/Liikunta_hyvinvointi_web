@@ -56,7 +56,7 @@ sivusto käyttää noin 24 pyyntöä päivässä. Laskutustiliä ei tarvitse eik
 Lähde: <https://developers.google.com/calendar/pricing>
 
 **Ajastus pysähtyy**, jos repossa ei ole tapahtunut mitään 60 päivään (GitHubin sääntö).
-Silloin: Actions → Pages → *Enable workflow*. Tuotannossa (esim. Cloudflare Pages) ajastus tehdään build-hookilla.
+Silloin: Actions → Pages → *Enable workflow*. Tuotannossa ajastuksen hoitaa Cloudflare-Worker 15 minuutin välein (`docs/tuotanto.md`).
 
 ## Ilmoittautuminen
 
