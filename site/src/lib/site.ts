@@ -12,15 +12,16 @@ export const site = {
   phone: "040 830 5914",          // Näytettävä muoto
   phoneHref: "tel:+358408305914", // Kansainvälinen muoto toimii kaikissa puhelimissa
   email: "amanda.taskinen@outlook.com",
-  // Ilmoittautumislomake (Microsoft Forms). Amanda tekee lomakkeen kuukausi tai sesonkiviikko
-  // kerrallaan; kun lomake vaihtuu, vaihdetaan vain tämä linkki. null = ilmoittautuminen sähköpostilla.
-  // Vastaukset (osallistujien nimet) jäävät Amandan Formsiin: niitä ei koskaan tuoda sivustolle.
+  // Ilmoittautumislomake: yksi pysyvä lomake (Microsoft tai Google Forms). Tunti täytetään siihen
+  // valmiiksi (signupFormPrefill), joten lomaketta ei muuteta tuntien vaihtuessa. null = sähköposti.
+  // Vastaukset (osallistujien nimet) jäävät Amandan lomakkeeseen: niitä ei koskaan tuoda sivustolle.
+  // Tietosuoja- ja evästesivu nimeävät palvelun tämän osoitteen perusteella (calendar.ts: formProvider).
   // TESTIHAARA (testi/excel-forms): Eeron Google Forms -testilomake. Ennen tuotantoa takaisin
   // Amandan lomakkeeseen: "https://forms.cloud.microsoft/r/SCYtDm1Ypb" (docs/excel-ja-forms.md, vaihe 6).
   signupForm: "https://docs.google.com/forms/d/e/1FAIpQLSeqZEI_VXd73HHbgiAS_cojEB6agqF9Gyk4Yiy7CVjLEMMpcA/viewform" as string | null,
   // Valinnainen: Formsin "valmiiksi täytetty linkki", jossa tunnin kohdalla on {tunti}.
   // Painike korvaa sen tunnin tekstillä, esim. "Vesijumppa ti 1.12. klo 18.00", jolloin tunti on
-  // lomakkeessa valmiiksi valittuna. Formsin vaihtoehdon pitää olla täsmälleen samaa muotoa.
+  // lomakkeessa valmiiksi täytettynä. Kysymys "Valitse tunti" on tyyppiä Lyhyt vastaus.
   // Ohje: docs/excel-ja-forms.md. null = painike avaa signupForm-lomakkeen sellaisenaan.
   // Google Forms: entry.<kysymyksen tunnus> = vaihtoehdon teksti. Tunnus 378321794 = "Valitse tunti".
   // Testattu Chromessa 20.11.2026: "Yin jooga ke 2.12. klo 17.30" tulee valmiiksi valituksi.

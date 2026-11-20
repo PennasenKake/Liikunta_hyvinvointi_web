@@ -171,6 +171,21 @@ export function toIcs(e: CalendarEvent, siteUrl: string, stamp = toUtcStamp(cale
 }
 
 // --- Ilmoittautuminen ------------------------------------------------------------
+
+/**
+ * Lomakepalvelu osoitteen perusteella. Tietosuoja- ja evästesivu kertovat sen nimellä, joten
+ * teksti pysyy oikeana, vaikka lomake vaihtuisi Microsoftista Googleen tai päinvastoin.
+ */
+export function formProvider(form: string | null = site.signupForm): { name: string; company: string } | null {
+  if (!form) return null;
+  const host = new URL(form).hostname;
+  if (host === "docs.google.com" || host === "forms.gle") return { name: "Google Forms", company: "Google" };
+  if (host.endsWith("office.com") || host.endsWith("cloud.microsoft") || host.endsWith("microsoft.com")) {
+    return { name: "Microsoft Forms", company: "Microsoft" };
+  }
+  return { name: "verkkolomake", company: "lomakepalvelun tarjoaja" };
+}
+
 // Ensisijaisesti Amandan Forms-lomake (site.signupForm): ilmoittautumiset kertyvät samaan
 // Exceliin kuin ennenkin. Jos lomaketta ei ole, valmiiksi täytetty sähköposti.
 export function signupHref(e: CalendarEvent, form: string | null = site.signupForm, prefill: string | null = site.signupFormPrefill) {

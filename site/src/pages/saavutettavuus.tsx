@@ -8,10 +8,10 @@ import { site } from "@/lib/site";
 
 export default function AccessibilityPage() {
   return (
-    <LegalPage eyebrow="Saavutettavuus" title="Saavutettavuusseloste" updated="29.10.2026">
+    <LegalPage eyebrow="Saavutettavuus" title="Saavutettavuusseloste" updated="20.11.2026">
       <p>
         Haluamme, että sivustoa voi käyttää mahdollisimman moni, myös ruudunlukijalla, näppäimistöllä tai
-        suurennettuna. Tavoitteena on WCAG 2.1 -ohjeiden AA-taso.
+        suurennettuna. Tavoitteena on WCAG 2.2 -ohjeiden AA-taso.
       </p>
 
       <h2>Mitä on tehty</h2>
@@ -28,6 +28,10 @@ export default function AccessibilityPage() {
         {/* TODO: päivitä, kun paikkamerkit on korvattu oikealla sisällöllä */}
         Osa sisällöstä on vielä paikkamerkkejä (esimerkiksi hinnat ja kumppanien logot), ja ne täydennetään ennen
         julkaisua.
+      </p>
+      <p>
+        Ilmoittautumislomake on ulkopuolisen lomakepalvelun sivu, jonka saavutettavuudesta vastaa
+        palveluntarjoaja. Jos lomakkeen käyttö ei onnistu, voit ilmoittautua myös sähköpostilla.
       </p>
 
       <h2>Palaute</h2>

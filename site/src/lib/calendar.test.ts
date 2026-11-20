@@ -1,6 +1,6 @@
 // calendar.test.ts: kalenterin apufunktioiden yksikkötestit (Vitest, npm test).
 import { describe, expect, it } from "vitest";
-import { filterUpcoming, googleCalendarUrl, cancelHref, serviceHref, signupHref, signupLabel, toIcs, type CalendarEvent } from "./calendar";
+import { filterUpcoming, formProvider, googleCalendarUrl, cancelHref, serviceHref, signupHref, signupLabel, toIcs, type CalendarEvent } from "./calendar";
 
 const e: CalendarEvent = {
   id: "t1",
@@ -32,6 +32,16 @@ describe("toIcs", () => {
   it("koodaa erikoismerkit ja taittaa pitkät rivit", () => {
     expect(ics.replace(/\r\n /g, "")).toContain("DESCRIPTION:Ota alusta mukaan\\; vesipullo\\, pyyhe.\\nTervetuloa!");
     for (const line of ics.split("\r\n")) expect(line.length).toBeLessThanOrEqual(75);
+  });
+});
+
+describe("formProvider", () => {
+  it("tunnistaa lomakepalvelun tietosuojatekstiä varten", () => {
+    expect(formProvider("https://forms.cloud.microsoft/r/SCYtDm1Ypb")?.company).toBe("Microsoft");
+    expect(formProvider("https://forms.office.com/r/abc")?.name).toBe("Microsoft Forms");
+    expect(formProvider("https://docs.google.com/forms/d/e/x/viewform")?.name).toBe("Google Forms");
+    expect(formProvider("https://example.com/lomake")?.name).toBe("verkkolomake");
+    expect(formProvider(null)).toBeNull();
   });
 });
 

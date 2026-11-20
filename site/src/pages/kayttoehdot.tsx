@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 
 export default function TermsPage() {
   return (
-    <LegalPage eyebrow="Ehdot" title="Käyttöehdot" updated="29.10.2026">
+    <LegalPage eyebrow="Ehdot" title="Käyttöehdot" updated="20.11.2026">
       <p>
         Kun varaat tunnin tai palvelun Tahkon Amandalta, hyväksyt nämä ehdot. Kysy rohkeasti etukäteen, jos
         jokin jää mietityttämään.
@@ -29,7 +29,9 @@ export default function TermsPage() {
 
       <h2>3. Ajanvaraus ja maksaminen</h2>
       <p>
-        Ryhmätunneille ilmoittaudutaan sivuston Tulevat tunnit -osion ilmoittautumislomakkeella. Yksilöpalvelut
+        Ryhmätunneille ilmoittaudutaan sivuston Tulevat tunnit -osion Ilmoittaudu-painikkeesta avautuvalla
+        lomakkeella. Ilmoittautuminen on voimassa, kun lomake on lähetetty. Kun tunti on täynnä, sen kohdalla lukee
+        Täynnä, eikä sille voi enää ilmoittautua. Yksilöpalvelut
         (Personal Training, InBody-mittaus) ja tarjoukset ryhmille ja yrityksille sovitaan sähköpostilla tai
         puhelimitse.
         Maksutavat: [maksutavat]. Liikuntaedut, kuten ePassi, käyvät niissä palveluissa, joissa ne on mainittu.
@@ -38,6 +40,11 @@ export default function TermsPage() {
       <h2>4. Peruutus ja siirto</h2>
       <p>
         {/* TODO(Amanda): peruutusaika ja maksu. Alla yleinen malli. */}
+        Ryhmätunnin ilmoittautumisen voi perua tunnin kohdalla olevalla Peru ilmoittautuminen -linkillä, joka
+        avaa valmiin sähköpostiviestin, tai sähköpostilla osoitteeseen{" "}
+        <a href={`mailto:${site.email}`}>{site.email}</a> viimeistään [24] tuntia ennen tunnin alkua.
+      </p>
+      <p>
         Varatun yksilöpalvelun voi perua tai siirtää maksutta viimeistään [24] tuntia ennen varattua aikaa.
         Myöhemmin perutusta tai käyttämättä jääneestä ajasta voidaan periä [osa / koko] palvelun hinnasta.
         Jos tunti joudutaan perumaan ohjaajasta johtuvasta syystä, siitä ilmoitetaan mahdollisimman pian, eikä

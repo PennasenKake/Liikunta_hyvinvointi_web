@@ -49,6 +49,8 @@ Tee vaiheet järjestyksessä. Tilit ovat Amandan nimissä, Eero saa niihin halli
    - SSL/TLS → Overview → **Full (strict)**, Edge Certificates → **Always Use HTTPS** päälle.
    - DNS: lisää `www` (CNAME `tahkonamanda.fi`, Proxied), jotta uudelleenohjaus toimii.
    - Rules → **Redirect Rules** → mallista "Redirect from WWW to root": `www.tahkonamanda.fi/*` → `https://tahkonamanda.fi/${1}`, 301.
+   - Security → Bots: **Bot Fight Mode pois päältä.** Se asettaa evästeen `__cf_bm`, ja evästesivu lupaa,
+     ettei sivusto aseta evästeitä. Jos se halutaan päälle, päivitä `site/src/pages/evasteet.tsx`.
    - Security → Bots / AI Crawl Control: hakukoneet ja tekoälyhaut (Search) sallituiksi. Sivu haluaa näkyä myös ChatGPT:n ja muiden vastauksissa.
 5. Sähköpostin edelleenohjaus (valinnainen): Email → Email Routing → `amanda@tahkonamanda.fi` → Amandan nykyinen osoite.
 

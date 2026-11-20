@@ -26,8 +26,8 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 7b | **Ilmoittautumislomake**: yksi pysyvä lomake, Tunti-kysymys lyhyenä vastauksena. Microsoft vai Google Forms? | Ilmoittaudu-painikkeet | `lib/site.ts` → `signupForm`, `signupFormPrefill` | ⬜ |
 | 8 | **Kumppanilogot ja käyttölupa:** ePassi, Tahko, Nilsiän Yrittäjät | Footer | `lib/site.ts` → `partners` | ⬜ |
 | 9 | **Palveluiden tiedot:** kestot, paikkakunnat ja tehotasot (poistettu arvioina, lisätään vahvistettuina) sekä "Sopii:"-tekstien tarkistus | Palvelut-osio | `lib/services.ts` | ⬜ |
-| 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu | Käyttöehdot | `pages/kayttoehdot.tsx` | ⬜ |
-| 11 | **InBody-tulosten säilytys:** säilytetäänkö ja missä muodossa | Tietosuojaseloste | `pages/tietosuoja.tsx` | ⬜ |
+| 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu (yksilöpalvelut ja ryhmätuntien ilmoittautumiset) | Käyttöehdot | `pages/kayttoehdot.tsx` | ⬜ |
+| 11 | **Säilytysajat:** ilmoittautumisten poisto (esim. kauden päätyttyä), InBody-tulokset: säilytetäänkö ja missä muodossa | Tietosuojaseloste | `pages/tietosuoja.tsx` | ⬜ |
 | 12 | **Taustavideo heroon** (vapaaehtoinen): 10–20 s vaakavideo tunnilta tai Tahkon maisemasta, ei ääntä, ei tunnistettavia asiakkaita ilman lupaa | Etusivun yläosa (hero) | `lib/site.ts` → `heroVideo` | ⬜ |
 | 13 | **Heron luottamusrivi:** pääkoulutus yhdellä rivillä ja ohjaajavuodet | Etusivun yläosa | `hero/Hero.tsx` → `trust` | ⬜ |
 
