@@ -1,8 +1,10 @@
-// HeroD.tsx: hero-versio D ("Liikettä ja lepoa Pohjois-Savossa").
+// Hero.tsx: etusivun yläosa ("Liikettä ja lepoa Pohjois-Savossa").
 // Teksti vasemmalla, tausta koko leveydeltä: taustavideo (site.heroVideo), tai jos sitä ei ole,
-// Amandan omat kuvat vaihtuvat ristiinhäivytyksellä (sama CSS kuin Hero C:ssä, index.css).
-// Toisin kuin Hero C:ssä, kuvia ei peitetä hunnulla: vain tekstin puoli häivytetään,
-// jotta kuvat näkyvät aitoina eivätkä näytä kuvapankkikuvilta.
+// Amandan omat kuvat vaihtuvat ristiinhäivytyksellä (HeroSlides.tsx, index.css: .hero-kb).
+// Kuvia ei peitetä hunnulla: vain tekstin puoli häivytetään, jotta kuvat näkyvät aitoina
+// eivätkä näytä kuvapankkikuvilta.
+// (Aiemmat vaihtoehtoiset versiot A–C poistettiin 11/2026, kun Amanda valitsi tämän. Ne löytyvät
+// git-historiasta.)
 //
 // Mobiilissa kuva on kaistana ylhäällä ja teksti sen alla (teksti ei koskaan ole kuvan päällä).
 //
@@ -30,7 +32,7 @@ function Check() {
   );
 }
 
-export default function HeroD() {
+export default function Hero() {
   // paused = onko taustan liike pysäytetty. Alkutila false: sama palvelimella ja selaimessa.
   const [paused, setPaused] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);

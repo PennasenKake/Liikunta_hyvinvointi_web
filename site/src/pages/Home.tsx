@@ -2,7 +2,7 @@
 // Kokoaa osiot järjestykseen. Itse osiot ovat kansiossa components/sections,
 // joten tämä tiedosto kertoo yhdellä silmäyksellä sivun rakenteen.
 
-import Hero from "@/components/sections/Hero";
+import Hero from "@/components/sections/hero/Hero";
 import QuickLinks from "@/components/sections/QuickLinks";
 import Services from "@/components/sections/Services";
 import WhyMove from "@/components/sections/WhyMove";

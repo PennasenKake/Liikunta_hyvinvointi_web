@@ -11,7 +11,7 @@ Tarkistettu: 16.11.2026 (haara `rebuild/vite`).
 |---|---|---|---|
 | 1 | **Salaisuudet** | Ks. taulukko alla. Ainoa salaisuus `GOOGLE_API_KEY` on vain GitHubin salaisuuksissa ja buildissa. Git-historiassa ei ole avaimia (`AIza…`) eikä `.env`-tiedostoja, ja `.env.*` on `.gitignore`ssa. | ✅ |
 | 2 | **Omistajuus (API-reitit)** | Ei API-reittejä. Sivusto on valmiita HTML-tiedostoja. | – |
-| 3 | **Tietokannan säännöt** | Ei tietokantaa. Ilmoittautumiset ovat Amandan Microsoft Formsissa: tarkista, ettei lomakkeen *Jaa tulokset* -yhteenvetolinkkiä ole jaettu julkisesti. | ⬜ Amanda |
+| 3 | **Tietokannan säännöt** | Ei tietokantaa. Ilmoittautumiset ovat Amandan lomakkeessa (Microsoft tai Google Forms): tarkista, ettei lomakkeen *Jaa tulokset* -yhteenvetolinkkiä ole jaettu julkisesti. | ⬜ Amanda |
 | 4 | **Mass assignment / syötteiden tarkistus** | Sivu ei vastaanota syötteitä. Ulkoinen data (Google-kalenterin tekstit) käsitellään tekstinä: HTML poistetaan (`fetch-calendar.mjs`), Preact koodaa tekstin, rakennetiedon JSON koodataan (`jsonLdString`, yksikkötesti). | ✅ |
 | 5 | **Maksut** | Ei maksuja sivustolla. Hinnat ovat vain tietoa (`lib/pricing.ts`). | – |
 | 6 | **Pyyntörajat** | Ei omia rajapintoja. Calendar API -kutsuja noin 24 päivässä buildista, kiintiö 1 000 000. | – |

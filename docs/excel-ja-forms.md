@@ -1,7 +1,7 @@
 # Tuntilista Excelistä ja ilmoittautuminen Formsilla
 
 Tulevat tunnit voi hakea sivulle Amandan Excel-tiedostosta Google-kalenterin sijaan, ja ilmoittautuminen
-hoidetaan Microsoft Formsilla. Tämä ohje kertoo, miten koko ketju **testataan ensin Eeron omilla
+hoidetaan lomakkeella (Microsoft tai Google Forms, tunti esitäytettynä). Tämä ohje kertoo, miten koko ketju **testataan ensin Eeron omilla
 tunnuksilla** GitHub Pages -testiversiossa ja vasta sitten otetaan käyttöön Amandan tiedostoilla.
 
 ```
@@ -9,7 +9,7 @@ Excel (OneDrive, katselulinkki) ──► GitHub Actions: build kerran tunnissa 
                                     scripts/fetch-excel.mjs                         │
                                                                    Ilmoittaudu ─────┘
                                                                         ▼
-                                                    Microsoft Forms ──► Amandan Excel-vastaukset
+                                                    Forms-lomake ──► Amandan vastaukset    
 ```
 
 Tuntilista ja ilmoittautumiset ovat eri tiedostoissa. Sivulle tulee vain aikataulu, **ei koskaan
@@ -38,8 +38,9 @@ ei saada ladattua, build pysähtyy, jolloin sivulle jää edellinen toimiva vers
 2. **Jakaminen:** tiedoston kohdalla *Jaa* → *Kopioi linkki* → linkin asetuksista
    **Kuka tahansa** ja **Voi tarkastella** (ei muokkausoikeutta). Kopioi linkki talteen.
 3. **Forms-testilomake** (forms.office.com → Uusi lomake), nimeksi *Testi: ilmoittautuminen*:
-   - Kysymys **Valitse tunti** (Valinta, pakollinen). Vaihtoehdot täsmälleen muodossa
-     `Vesijumppa ti 1.12. klo 18.00`, `Yin jooga ke 2.12. klo 17.30` jne. (sama muoto kuin sivulla).
+   - Kysymys **Tunti** (**Lyhyt vastaus**, pakollinen), kuvaukseen *Täytetään automaattisesti*.
+     Sivu täyttää siihen tunnin muodossa `Vesijumppa ti 1.12. klo 18.00`. Lyhyt vastaus on suositus:
+     tunteja ei tarvitse koskaan lisätä lomakkeeseen (ks. *Testatut lomakemuutokset* alla).
    - **Nimi** (Teksti, pakollinen) ja **Puhelin tai sähköposti** (Teksti, pakollinen).
    - Lomakkeen alkuun lyhyt teksti: *Tietojasi käytetään vain ilmoittautumisen hoitamiseen. Tietosuojaseloste: tahkonamanda.fi/tietosuoja*
    - *Asetukset* (… → Asetukset): **Kuka tahansa voi vastata**, **Hae sähköposti-ilmoitus jokaisesta vastauksesta**.
@@ -131,12 +132,26 @@ Kohta 6: palauta oikea linkki heti testin jälkeen.
    `JULKAISU=1 npm run build` pysähtyy, jos tunnit ovat vielä esimerkkitunteja.
 5. Poista tai arkistoi omat testitiedostosi OneDrivesta ja Formsista.
 
+## Testatut lomakemuutokset (Google Forms, 20.11.2026)
+
+| Muutos lomakkeessa | Vaikutus sivun ilmoittautumiseen |
+|---|---|
+| Tunti-kysymys monivalinnasta lyhyeksi vastaukseksi | Toimii: kysymyksen tunnus säilyy, esitäyttö jatkuu ilman muutoksia sivulle |
+| Lyhyt vastaus ja Excelissä muutettu kellonaika | Toimii: lomakkeeseen tulee uusi aika |
+| Monivalinta, jonka vaihtoehto ei täsmää Exceliin | **Ei valita mitään, eikä kävijä saa varoitusta.** Siksi lyhyt vastaus |
+| Kysymyksen otsikko tai vaihtoehtojen järjestys muuttuu | Ei vaikutusta (linkki käyttää kysymyksen tunnusta) |
+| Muutos julkaistuun lomakkeeseen | Näkyy heti |
+| Lomakkeesta kopio tai uusi lomake | Uusi osoite: linkki vaihdetaan `site.ts`:ään. Kopio pitää ensin julkaista |
+| Kysymys poistetaan ja tehdään uusi | Uusi tunnus: tunti jää täyttämättä, kunnes linkki päivitetään |
+
 ## Amandan arki
 
 - Uusi tunti = uusi rivi Exceliin. Peruttu tunti = *Peruttu* Tila-sarakkeeseen. Täysi = *Täynnä*.
-- Sama tunti myös Formsin tuntivalintoihin samassa muodossa (`Vesijumppa ti 1.12. klo 18.00`).
-  Täysi tunti poistetaan Formsin vaihtoehdoista, koska Forms ei rajoita paikkamäärää itse.
-- Muutokset näkyvät sivulla noin tunnin kuluessa.
+- Lomakkeeseen ei kosketa, kun tunteja muutetaan (Tunti-kysymys on lyhyt vastaus).
+  **Älä poista Tunti-kysymystä äläkä tee lomakkeesta uutta**: silloin sivun linkki pitää päivittää.
+- Forms ei rajoita paikkamäärää itse: kun tunti täyttyy, merkitse Exceliin *Täynnä*.
+- Muutokset näkyvät sivulla seuraavassa päivityksessä (tuotannossa 15 minuutin välein, testiversiossa
+  GitHubin ajastus, joka voi viivästyä tunteja; käsin: Actions → Pages → Run workflow).
 - Ohje on myös Excel-pohjan välilehdellä *Ohje*.
 
 ## Varasuunnitelma, jos OneDrive-lataus ei toimi
