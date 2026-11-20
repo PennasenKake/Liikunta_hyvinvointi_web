@@ -138,6 +138,4 @@ export const serviceCategories: ServiceCategory[] = [
   },
 ];
 
-// Palveluiden kokonaismäärä (Hero C:n faktarivi). Lasketaan datasta, joten luku pysyy oikeana,
-// kun palveluita lisätään tai poistetaan.
-export const serviceCount = serviceCategories.reduce((sum, c) => sum + c.services.length, 0);
+

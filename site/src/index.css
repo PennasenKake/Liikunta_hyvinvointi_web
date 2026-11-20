@@ -133,7 +133,7 @@ html {
   }
 }
 
-/* ---------- Hero C: liikkuva tausta (HeroC.tsx) ----------
+/* ---------- Hero: vaihtuvat taustakuvat (hero/HeroSlides.tsx) ----------
    Kolme kuvaa vaihtuu ristiinhäivytyksellä, ja jokainen zoomautuu hitaasti (Ken Burns).
    Kierros 18 s, kuvat 6 s välein. Vähennetty liike: vain ensimmäinen kuva, ei liikettä.
    .hero-paused pysäyttää animaation (WCAG 2.2.2: liikkuvan sisällön voi pysäyttää). */

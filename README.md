@@ -28,11 +28,11 @@ Toiminta-alue: Tahko, Siilinjärvi, Kuopio ja Rautavaara.
 
 **Sivun osat**
 - [x] Yläpalkki: pienenee ja piiloutuu vieritettäessä, alavalikot palveluihin, mobiilivalikko
-- [x] Hero neljänä versiona (A–D, käytössä D), valinta yhdellä asetuksella. Seuraava tunti nostettuna heroon
+- [x] Hero: teksti vasemmalla, vaihtuvat omat kuvat tai video, pysäytyspainike. Seuraava tunti nostettuna heroon
 - [x] Palvelut: Liikunta ja Hyvinvointi rinnakkain, mobiilissa avautuvat kuvaukset, suorat linkit palveluihin (`/#vesijumppa`)
 - [x] Miksi liikkua, Hinnasto (Kysy tarjous) ja Minusta *(osin paikkamerkkisisältöä)*
 - [x] Hengähdä hetki: ajastettu 4–7–8-hengitysharjoitus, jossa lootus ohjaa rytmiä
-- [x] Tulevat tunnit Google-kalenterista (päivitys tunneittain), ilmoittautuminen Microsoft Formsilla, lisäys omaan kalenteriin ja jakaminen
+- [x] Tulevat tunnit Amandan Excelistä (varalla Google-kalenteri), Täynnä/Peruttu-tila, ilmoittautuminen lomakkeella tunti esitäytettynä, lisäys omaan kalenteriin ja jakaminen
 - [x] Yhteydenotot, tarjouspyynnöt ja ajanvaraus valmiiksi täytettyinä sähköposteina
 - [x] Instagram-karuselli nuolilla, pyyhkäisyllä ja näppäimistöllä *(väliaikaiset kuvat)*
 - [x] Alatunniste, jonka yläreunassa nouseva lootusmandala
@@ -79,7 +79,7 @@ mihin tahansa staattiseen hostingiin (GitHub Pages, Cloudflare Pages, Netlify).
 │   └── src/
 │       ├── routes.tsx     Sivut, otsikot ja kuvaukset
 │       ├── pages/         Etusivu, lakisivut ja 404
-│       ├── components/    layout/ · sections/ (hero/: A–D) · ui/
+│       ├── components/    layout/ · sections/ (hero/) · ui/
 │       └── lib/           Sisältö ja apufunktiot
 ├── materiaalit/           Logo ja kuvitus (lähdetiedostot)
 ├── docs/                  Dokumentaatio
@@ -115,10 +115,9 @@ Sivu aukeaa osoitteeseen http://localhost:5173.
 
 Ennen ensimmäistä savutestien ajoa asenna testiselain: `npx playwright install chromium`.
 
-**Hero-versio** valitaan tiedostossa `site/src/lib/site.ts`: `heroVariant: "a" | "b" | "c" | "d"`
-(a = tumma tekstilaatikko, b = sulautuvat kuvat, c = liikkuva tausta, d = teksti vasemmalla ja vaihtuvat kuvat, käytössä).
-
-**Ilmoittautumislomake** vaihdetaan samassa tiedostossa: `signupForm` (Microsoft Forms -linkki, `null` = sähköposti).
+**Tuntilista** tulee Amandan Excelistä (`SCHEDULE_EXCEL_URL`, [docs/excel-ja-forms.md](docs/excel-ja-forms.md)),
+varalla Google-kalenteri. **Ilmoittautumislomake** asetetaan tiedostossa `site/src/lib/site.ts`:
+`signupForm` ja `signupFormPrefill` (lomakkeen linkki ja esitäytetty linkki, `null` = sähköposti).
 
 **Savutestit** ([`site/e2e/`](site/e2e/)) ajetaan työpöytä- ja mobiiliprofiililla. Ne tarkistavat mm. että
 etusivu latautuu ilman virheitä ja vaakavieritystä, navigaatio ja mobiilivalikko toimivat, tietosivut latautuvat,

@@ -64,12 +64,12 @@ Liikunta_hyvinvointi_web/
 │       ├── App.tsx                    ✅ Yhteinen asettelu: ohituslinkki, yläpalkki, alatunniste
 │       ├── routes.tsx                 ✅ Sivut, otsikot ja kuvaukset
 │       ├── routes.test.ts             ✅ Vitest: reitit, otsikot ja kuvaukset (pituus, yksilöllisyys)
-│       ├── index.css                  ✅ Tailwind-teema, vierityspaljastus, vuoristoviiva, hero C, hengitysharjoitus, lootusmandala
+│       ├── index.css                  ✅ Tailwind-teema, vierityspaljastus, vuoristoviiva, heron kuvat, hengitysharjoitus, lootusmandala
 │       ├── pages/                     ✅ Home, kayttoehdot, tietosuoja, evasteet, saavutettavuus, NotFound
 │       ├── components/
 │       │   ├── layout/                ✅ Header, HeaderShell, NavDropdown, MobileMenu, Footer
 │       │   ├── sections/              ✅ Etusivun osiot (Hero, Palvelut, Miksi liikkua, Hengähdä hetki, Kalenteri, Hinnasto, Minusta, Instagram)
-│       │   │   └── hero/              ✅ HeroA–D (D käytössä), NextClass
+│       │   │   └── hero/              ✅ Hero, HeroSlides (vaihtuvat kuvat), NextClass (seuraava tunti)
 │       │   ├── ui/                    ✅ Image, Link, ButtonLink, TahkoLine, LotusMandala, EmailText, LegalPage ym.
 │       │   └── RevealOnScroll.tsx     ✅ Vierityspaljastus
 │       └── lib/                       ✅ site, services, pricing, about, photos, instagram, calendar, contact, lotus, seo, paths

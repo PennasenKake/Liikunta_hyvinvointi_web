@@ -86,15 +86,7 @@ export const site = {
   // voisi hydraatiossa laskea eri vuoden (vuodenvaihteessa), jolloin HTML ei täsmäisi.
   copyrightYear: 2026,
 
-  // Etusivun yläosan (hero) versio. Amanda valitsee kolmesta:
-  //   "a" = kaksi kuvaa ja tumma tekstilaatikko ("Liiku & rauhoitu")
-  //   "b" = kahvakuulat ja järven äänimalja sulautuvat ("Liikunta & hyvinvointi")
-  //   "c" = liikkuva tausta ja keskitetty otsikko ("Liikuntaa, joka tuntuu hyvältä")
-  //   "d" = teksti vasemmalla, kuvat/video oikealla ilman huntua ("Liikettä ja lepoa Pohjois-Savossa")
-  // Vaihto: muuta kirjain ja julkaise. Komponentit: components/sections/hero/.
-  heroVariant: "d" as "a" | "b" | "c" | "d",
-
-  // Hero C:n ja D:n taustavideo. null = video puuttuu, jolloin taustalla vaihtuvat valokuvat.
+  // Heron taustavideo. null = video puuttuu, jolloin taustalla vaihtuvat valokuvat.
   // Video lisätään kansioon site/public/video/ kahtena tiedostona (WebM pienempi, MP4 Safarille)
   // sekä pysäytyskuva (poster), joka näkyy heti ja vähennetyn liikkeen asetuksella.
   // Suositus: 10–20 s, ei ääntä, 1280 px leveä, alle 3 Mt. Esim.:

@@ -22,14 +22,14 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | 4 | **Koulutukset ja sertifikaatit** | Minusta-osio | `lib/about.ts` → `certifications` | ⬜ |
 | 5 | **Hinnat ja kestot** jokaiselle palvelulle | Hinnasto | `lib/pricing.ts` | ⬜ |
 | 6 | **Instagram-tunnus** | Instagram-osio, Footer | `lib/site.ts` → `instagram` | ⬜ |
-| 7 | **Google-kalenteri**: julkinen tuntikalenteri ja sen tunnus (ohje: [kalenteri.md](kalenteri.md)) | Tulevat tunnit | GitHub-salaisuudet, `lib/calendar.ts` | ⬜ |
-| 7b | **Ilmoittautumislomake** (Microsoft Forms): saatu joulukuun lomake. Pysyvä lomake vai uusi kuukausittain? | Ilmoittaudu-painikkeet | `lib/site.ts` → `signupForm` | ✅ / ⬜ |
+| 7 | **Tuntilista Excelissä** (pohja `docs/pohjat/tunnit-pohja.xlsx`, ohje [excel-ja-forms.md](excel-ja-forms.md)): Amandan oma tiedosto OneDriveen ja katselulinkki | Tulevat tunnit | GitHub-salaisuus `SCHEDULE_EXCEL_URL` | ⬜ |
+| 7b | **Ilmoittautumislomake**: yksi pysyvä lomake, Tunti-kysymys lyhyenä vastauksena. Microsoft vai Google Forms? | Ilmoittaudu-painikkeet | `lib/site.ts` → `signupForm`, `signupFormPrefill` | ⬜ |
 | 8 | **Kumppanilogot ja käyttölupa:** ePassi, Tahko, Nilsiän Yrittäjät | Footer | `lib/site.ts` → `partners` | ⬜ |
 | 9 | **Palveluiden tiedot:** kestot, paikkakunnat ja tehotasot (poistettu arvioina, lisätään vahvistettuina) sekä "Sopii:"-tekstien tarkistus | Palvelut-osio | `lib/services.ts` | ⬜ |
 | 10 | **Käyttöehtojen tiedot:** arvonlisävero, maksutavat, peruutusaika ja -maksu | Käyttöehdot | `pages/kayttoehdot.tsx` | ⬜ |
 | 11 | **InBody-tulosten säilytys:** säilytetäänkö ja missä muodossa | Tietosuojaseloste | `pages/tietosuoja.tsx` | ⬜ |
-| 12 | **Taustavideo heroon** (vapaaehtoinen): 10–20 s vaakavideo tunnilta tai Tahkon maisemasta, ei ääntä, ei tunnistettavia asiakkaita ilman lupaa | Etusivun yläosa (hero D) | `lib/site.ts` → `heroVideo` | ⬜ |
-| 13 | **Heron luottamusrivi:** pääkoulutus yhdellä rivillä ja ohjaajavuodet | Etusivun yläosa | `hero/HeroD.tsx` → `trust` | ⬜ |
+| 12 | **Taustavideo heroon** (vapaaehtoinen): 10–20 s vaakavideo tunnilta tai Tahkon maisemasta, ei ääntä, ei tunnistettavia asiakkaita ilman lupaa | Etusivun yläosa (hero) | `lib/site.ts` → `heroVideo` | ⬜ |
+| 13 | **Heron luottamusrivi:** pääkoulutus yhdellä rivillä ja ohjaajavuodet | Etusivun yläosa | `hero/Hero.tsx` → `trust` | ⬜ |
 
 ## Tarkistettavat asiat
 
@@ -38,7 +38,7 @@ Select-String -Path src -Pattern "TODO\(Amanda\)" -Recurse   # PowerShell
 | RVP | Sivulla tulkittu "reidet, vatsa ja pakarat" | ⬜ |
 | Palvelukuvaukset | Luonnokset, Amanda voi korjata omalla äänellään (`lib/services.ts`) | ⬜ |
 | Fontit | Suunnitelmassa Lora + Inter, toteutuksessa Cormorant Garamond + Jost (mockup B) | ⬜ |
-| Hero | Käytössä D: teksti vasemmalla, kuvat tai video ilman huntua, seuraava tunti kalenterista. A–C säilyvät vaihtoehtoina. Asetus: `lib/site.ts` → `heroVariant` | ⬜ |
+| Hero | Valittu: teksti vasemmalla, omat kuvat tai video ilman huntua, seuraava tunti tuntilistasta. Vaihtoehdot A–C poistettu 11/2026 (git-historiassa) | ✅ |
 
 ## Saadut kuvat
 

@@ -1,4 +1,7 @@
-# Tuntikalenteri
+# Tuntikalenteri (Google-kalenteri, varavaihtoehto)
+
+> **Käytössä on Excel-tuntilista** ([excel-ja-forms.md](excel-ja-forms.md)). Google-kalenteri on valmiina
+> varavaihtoehtona: kun `SCHEDULE_EXCEL_URL` puuttuu ja kalenterin salaisuudet on asetettu, tunnit haetaan täältä.
 
 Amanda lisää tunnit omaan Google-kalenteriinsa, ja ne näkyvät sivuston kohdassa **Tulevat tunnit**.
 Kävijä voi ilmoittautua tunnille, lisätä sen omaan kalenteriinsa (Google, Apple, Outlook) tai jakaa sen kaverille.
@@ -57,7 +60,7 @@ Silloin: Actions → Pages → *Enable workflow*. Tuotannossa (esim. Cloudflare 
 
 ## Ilmoittautuminen
 
-Painike *Ilmoittaudu* avaa Amandan Microsoft Forms -lomakkeen uuteen välilehteen (`site.signupForm`
+Painike *Ilmoittaudu* avaa Amandan ilmoittautumislomakkeen (Microsoft tai Google Forms) uuteen välilehteen (`site.signupForm`
 tiedostossa `src/lib/site.ts`). Vastaukset kertyvät Amandan Formsiin ja Exceliin, eikä niitä tuoda sivustolle.
 Kun Amanda tekee uuden kuukauden lomakkeen, vain linkki vaihdetaan. Jos arvo on `null`, painike avaa
 valmiiksi täytetyn sähköpostin (`lib/calendar.ts`, `signupHref`).

@@ -1,4 +1,4 @@
-// HeroSlides.tsx: heron vaihtuvat taustakuvat (Hero C ja D).
+// HeroSlides.tsx: heron vaihtuvat taustakuvat (Hero.tsx).
 // Kuvat vaihtuvat ristiinhäivytyksellä ja zoomautuvat hitaasti (index.css: .hero-kb).
 //
 // Suorituskyky: vain ensimmäinen kuva on sivun HTML:ssä ja ladataan heti (LCP-kuva).

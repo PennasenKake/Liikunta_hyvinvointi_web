@@ -4,7 +4,7 @@
 import { describe, expect, it } from "vitest";
 import { findRoute, fullTitle, normalizePath, routes } from "./routes";
 import { site } from "./lib/site";
-import { serviceCategories, serviceCount, serviceId } from "./lib/services";
+import { serviceCategories, serviceId } from "./lib/services";
 
 describe("reitit", () => {
   it("osoite löytyy kauttaviivan kanssa ja ilman", () => {
@@ -56,13 +56,6 @@ describe("palvelut", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("palvelumäärä lasketaan datasta", () => {
-    expect(serviceCount).toBe(serviceCategories.reduce((n, c) => n + c.services.length, 0));
-  });
-
-  it("hero-versio on sallittu", () => {
-    expect(["a", "b", "c", "d"]).toContain(site.heroVariant);
-  });
 });
 
 describe("kuvat", () => {
