@@ -23,6 +23,7 @@ import {
   icsPath,
   serviceHref,
   signupHref,
+  cancelHref,
   subscribeLinks,
   type CalendarEvent,
 } from "@/lib/calendar";
@@ -184,6 +185,14 @@ export default function Calendar() {
                       text={`${formatShort(e.start)}${e.location ? ` · ${e.location}` : ""}`}
                       anchor={`tunti-${e.id}`}
                     />
+                    {/* Peruutus sähköpostilla (lomake ei osaa perua). Pieni tekstilinkki, koska harvoin tarvittu.
+                        Näkyy myös täydellä tunnilla: ilmoittautuneet voivat perua. */}
+                    <a
+                      href={cancelHref(e)}
+                      className="inline-flex min-h-11 items-center px-1 text-[14px] text-muted underline underline-offset-4 hover:text-accent"
+                    >
+                      Peru ilmoittautuminen<span className="sr-only">: {e.title} {formatShort(e.start)}</span>
+                    </a>
                   </div>
                 </li>
               );
