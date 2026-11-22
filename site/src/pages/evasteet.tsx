@@ -5,11 +5,13 @@
 
 import Link from "@/components/ui/Link";
 import LegalPage from "@/components/ui/LegalPage";
+import { formProvider } from "@/lib/calendar";
 
 
 export default function CookiesPage() {
+  const form = formProvider();
   return (
-    <LegalPage eyebrow="Evästeet" title="Evästeasetukset" updated="29.10.2026">
+    <LegalPage eyebrow="Evästeet" title="Evästeasetukset" updated="20.11.2026">
       <p>
         <strong>Tämä sivusto ei aseta evästeitä</strong> eikä käytä analytiikka- tai mainosseurantaa. Siksi
         sinulta ei kysytä evästeasetuksia, eikä mitään tarvitse hyväksyä.
@@ -20,10 +22,14 @@ export default function CookiesPage() {
         <li>Sivuston omat tiedostot (teksti, kuvat, fontit) sivuston omalta palvelimelta.</li>
         <li>Fontit tulevat sivuston omalta palvelimelta, eivät Googlen palvelimilta.</li>
         <li>Kolmansien osapuolten sisältöjä ei ladata ilman, että painat linkkiä.</li>
-        <li>
-          Ilmoittautumislomake avautuu Microsoft Formsiin uuteen välilehteen. Siellä ovat voimassa Microsoftin omat
-          evästeet ja ehdot, eivät tämän sivuston.
-        </li>
+        {form && (
+          <li>
+            Ilmoittautumislomake avautuu uuteen välilehteen ({form.name}). Siellä ovat voimassa lomakepalvelun
+            ({form.company}) omat evästeet ja ehdot, eivät tämän sivuston.
+          </li>
+        )}
+        <li>Peru ilmoittautuminen- ja yhteydenottolinkit avaavat oman sähköpostiohjelmasi. Evästeitä ei aseteta.</li>
+        <li>Lisää kalenteriin avaa Google Kalenterin uuteen välilehteen tai lataa kalenteritiedoston (.ics).</li>
       </ul>
 
       <h2>Jos tämä muuttuu</h2>
