@@ -32,7 +32,7 @@ export default function TermsPage() {
         Ryhmätunneille ilmoittaudutaan sivuston Tulevat tunnit -osion Ilmoittaudu-painikkeesta avautuvalla
         lomakkeella. Ilmoittautuminen on voimassa, kun lomake on lähetetty. Kun tunti on täynnä, sen kohdalla lukee
         Täynnä, eikä sille voi enää ilmoittautua. Yksilöpalvelut
-        (Personal Training, InBody-mittaus) ja tarjoukset ryhmille ja yrityksille sovitaan sähköpostilla tai
+        (Personal training, InBody-mittaus) ja tarjoukset ryhmille ja yrityksille sovitaan sähköpostilla tai
         puhelimitse.
         Maksutavat: [maksutavat]. Liikuntaedut, kuten ePassi, käyvät niissä palveluissa, joissa ne on mainittu.
       </p>

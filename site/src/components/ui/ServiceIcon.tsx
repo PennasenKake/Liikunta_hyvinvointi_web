@@ -36,7 +36,7 @@ const paths: Record<ServiceIconName, React.ReactNode> = {
       <circle cx="17.5" cy="16" r="2.5" />
     </>
   ),
-  // Personal Training: henkilö
+  // Personal training: henkilö
   person: (
     <>
       <circle cx="12" cy="7" r="3.5" />

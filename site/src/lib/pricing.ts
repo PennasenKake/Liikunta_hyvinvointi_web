@@ -13,7 +13,7 @@ export type PriceItem = {
 export const prices: PriceItem[] = [
   { name: "Ryhmäliikuntatunti", detail: "Vesijumppa, HIIT, Circuit, RVP ym. · kerta", price: "[HINTA] €" },
   { name: "10 kerran kortti", detail: "Käy kaikille ryhmäliikuntatunneille", price: "[HINTA] €" },
-  { name: "Personal Training", detail: "[kesto] min", price: "[HINTA] €" },
+  { name: "Personal training", detail: "[kesto] min", price: "[HINTA] €" },
   { name: "Ääni- tai kristallimaljarentoutus", detail: "[kesto] min", price: "[HINTA] €" },
   { name: "Yin jooga / Syvävenyttely", detail: "Kerta", price: "[HINTA] €" },
   { name: "InBody-mittaus", detail: "Sisältää tulosten läpikäynnin", price: "[HINTA] €" },

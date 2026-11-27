@@ -27,7 +27,7 @@ export const NOINDEX = import.meta.env.VITE_NOINDEX === "1";
 
 // Sisällön päivityspäivä sitemapia varten. Kiinteä arvo eikä new Date(): build ei vaihda
 // päivämäärää turhaan. Päivitä, kun sisältö muuttuu.
-export const CONTENT_UPDATED = "2026-11-16";
+export const CONTENT_UPDATED = "2026-11-27";
 
 // Google Search Consolen vahvistuskoodi (metatagi). Suositus on DNS-vahvistus Cloudflaressa,
 // jolloin tätä ei tarvita. Tyhjä = ei tagia.
