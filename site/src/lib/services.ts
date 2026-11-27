@@ -160,7 +160,7 @@ export const serviceCategories: ServiceCategory[] = [
       "Valmennuksessa keskitytään sinuun: tavoitteisiisi, lähtötasoosi ja arkeesi. InBody-mittaus näyttää, mistä lähdetään ja miten kehitys etenee.",
     services: [
       {
-        title: "Personal Training",
+        title: "Personal training",
         description: "Ohjelma tehdään sinun tavoitteidesi, lähtötasosi ja aikataulusi mukaan, ja kuljen mukana koko matkan.",
         icon: "person", booking: "yksilo",
         suitsFor: "Omaan tavoitteeseen, aloittelijasta kokeneeseen",

@@ -76,7 +76,7 @@ export const routes: Route[] = [
   {
     path: "/saavutettavuus/",
     title: "Saavutettavuusseloste",
-    description: "Tahkon Amandan sivuston saavutettavuus: WCAG 2.1 AA -tavoite, testaus ja palaute.",
+    description: "Tahkon Amandan sivuston saavutettavuus: WCAG 2.2 AA -tavoite, testaus ja palaute.",
     Page: AccessibilityPage,
   },
 ];
