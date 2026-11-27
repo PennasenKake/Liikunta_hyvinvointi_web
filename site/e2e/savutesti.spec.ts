@@ -432,11 +432,11 @@ test.describe("Navigaatio", () => {
     await expect(page.locator("#yhteystiedot")).toBeInViewport();
   });
 
-  test("Hyvinvointi-linkki vierittää Hyvinvointi-palstaan", async ({ page, isMobile }) => {
+  test("Hyvinvointi-linkki avaa Hyvinvointi-sivun", async ({ page, isMobile }) => {
     await page.goto("/");
     await clickNavLink(page, isMobile, "Hyvinvointi");
-    await expect(page).toHaveURL(/#hyvinvointi$/);
-    await expect(page.getByRole("heading", { level: 3, name: "Hyvinvointi" })).toBeInViewport();
+    await expect(page).toHaveURL(/\/hyvinvointi\/$/);
+    await expect(page.getByRole("heading", { level: 1, name: "Rentoutus, jooga ja venyttely" })).toBeVisible();
   });
 
   test("alavalikon palvelulinkki vie oikeaan palveluun", async ({ page, isMobile }) => {
@@ -451,7 +451,7 @@ test.describe("Navigaatio", () => {
       await nav.getByRole("link", { name: "Liikunta", exact: true }).hover();
     }
     await nav.getByRole("link", { name: "Vesijumppa" }).click();
-    await expect(page).toHaveURL(/#vesijumppa$/);
+    await expect(page).toHaveURL(/\/liikunta\/#vesijumppa$/);
     await expect(page.locator("#vesijumppa")).toBeInViewport();
   });
 
@@ -509,39 +509,49 @@ test.describe("Navigaatio", () => {
 });
 
 test.describe("Palvelut", () => {
-  test("kaikki palvelut näkyvät oikeissa palstoissa", async ({ page }) => {
-    // Odotetut määrät ja nimet luetaan datasta, jotta testi ei hajoa, kun palveluita lisätään
+  test("etusivulla on kolme korttia, jotka vievät palvelujen omille sivuille", async ({ page }) => {
     await page.goto("/");
+    const cards = page.locator("#palvelut").getByRole("link");
+    await expect(cards).toHaveCount(serviceCategories.length);
+    for (const [i, cat] of serviceCategories.entries()) {
+      await expect(cards.nth(i)).toHaveAttribute("href", new RegExp(`${cat.path}$`));
+      await expect(cards.nth(i).getByRole("heading", { level: 3, name: cat.label })).toBeVisible();
+    }
+  });
+
+  test("jokainen palvelu näkyy omalla sivullaan kuvauksineen", async ({ page }) => {
+    // Odotetut nimet ja kuvaukset luetaan datasta, jotta testi ei hajoa, kun palveluita lisätään
     for (const cat of serviceCategories) {
-      const column = page.getByRole("region", { name: cat.label });
-      await expect(column.getByRole("listitem")).toHaveCount(cat.services.length);
+      await page.goto(cat.path);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(cat.heading);
       for (const s of cat.services) {
-        await expect(column.getByRole("heading", { level: 4, name: s.title })).toBeAttached();
+        await expect(page.getByRole("heading", { level: 3, name: s.title, exact: true })).toBeVisible();
+        await expect(page.getByText(s.description)).toBeVisible();
       }
     }
   });
 
-  test("työpöydällä kuvaukset näkyvät heti", async ({ page, isMobile }) => {
-    test.skip(isMobile, "Mobiilissa kuvaus avautuu klikkaamalla (oma testi)");
-    await page.goto("/#liikunta");
-    await expect(page.getByText(/Vedessä liikkuminen on nivelille ystävällistä/)).toBeVisible();
+  test("liikuntatunnit on jaettu kevyempiin ja tehokkaampiin", async ({ page }) => {
+    await page.goto("/liikunta/");
+    for (const name of ["Kevyemmät", "Tehokkaammat"]) {
+      await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
+    }
+    const kevyet = page.getByRole("region", { name: "Kevyemmät" });
+    await expect(kevyet.getByRole("heading", { level: 3, name: "Vesijumppa" })).toBeVisible();
+    await expect(kevyet.getByRole("heading", { level: 3, name: "HIIT" })).toHaveCount(0);
   });
 
-  test("mobiilissa kuvaus avautuu ja sulkeutuu palvelun nimeä napauttamalla", async ({ page, isMobile }) => {
-    test.skip(!isMobile, "Työpöydällä kuvaukset näkyvät aina");
-    await page.goto("/#liikunta");
-    const button = page.getByRole("button", { name: "Vesijumppa", exact: true });
-    const description = page.getByText(/Vedessä liikkuminen on nivelille ystävällistä/);
+  test("palvelun linkki (/liikunta/#vesijumppa) vie suoraan palvelun kohdalle", async ({ page }) => {
+    await page.goto("/liikunta/#vesijumppa");
+    await expect(page.locator("#vesijumppa")).toBeInViewport();
+  });
 
-    await expect(button).toHaveAttribute("aria-expanded", "false");
-    await expect(description).toBeHidden();
-
-    await button.click();
-    await expect(button).toHaveAttribute("aria-expanded", "true");
-    await expect(description).toBeVisible();
-
-    await button.click();
-    await expect(description).toBeHidden();
+  test("valmennussivulla on ajanvaraus sähköpostilla ja aloituksen vaiheet", async ({ page }) => {
+    await page.goto("/valmennus/");
+    await expect(page.getByRole("link", { name: "Varaa tutustumisaika" })).toHaveAttribute("href", /^mailto:/);
+    await expect(page.getByRole("heading", { level: 2, name: "Näin aloitetaan" })).toBeVisible();
+    const jsonLd = await page.locator('script[type="application/ld+json"]').allTextContents();
+    expect(jsonLd.some((t) => t.includes('"BreadcrumbList"'))).toBe(true);
   });
 });
 
@@ -572,7 +582,7 @@ test.describe("Virhesivut", () => {
 // Saavutettavuusseloste lupaa tämän testauksen, joten testi pitää myös lupauksen totena.
 // Vähennetty liike: vierityspaljastuksen häivytys ei vääristä kontrastimittausta kesken animaation.
 test.describe("Saavutettavuus (axe-core)", () => {
-  for (const path of ["/", "/kayttoehdot/", "/tietosuoja/", "/evasteet/", "/saavutettavuus/", "/olematon-sivu"]) {
+  for (const path of ["/", "/liikunta/", "/hyvinvointi/", "/valmennus/", "/kayttoehdot/", "/tietosuoja/", "/evasteet/", "/saavutettavuus/", "/olematon-sivu"]) {
     test(`ei WCAG-virheitä: ${path}`, async ({ page }) => {
       await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(path);

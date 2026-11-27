@@ -1,7 +1,7 @@
 // Header.tsx: sivun yläpalkki (logo ja navigaatio).
 // Staattinen rakenne. Tilaa ja tapahtumia tarvitsevat osat ovat omissa komponenteissaan:
 //   HeaderShell  – pieneneminen ja piiloutuminen vieritettäessä
-//   NavDropdown  – työpöydän alavalikot (Liikunta, Hyvinvointi)
+//   NavDropdown  – työpöydän alavalikot (Liikunta, Hyvinvointi, Valmennus)
 //   MobileMenu   – hampurilaisvalikko pienille näytöille
 //
 // Värit myötäilevät logoa: liukuväri logon tummasta sinisestä (royal)
@@ -10,7 +10,7 @@
 import Image from "@/components/ui/Image";
 import Link from "@/components/ui/Link";
 import { site } from "@/lib/site";
-import { serviceCategories, serviceId } from "@/lib/services";
+import { levels, serviceCategories, serviceHrefFor } from "@/lib/services";
 import HeaderShell from "./HeaderShell";
 import NavDropdown from "./NavDropdown";
 import MobileMenu, { type MenuItem } from "./MobileMenu";
@@ -21,16 +21,23 @@ import { withBase } from "@/lib/paths";
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
 
-// Valikon rakenne: site.ts:n linkit, joista Liikunta ja Hyvinvointi saavat alavalikoksi
-// palvelunsa (services.ts). Uusi palvelu ilmestyy alavalikkoon automaattisesti.
+// Valikon rakenne: site.ts:n linkit, joista palvelusivut (Liikunta, Hyvinvointi, Valmennus)
+// saavat alavalikoksi palvelunsa (services.ts). Uusi palvelu ilmestyy alavalikkoon automaattisesti.
+// Liikunnan tunnit ryhmitellään tasoittain (Kevyemmät, Tehokkaammat).
 const menu: MenuItem[] = site.nav.map((item) => {
-  const category = serviceCategories.find((c) => item.href === `/#${c.id}`);
+  const category = serviceCategories.find((c) => item.href === c.path);
+  if (!category) return item;
+  const order = Object.keys(levels);
+  const services = [...category.services].sort(
+    (a, b) => order.indexOf(a.level ?? "") - order.indexOf(b.level ?? ""),
+  );
   return {
     ...item,
-    children: category?.services.map((s) => ({
+    children: services.map((s) => ({
       label: s.title,
-      href: `/#${serviceId(s.title)}`,
+      href: serviceHrefFor(category, s),
       icon: s.icon,
+      group: s.level ? levels[s.level].label : undefined,
     })),
   };
 });
@@ -67,8 +74,9 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Työpöytänavigaatio: piilossa pienillä näytöillä, näkyvissä lg-leveydestä (1024 px). */}
-        <ul className="hidden items-center gap-4 font-medium lg:flex xl:gap-6">
+        {/* Työpöytänavigaatio: näkyvissä xl-leveydestä (1280 px). Kolme palvelusivua alavalikkoineen ei
+            mahdu kapeammalle logon viereen, joten 1024–1279 px käyttää mobiilivalikkoa. */}
+        <ul className="hidden items-center gap-5 font-medium xl:flex">
           {menu.map((item) =>
             item.children ? (
               <NavDropdown
@@ -101,7 +109,7 @@ export default function Header() {
           </li>
         </ul>
 
-        {/* Mobiilivalikko näkyy vain alle lg-leveydellä (komponentti piilottaa itsensä) */}
+        {/* Mobiilivalikko näkyy vain alle xl-leveydellä (komponentti piilottaa itsensä) */}
         <MobileMenu items={menu} cta={site.contact} />
       </nav>
     </HeaderShell>

@@ -73,7 +73,7 @@ Liikunta_hyvinvointi_web/
 │       ├── routes.tsx                 ✅ Sivut, otsikot ja kuvaukset
 │       ├── routes.test.ts             ✅ Vitest: reitit, otsikot ja kuvaukset (pituus, yksilöllisyys)
 │       ├── index.css                  ✅ Tailwind-teema, vierityspaljastus, vuoristoviiva, heron kuvat, hengitysharjoitus, lootusmandala
-│       ├── pages/                     ✅ Home, kayttoehdot, tietosuoja, evasteet, saavutettavuus, NotFound
+│       ├── pages/                     ✅ Home, palvelusivu (/liikunta/, /hyvinvointi/, /valmennus/), kayttoehdot, tietosuoja, evasteet, saavutettavuus, NotFound
 │       ├── components/
 │       │   ├── layout/                ✅ Header, HeaderShell, NavDropdown, MobileMenu, Footer
 │       │   ├── sections/              ✅ Etusivun osiot (Hero, Palvelut, Miksi liikkua, Hengähdä hetki, Kalenteri, Hinnasto, Minusta, Instagram)

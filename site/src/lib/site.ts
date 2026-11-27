@@ -30,13 +30,13 @@ export const site = {
   businessId: "3337574-9",
   areas: ["Tahko", "Siilinjärvi", "Kuopio", "Rautavaara"],
 
-  // Navigaatio suunnitelman mukaan: Liikunta ja Hyvinvointi omina kohtinaan.
-  // Linkit alkavat "/"-merkillä, jotta ne toimivat myös muilta sivuilta
-  // (404, tietosuojaseloste): selain siirtyy etusivulle ja vierittää osioon.
-  // Etusivulla "/#liikunta" ei lataa sivua uudelleen, vaan vain vierittää.
+  // Navigaatio: Liikunta, Hyvinvointi ja Valmennus omina sivuinaan (services.ts: path).
+  // Ne saavat alavalikoksi palvelunsa (Header.tsx). Muut linkit vievät etusivun osioihin:
+  // "/"-alku toimii myös muilta sivuilta (selain siirtyy etusivulle ja vierittää osioon).
   nav: [
-    { label: "Liikunta", href: "/#liikunta" },
-    { label: "Hyvinvointi", href: "/#hyvinvointi" },
+    { label: "Liikunta", href: "/liikunta/" },
+    { label: "Hyvinvointi", href: "/hyvinvointi/" },
+    { label: "Valmennus", href: "/valmennus/" },
     { label: "Hinnasto", href: "/#hinnasto" },
     { label: "Minusta", href: "/#minusta" },
     // Yhteystiedot ovat alatunnisteessa (id="yhteystiedot"): puhelin, sähköposti ja alueet
@@ -45,8 +45,9 @@ export const site = {
 
   // Alatunnisteen "Sivusto"-sarake: päävalikon kohdat ja muut etusivun osiot
   footerNav: [
-    { label: "Liikunta", href: "/#liikunta" },
-    { label: "Hyvinvointi", href: "/#hyvinvointi" },
+    { label: "Liikunta", href: "/liikunta/" },
+    { label: "Hyvinvointi", href: "/hyvinvointi/" },
+    { label: "Valmennus", href: "/valmennus/" },
     { label: "Hinnasto", href: "/#hinnasto" },
     { label: "Minusta", href: "/#minusta" },
     { label: "Tulevat tunnit", href: "/#kalenteri" },

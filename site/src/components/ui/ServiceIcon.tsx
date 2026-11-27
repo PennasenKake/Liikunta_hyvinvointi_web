@@ -61,7 +61,7 @@ const paths: Record<ServiceIconName, React.ReactNode> = {
       <path d="M4 20h7l2-6 5 6M13 14l-1-5-6 2M12 9l6 1" />
     </>
   ),
-  // InBody-mittaukset: raportti
+  // InBody-mittaus: raportti
   chart: (
     <>
       <rect x="4" y="3" width="16" height="18" rx="3" />
