@@ -2,7 +2,7 @@
 // Nopeita tarkistuksia ilman selainta: e2e-testit (e2e/) testaavat sivua selaimessa.
 
 import { describe, expect, it } from "vitest";
-import { findRoute, fullTitle, normalizePath, routes } from "./routes";
+import { findRoute, fullTitle, normalizePath, notFoundRoute, routes } from "./routes";
 import { site } from "./lib/site";
 import { serviceCategories, serviceId } from "./lib/services";
 
@@ -54,6 +54,20 @@ describe("palvelut", () => {
   it("palveluiden tunnisteet (ankkurit) ovat yksilöllisiä", () => {
     const ids = serviceCategories.flatMap((c) => c.services.map((s) => serviceId(s.title)));
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("jokaisella palveluosalla on oma sivunsa ja jokainen palvelu kuuluu johonkin osaan", () => {
+    for (const c of serviceCategories) {
+      expect(findRoute(c.path).Page, c.path).not.toBe(notFoundRoute.Page);
+      expect(c.services.length, c.id).toBeGreaterThan(0);
+    }
+    expect(serviceCategories.map((c) => c.id)).toEqual(["liikunta", "hyvinvointi", "valmennus"]);
+  });
+
+  it("liikunnan tunneilla on taso, muilla ei", () => {
+    for (const c of serviceCategories) {
+      for (const s of c.services) expect(Boolean(s.level), s.title).toBe(c.id === "liikunta");
+    }
   });
 
 });

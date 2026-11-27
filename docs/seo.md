@@ -63,5 +63,6 @@ Verkossa, kun sivu on julkaistu:
 - **Sisällön päivitys:** muuta `CONTENT_UPDATED` (`src/lib/seo.ts`), kun tekstit muuttuvat. Päivämäärä menee sitemapiin.
 - **Uusi sivu:** lisää rivi `src/routes.tsx`:ään. Sitemap, otsikko, kuvaus ja canonical tulevat automaattisesti,
   ja testit varmistavat, ettei otsikko tai kuvaus ole liian pitkä tai sama kuin toisella sivulla.
-- **Myöhemmin harkittavaa:** omat sivut tärkeimmille palveluille (esim. `/vesijumppa/`), jos haku halutaan
+- **Palvelusivut:** `/liikunta/`, `/hyvinvointi/` ja `/valmennus/` omine otsikoineen, kuvauksineen ja murupolkuineen (BreadcrumbList). Rakennetiedon palvelukatalogi linkittää niihin.
+- **Myöhemmin harkittavaa:** omat sivut yksittäisille palveluille (esim. `/vesijumppa/`), jos haku halutaan
   kohdistaa tarkemmin. Yksi tarkka sivu per palvelu sijoittuu paremmin kuin yksi yleissivu.

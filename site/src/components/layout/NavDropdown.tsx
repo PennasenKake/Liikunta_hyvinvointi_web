@@ -1,4 +1,4 @@
-// NavDropdown.tsx: työpöydän valikkokohta, jossa on alavalikko (Liikunta, Hyvinvointi).
+// NavDropdown.tsx: työpöydän valikkokohta, jossa on alavalikko (Liikunta, Hyvinvointi, Valmennus).
 // Interaktiivinen: alavalikon auki/kiinni-tila.
 //
 // Toiminta:
@@ -11,13 +11,13 @@
 
 import { useRef, useState } from "react";
 import ServiceIcon from "@/components/ui/ServiceIcon";
-import type { ServiceIconName } from "@/lib/services";
 import { withBase } from "@/lib/paths";
+import { startsGroup, type MenuChild } from "./MobileMenu";
 
 type Props = {
   label: string;
   href: string;
-  items: { label: string; href: string; icon: ServiceIconName }[];
+  items: MenuChild[];
   focusRing: string; // Sama fokusrengas kuin muissa palkin linkeissä (Header.tsx)
 };
 
@@ -61,7 +61,7 @@ export default function NavDropdown({ label, href, items, focusRing }: Props) {
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label={`${label}: näytä palvelut`}
-          className={`flex h-11 w-8 items-center justify-center rounded-sm ${focusRing}`}
+          className={`flex h-11 w-7 items-center justify-center rounded-sm ${focusRing}`}
         >
           <svg
             viewBox="0 0 24 24"
@@ -83,8 +83,13 @@ export default function NavDropdown({ label, href, items, focusRing }: Props) {
       {open && (
         <div className="absolute left-1/2 top-full z-10 w-72 -translate-x-1/2 pt-3">
           <ul className="rounded-2xl border border-line bg-white p-2 text-ink shadow-[0_16px_40px_rgba(34,29,74,0.18)]">
-            {items.map((item) => (
+            {items.map((item, i) => (
               <li key={item.href}>
+                {startsGroup(items, i) && (
+                  <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-[0.12em] text-sky-ink">
+                    {startsGroup(items, i)}
+                  </p>
+                )}
                 <a
                   href={withBase(item.href)}
                   onClick={() => setOpen(false)}

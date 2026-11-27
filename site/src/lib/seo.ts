@@ -67,13 +67,14 @@ export function localBusinessJsonLd() {
       name,
       containedInPlace: { "@type": "AdministrativeArea", name: "Pohjois-Savo" },
     })),
-    // Palvelut kategorioittain (Liikunta, Hyvinvointi)
+    // Palvelut kategorioittain (Liikunta, Hyvinvointi, Valmennus), kullakin oma sivunsa
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Palvelut",
       itemListElement: serviceCategories.map((cat) => ({
         "@type": "OfferCatalog",
         name: cat.label,
+        url: `${SITE_URL}${cat.path}`,
         itemListElement: cat.services.map((s) => ({
           "@type": "Offer",
           itemOffered: { "@type": "Service", name: s.title, description: s.description },
@@ -119,6 +120,18 @@ export function websiteJsonLd() {
 // Tulevat tunnit tapahtumina (schema.org/Event): Google voi näyttää ne tapahtumahaussa
 // ("vesijumppa Kuopio"). Paikka: tunnin paikka-tekstin viimeinen osa on paikkakunta,
 // jos se on yksi toiminta-alueista ("Kylpylä, Tahko" → Tahko).
+// Murupolku palvelusivuille (Etusivu › Liikunta): Google voi näyttää sen hakutuloksessa osoitteen tilalla
+export function breadcrumbJsonLd(label: string, path: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Etusivu", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: label, item: `${SITE_URL}${path}` },
+    ],
+  };
+}
+
 export function eventsJsonLd(events: CalendarEvent[]) {
   return events.map((e) => {
     const parts = e.location.split(",").map((p) => p.trim()).filter(Boolean);

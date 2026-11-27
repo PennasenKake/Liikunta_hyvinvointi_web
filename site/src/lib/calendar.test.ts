@@ -67,7 +67,8 @@ describe("linkit", () => {
     expect(url.searchParams.get("body")).toContain("perun ilmoittautumiseni tunnille Yin jooga ke 18.11. klo 17.30");
   });
   it("tunnin nimi löytää samannimisen palvelun", () => {
-    expect(serviceHref("vesijumppa")).toBe("/#vesijumppa");
+    expect(serviceHref("vesijumppa")).toBe("/liikunta/#vesijumppa");
+    expect(serviceHref("Personal Training")).toBe("/valmennus/#personal-training");
     expect(serviceHref("Tuntematon tunti")).toBeNull();
   });
 });

@@ -12,6 +12,7 @@ import TermsPage from "@/pages/kayttoehdot";
 import PrivacyPage from "@/pages/tietosuoja";
 import CookiesPage from "@/pages/evasteet";
 import AccessibilityPage from "@/pages/saavutettavuus";
+import { HyvinvointiPage, LiikuntaPage, ValmennusPage } from "@/pages/palvelusivu";
 
 export type Route = {
   path: string;            // Osoite, aina kauttaviivaan päättyvä ("/", "/tietosuoja/")
@@ -31,6 +32,28 @@ export const routes: Route[] = [
     description:
       "Vesijumppa, HIIT, jooga, äänimaljarentoutus ja personal training Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla. Katso tulevat tunnit ja ilmoittaudu.",
     Page: Home,
+  },
+  // Palvelujen omat sivut (pages/palvelusivu.tsx, sisältö services.ts:stä)
+  {
+    path: "/liikunta/",
+    title: "Ryhmäliikunta: vesijumppa, HIIT ja keppijumppa",
+    description:
+      "Vesijumppaa, keppijumppaa, HIIT-, circuit- ja tehotreenejä Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla. Kevyemmät ja tehokkaammat tunnit.",
+    Page: LiikuntaPage,
+  },
+  {
+    path: "/hyvinvointi/",
+    title: "Äänimaljarentoutus, yin jooga ja venyttely",
+    description:
+      "Äänimalja- ja kristallimaljarentoutusta, yin joogaa ja syvävenyttelyä palautumiseen Tahkolla, Siilinjärvellä, Kuopiossa ja Rautavaaralla.",
+    Page: HyvinvointiPage,
+  },
+  {
+    path: "/valmennus/",
+    title: "Personal training ja InBody-mittaus",
+    description:
+      "Personal training omaan tavoitteeseen ja InBody-kehonkoostumusmittaus Pohjois-Savossa. Varaa tutustumisaika Tahkon Amandalta.",
+    Page: ValmennusPage,
   },
   {
     path: "/kayttoehdot/",

@@ -73,7 +73,7 @@ export default function NotFound() {
 
         <div className="mt-8 flex flex-wrap justify-center gap-3.5">
           <ButtonLink href="/">Etusivulle</ButtonLink>
-          <ButtonLink href="/#liikunta" variant="secondary">
+          <ButtonLink href="/#palvelut" variant="secondary">
             Katso palvelut
           </ButtonLink>
         </div>

@@ -8,7 +8,7 @@
 
 import data from "@/data/calendar.json";
 import { site } from "./site";
-import { serviceCategories, serviceId } from "./services";
+import { serviceCategories, serviceHrefFor } from "./services";
 import { withBase } from "./paths";
 import { mailtoHref } from "./contact";
 
@@ -54,13 +54,13 @@ export function subscribeLinks(): { webcal: string; google: string } | null {
   return { webcal: calendar.subscribeUrl.replace(/^https:/, "webcal:"), google: calendar.googleAddUrl };
 }
 
-// Tunnin nimi → palvelun ankkuri (Palvelut-osio), jos samanniminen palvelu löytyy.
-// Esim. "Vesijumppa" → "/#vesijumppa". Vertailu ilman isoja kirjaimia.
+// Tunnin nimi → palvelun kohta sen omalla sivulla, jos samanniminen palvelu löytyy.
+// Esim. "Vesijumppa" → "/liikunta/#vesijumppa". Vertailu ilman isoja kirjaimia.
 export function serviceHref(title: string): string | null {
   const t = title.trim().toLowerCase();
   for (const cat of serviceCategories) {
     const match = cat.services.find((s) => s.title.toLowerCase() === t);
-    if (match) return `/#${serviceId(match.title)}`;
+    if (match) return serviceHrefFor(cat, match);
   }
   return null;
 }

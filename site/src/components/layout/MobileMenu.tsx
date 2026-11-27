@@ -3,7 +3,8 @@
 //
 // Toiminta (kuten fitis.fi):
 // - Valikko aukeaa yläpalkin alle, ja muu sivu tummuu taustalla.
-// - Liikunta ja Hyvinvointi -kohdissa on nuoli, josta aukeaa palvelulista.
+// - Liikunta-, Hyvinvointi- ja Valmennus-kohdissa on nuoli, josta aukeaa palvelulista
+//   (Liikunnassa tasoittain: Kevyemmät ja Tehokkaammat).
 // - Sulkeutuu: rastista, Esc-näppäimestä, tummennetun taustan klikkauksesta tai linkin valinnasta.
 // - Sivun vieritys on estetty, kun valikko on auki, jottei tausta liiku sormen alla.
 
@@ -13,12 +14,20 @@ import ServiceIcon from "@/components/ui/ServiceIcon";
 import type { ServiceIconName } from "@/lib/services";
 import { withBase } from "@/lib/paths";
 
-// Valikon kohta. children = alavalikon linkit (vain Liikunnalla ja Hyvinvoinnilla).
+// Valikon kohta. children = alavalikon linkit (palvelusivuilla). group = ryhmän otsikko,
+// joka näytetään ryhmän ensimmäisen linkin yläpuolella (esim. "Kevyemmät").
+export type MenuChild = { label: string; href: string; icon: ServiceIconName; group?: string };
 export type MenuItem = {
   label: string;
   href: string;
-  children?: { label: string; href: string; icon: ServiceIconName }[];
+  children?: MenuChild[];
 };
+
+// Onko tämä alavalikon linkki uuden ryhmän ensimmäinen (näytetään ryhmän otsikko)
+export function startsGroup(children: MenuChild[], i: number): string | null {
+  const g = children[i].group;
+  return g && (i === 0 || children[i - 1].group !== g) ? g : null;
+}
 
 // cta: korostettu toimintakehote valikon lopussa (site.contact, "Ilmoittaudu tunnille"), painikkeena eikä tavallisena rivinä
 export default function MobileMenu({ items, cta }: { items: MenuItem[]; cta?: { label: string; href: string } }) {
@@ -49,8 +58,8 @@ export default function MobileMenu({ items, cta }: { items: MenuItem[]; cta?: { 
   };
 
   return (
-    // lg:hidden piilottaa koko mobiilivalikon isoilla näytöillä
-    <div className="shrink-0 lg:hidden">
+    // xl:hidden piilottaa koko mobiilivalikon isoilla näytöillä (1280 px alkaen työpöytävalikko)
+    <div className="shrink-0 xl:hidden">
       <button
         type="button"
         onClick={() => (open ? close() : setOpen(true))}
@@ -134,8 +143,13 @@ export default function MobileMenu({ items, cta }: { items: MenuItem[]; cta?: { 
                       ja nuoli tulee esiin oikealle: "tästä pääset palveluun". */}
                   {item.children && isOpen && (
                     <ul id={subId} className="menu-in mb-3 mt-1 rounded-xl bg-lilac-soft p-2 text-base">
-                      {item.children.map((child) => (
+                      {item.children.map((child, i) => (
                         <li key={child.href}>
+                          {startsGroup(item.children!, i) && (
+                            <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-[0.12em] text-accent first:pt-1">
+                              {startsGroup(item.children!, i)}
+                            </p>
+                          )}
                           <a
                             href={withBase(child.href)}
                             onClick={close}

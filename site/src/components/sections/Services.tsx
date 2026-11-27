@@ -1,19 +1,18 @@
-// Services.tsx: Palvelut-osio.
-// Liikunta ja Hyvinvointi rinnakkain omina palstoinaan (työpöydällä 2 saraketta,
-// mobiilissa allekkain). Kummankin palstan alussa on lyhyt "miksi tämä on tärkeää" -teksti.
+// Services.tsx: etusivun Palvelut-osio: kolme korttia, jotka vievät palvelujen omille sivuille
+// (Liikunta, Hyvinvointi, Valmennus). Kaikki tekstit tulevat services.ts:stä.
 //
-// Osion rakenne on staattinen. Vain yksittäinen palvelurivi (ServiceItem) on
-// interaktiivinen, koska mobiilissa kuvaus avautuu klikkaamalla.
+// Kortit pitävät etusivun lyhyenä: yksityiskohdat, tasojako ja "Sopii"-tekstit ovat omilla sivuillaan
+// (pages/palvelusivu.tsx), joissa Amandan teksteille ja kuville on tilaa.
+// Koko kortti on yksi linkki, joten kosketusalue on suuri ja näppäimistöllä yksi Tab-pysähdys.
 
-import { bookingHref } from "@/lib/contact";
 import Link from "@/components/ui/Link";
 import { serviceCategories } from "@/lib/services";
-import ServiceItem from "./ServiceItem";
 
-// Palstojen sävyt: Liikunta violetti, Hyvinvointi sininen (samat kuin pikalinkeissä)
-const tones = {
-  liikunta: { box: "bg-lilac-soft", icon: "bg-lilac text-accent" },
-  hyvinvointi: { box: "bg-sky-soft", icon: "bg-sky text-sky-ink" },
+// Kortin sävy osan mukaan: sama värikoodi kuin palvelusivuilla
+export const categoryTones = {
+  liikunta: { box: "bg-lilac-soft", icon: "bg-lilac text-accent", link: "text-accent" },
+  hyvinvointi: { box: "bg-sky-soft", icon: "bg-sky text-sky-ink", link: "text-sky-ink" },
+  valmennus: { box: "bg-sand", icon: "bg-sand text-accent", link: "text-accent" },
 } as const;
 
 export default function Services() {
@@ -23,56 +22,37 @@ export default function Services() {
         <h2 id="palvelut-otsikko" data-reveal className="mb-2.5 font-serif text-[clamp(2.5rem,6vw,3.5rem)] font-semibold leading-tight">
           Palvelut
         </h2>
-        <p className="mb-12 max-w-md text-[17px] leading-relaxed text-muted">
+        <p className="mb-10 max-w-md text-[17px] leading-relaxed text-muted">
           Tunteja eri kuntotasoille. Kysy rohkeasti, jos et tiedä mistä aloittaa.
         </p>
 
-        {/* grid-cols-1 = minmax(0, 1fr): sarake saa kaventua kapeimmallakin näytöllä (320 px),
-            muuten pisin palvelun nimi venyttäisi sen ruudun yli */}
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-          {serviceCategories.map((cat) => (
-            // id="liikunta" / "hyvinvointi": yläpalkin ja pikalinkkien ankkurit osuvat suoraan palstaan.
-            // aria-labelledby: ruudunlukija ilmoittaa alueen nimen ("Liikunta").
-            <div key={cat.id} id={cat.id} role="region" aria-labelledby={`${cat.id}-otsikko`} data-reveal className="min-w-0">
-              <div className={`mb-4 rounded-2xl p-6 lg:mb-6 ${tones[cat.id].box}`}>
-                <h3 id={`${cat.id}-otsikko`} className="mb-2 font-serif text-[38px] font-semibold leading-none">
-                  {cat.label}
-                </h3>
-                <p className="leading-relaxed text-ink-soft">{cat.intro}</p>
-              </div>
-
-              <ul>
-                {cat.services.map((s) => (
-                  <ServiceItem key={s.title} service={s} iconTone={tones[cat.id].icon} />
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Yhteinen toimintakehote koko osiolle: ryhmätunnit kalenterista,
-            yksilöpalveluista (Personal Training, InBody) sovitaan aika suoraan. */}
-        <div data-reveal className="mt-10 flex flex-col gap-4 rounded-2xl border border-line p-6 sm:flex-row sm:flex-wrap sm:items-center">
-          <p className="grow font-medium">
-            Ryhmätunnit näet kalenterista. Personal Trainingista ja InBody-mittauksesta sovitaan aika suoraan.
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {/* Link: linkki etusivun osioon (toimii myös toiselta sivulta) */}
-            <Link
-              href="/#kalenteri"
-              className="inline-flex min-h-12 items-center rounded-md bg-accent px-6 font-semibold text-white transition hover:bg-ink"
-            >
-              Katso tulevat tunnit
-            </Link>
-            {/* Ajanvaraus sähköpostilla: Amanda vastaa ohjausten välissä */}
-            <a
-              href={bookingHref}
-              className="inline-flex min-h-12 items-center rounded-md border border-border px-6 font-semibold text-accent transition hover:bg-lilac-soft"
-            >
-              Varaa aika
-            </a>
-          </div>
-        </div>
+        {/* Puhelimessa kortit allekkain, tabletilla ja työpöydällä kolme rinnakkain */}
+        <ul className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
+          {serviceCategories.map((cat) => {
+            const tone = categoryTones[cat.id];
+            // Kortin palvelulista: neljä ensimmäistä, loput "…"-merkillä
+            const names = cat.services.map((s) => s.title);
+            const preview = names.length > 4 ? `${names.slice(0, 4).join(", ")}…` : names.join(", ");
+            return (
+              <li key={cat.id} id={cat.id} data-reveal className="scroll-mt-28">
+                <Link
+                  href={cat.path}
+                  className={`group flex h-full min-h-72 flex-col gap-3 rounded-3xl p-7 transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_-16px_rgba(34,29,74,0.35)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent motion-reduce:transition-none lg:p-8 ${tone.box}`}
+                >
+                  <h3 className="font-serif text-[40px] font-bold leading-none">{cat.label}</h3>
+                  <p className="text-[17px] leading-relaxed text-ink-soft">{cat.card}</p>
+                  <p className="text-[15px] text-muted">{preview}</p>
+                  <span className={`mt-auto pt-2 font-semibold ${tone.link}`}>
+                    {cat.cardLink}{" "}
+                    <span aria-hidden="true" className="inline-block transition group-hover:translate-x-1 motion-reduce:transition-none">
+                      →
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
